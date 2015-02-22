@@ -2,7 +2,7 @@ import sys, pygame
 from pygame.locals import *
 pygame.init()
 
-import character
+import cricket
 import keyhandler
 
 screensize = width, height = 640, 576
@@ -11,7 +11,7 @@ display = pygame.display.set_mode(screensize)
 
 blue = 0, 0, 255
 
-cricket = character.Character()
+cricket = cricket.Cricket()
 cricket.loadSprite('Cricket1f.png')
 
 clock = pygame.time.Clock()
