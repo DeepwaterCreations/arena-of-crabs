@@ -27,14 +27,18 @@ class Cricket(character.Character, keyhandler.Keylistener):
         #TODO: I want the currently held horizontal/vertical key to override a second key, so if I hold down two keys at once, I keep moving in the first direction.
         #When the first key is released, if the second is still being held down, immediately move in the other direction.
         if self.key_inputs['up']:
-            self.y -= self.speed * (dt/1000.0)           
+            self.y -= self.speed * (dt/1000.0)
+            self.facing = character.Character.Direction.UP
         if self.key_inputs['down']:
             self.y += self.speed * (dt/1000.0) 
+            self.facing = character.Character.Direction.DOWN
             
         if self.key_inputs['left']:
             self.x -= self.speed * (dt/1000.0)
+            self.facing = character.Character.Direction.LEFT
         elif self.key_inputs['right']:
-            self.x += self.speed * (dt/1000.0) 
+            self.x += self.speed * (dt/1000.0)
+            self.facing = character.Character.Direction.UP
             
         
     #This will have to be moved into the Cricket-specific subclass later.
