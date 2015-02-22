@@ -2,6 +2,7 @@ import sys, pygame
 from pygame.locals import *
 pygame.init()
 
+import character
 import cricket
 import keyhandler
 
@@ -12,7 +13,7 @@ display = pygame.display.set_mode(screensize)
 blue = 0, 0, 255
 
 cricket = cricket.Cricket()
-cricket.loadSprite('Cricket1f.png')
+cricket.loadSprites()
 
 clock = pygame.time.Clock()
 
@@ -28,6 +29,6 @@ while 1:
     cricket.update(clock.get_time())
 				
     display.fill(blue)
-    display.blit(cricket.sprite, (cricket.x, cricket.y))
+    cricket.draw(display)
     pygame.display.flip()
 		
