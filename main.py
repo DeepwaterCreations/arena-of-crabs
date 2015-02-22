@@ -12,7 +12,7 @@ display = pygame.display.set_mode(screensize)
 blue = 0, 0, 255
 
 cricket = character.Character()
-cricket.loadSprite('Cricket1f.bmp')
+cricket.loadSprite('Cricket1f.png')
 
 clock = pygame.time.Clock()
 

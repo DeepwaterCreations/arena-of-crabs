@@ -21,7 +21,7 @@ class Character(keyhandler.Keylistener):
     #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
     #and all that jazz.
     def loadSprite(self, filepath):
-        self.sprite = pygame.image.load(filepath).convert()
+        self.sprite = pygame.image.load(filepath).convert_alpha()
         
         
     def update(self, dt):
@@ -38,7 +38,7 @@ class Character(keyhandler.Keylistener):
         if self.key_inputs['left']:
             self.x -= self.speed * (dt/1000.0)
         elif self.key_inputs['right']:
-            self.x += self.speed * (dt/1000.0)
+            self.x += self.speed * (dt/1000.0) 
             
         
     #This will have to be moved into the Cricket-specific subclass later.
