@@ -13,8 +13,10 @@ class Character(drawable.Drawable):
     def __init__(self):
         drawable.Drawable.__init__(self)
         
-        self.x = 0
-        self.y = 0
+        self.rect.x = 0
+        self.rect.y = 0
+        self.rect.width = 64
+        self.rect.height = 64
         
         self.speed = 100
         
@@ -27,5 +29,6 @@ class Character(drawable.Drawable):
         self.facing = Character.Direction.DOWN
         
     
-    def draw(self, surface):        
-        surface.blit(self.sprites[self.facing], (self.x, self.y))
+    def draw(self, surface):
+        if self.visible:         
+            surface.blit(self.sprites[self.facing], (self.rect.x, self.rect.y))

@@ -18,7 +18,7 @@ cricket.loadSprites()
 clock = pygame.time.Clock()
 
 while 1:
-    clock.tick()
+    clock.tick(60)
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE): 

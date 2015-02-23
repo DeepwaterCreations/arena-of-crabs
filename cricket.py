@@ -1,3 +1,5 @@
+import math
+
 import pygame
 from pygame.locals import *
 pygame.init()
@@ -5,6 +7,19 @@ pygame.init()
 import drawable
 import character
 import keyhandler
+
+#This should not be the final structure of this!
+class Knife(character.Character):
+    def __init__(self):
+        character.Character.__init__(self)
+        
+        self.visible = 0
+    
+        self.sprites[character.Character.Direction.UP] = drawable.loadImage('knifeb.bmp')
+        self.sprites[character.Character.Direction.DOWN] = drawable.loadImage('knifef.bmp')
+        self.sprites[character.Character.Direction.LEFT] = drawable.loadImage('knifel.bmp')
+        self.sprites[character.Character.Direction.RIGHT] = drawable.loadImage('knifer.bmp')
+    
 
 class Cricket(character.Character, keyhandler.Keylistener):
     
@@ -14,7 +29,9 @@ class Cricket(character.Character, keyhandler.Keylistener):
         
         self.speed = 200;
         
-        self.key_inputs = {'up': 0, 'down': 0, 'left': 0, 'right': 0} #Really, Python? No boolean values? 
+        self.key_inputs = {'up': 0, 'down': 0, 'left': 0, 'right': 0, 'atk': 0} #Really, Python? No boolean values? 
+        
+        self.knife = Knife()
     
     
         #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
@@ -44,21 +61,51 @@ class Cricket(character.Character, keyhandler.Keylistener):
         #TODO: I want the currently held horizontal/vertical key to override a second key, so if I hold down two keys at once, I keep moving in the first direction.
         #When the first key is released, if the second is still being held down, immediately move in the other direction.
         if self.key_inputs['up']:
-            self.y -= self.speed * (dt/1000.0)
+            self.rect.y -= math.floor(self.speed * (dt/1000.0))
             self.facing = character.Character.Direction.UP
-        if self.key_inputs['down']:
-            self.y += self.speed * (dt/1000.0) 
+        elif self.key_inputs['down']:
+            self.rect.y += math.floor(self.speed * (dt/1000.0))
             self.facing = character.Character.Direction.DOWN
             
         if self.key_inputs['left']:
-            self.x -= self.speed * (dt/1000.0)
+            self.rect.x -= math.floor(self.speed * (dt/1000.0))
             self.facing = character.Character.Direction.LEFT
         elif self.key_inputs['right']:
-            self.x += self.speed * (dt/1000.0)
+            self.rect.x += math.floor(self.speed * (dt/1000.0))            
             self.facing = character.Character.Direction.RIGHT
             
+        if self.key_inputs['atk']:
+            if self.facing == character.Character.Direction.UP:
+                self.knife.facing = character.Character.Direction.UP
+                self.knife.rect.x = self.rect.x
+                self.knife.rect.y = self.rect.y - self.knife.rect.height
+                self.knife.visible = 1
+                
+            elif self.facing == character.Character.Direction.DOWN:
+                self.knife.facing = character.Character.Direction.DOWN
+                self.knife.rect.x = self.rect.x
+                self.knife.rect.y = self.rect.y + self.rect.height
+                self.knife.visible = 1            
+            
+            elif self.facing == character.Character.Direction.LEFT:
+                self.knife.facing = character.Character.Direction.LEFT
+                self.knife.rect.x = self.rect.x - self.knife.rect.width
+                self.knife.rect.y = self.rect.y 
+                self.knife.visible = 1
+            
+            elif self.facing == character.Character.Direction.RIGHT:
+                self.knife.facing = character.Character.Direction.RIGHT
+                self.knife.rect.x = self.rect.x + self.rect.width
+                self.knife.rect.y = self.rect.y 
+                self.knife.visible = 1
+        else:
+            self.knife.visible = 0
         
-    #This will have to be moved into the Cricket-specific subclass later.
+    def draw(self, surface):
+        character.Character.draw(self, surface)
+        self.knife.draw(surface)
+        
+        
     def handleKey(self, event):
         keyhandler.Keylistener.handleKey(self, event)
         
@@ -71,6 +118,8 @@ class Cricket(character.Character, keyhandler.Keylistener):
                 self.key_inputs['left'] = 1
             elif event.key == K_RIGHT:
                 self.key_inputs['right'] = 1
+            elif event.key == K_LSHIFT:
+                self.key_inputs['atk'] = 1
         if event.type == (KEYUP):
             if event.key == K_UP:
                 self.key_inputs['up'] = 0
@@ -80,4 +129,6 @@ class Cricket(character.Character, keyhandler.Keylistener):
                 self.key_inputs['left'] = 0
             elif event.key == K_RIGHT:
                 self.key_inputs['right'] = 0
+            elif event.key == K_LSHIFT:
+                self.key_inputs['atk'] = 0
         
