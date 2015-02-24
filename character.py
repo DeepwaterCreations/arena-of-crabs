@@ -13,6 +13,7 @@ class Character(drawable.Drawable):
     def __init__(self):
         drawable.Drawable.__init__(self)
         
+        #TODO: Why not just inherit from Rect?
         self.rect.x = 0
         self.rect.y = 0
         self.rect.width = 64

@@ -4,6 +4,7 @@ pygame.init()
 
 import character
 import cricket
+import crab
 import keyhandler
 
 screensize = width, height = 640, 576
@@ -14,6 +15,8 @@ blue = 0, 0, 255
 
 cricket = cricket.Cricket()
 cricket.loadSprites()
+
+testcrab = crab.Crab()
 
 clock = pygame.time.Clock()
 
@@ -30,5 +33,6 @@ while 1:
 				
     display.fill(blue)
     cricket.draw(display)
+    testcrab.draw(display)
     pygame.display.flip()
 		
