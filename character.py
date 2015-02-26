@@ -8,7 +8,7 @@ import drawable
 
 class Character(drawable.Drawable):
     
-    Direction = Enum("Direction", "UP DOWN LEFT RIGHT");
+    Direction = Enum("Direction", "UP RIGHT DOWN LEFT");
     
     def __init__(self):
         drawable.Drawable.__init__(self)
@@ -23,9 +23,9 @@ class Character(drawable.Drawable):
         
         self.sprites = {
             Character.Direction.UP : 0, 
+            Character.Direction.RIGHT : 0, 
             Character.Direction.DOWN : 0, 
-            Character.Direction.LEFT : 0, 
-            Character.Direction.RIGHT : 0
+            Character.Direction.LEFT : 0
                 }
         self.facing = Character.Direction.DOWN
         

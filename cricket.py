@@ -13,7 +13,7 @@ class Knife(character.Character):
     def __init__(self):
         character.Character.__init__(self)
         
-        self.visible = 0
+        self.visible = False
     
         self.sprites[character.Character.Direction.UP] = drawable.loadImage('knifeb.bmp')
         self.sprites[character.Character.Direction.DOWN] = drawable.loadImage('knifef.bmp')
@@ -29,7 +29,11 @@ class Cricket(character.Character, keyhandler.Keylistener):
         
         self.speed = 200;
         
-        self.key_inputs = {'up': 0, 'down': 0, 'left': 0, 'right': 0, 'atk': 0} #Really, Python? No boolean values? 
+        self.key_inputs = {'up': False, 
+                           'down': False, 
+                           'left': False, 
+                           'right': False, 
+                           'atk': False}
         
         self.knife = Knife()
     
@@ -79,27 +83,27 @@ class Cricket(character.Character, keyhandler.Keylistener):
                 self.knife.facing = character.Character.Direction.UP
                 self.knife.rect.x = self.rect.x
                 self.knife.rect.y = self.rect.y - self.knife.rect.height
-                self.knife.visible = 1
+                self.knife.visible = True
                 
             elif self.facing == character.Character.Direction.DOWN:
                 self.knife.facing = character.Character.Direction.DOWN
                 self.knife.rect.x = self.rect.x
                 self.knife.rect.y = self.rect.y + self.rect.height
-                self.knife.visible = 1            
+                self.knife.visible = True            
             
             elif self.facing == character.Character.Direction.LEFT:
                 self.knife.facing = character.Character.Direction.LEFT
                 self.knife.rect.x = self.rect.x - self.knife.rect.width
                 self.knife.rect.y = self.rect.y 
-                self.knife.visible = 1
+                self.knife.visible = True
             
             elif self.facing == character.Character.Direction.RIGHT:
                 self.knife.facing = character.Character.Direction.RIGHT
                 self.knife.rect.x = self.rect.x + self.rect.width
                 self.knife.rect.y = self.rect.y 
-                self.knife.visible = 1
+                self.knife.visible = True
         else:
-            self.knife.visible = 0
+            self.knife.visible = False
         
     def draw(self, surface):
         character.Character.draw(self, surface)
@@ -111,24 +115,24 @@ class Cricket(character.Character, keyhandler.Keylistener):
         
         if event.type == (KEYDOWN):
             if event.key == K_UP:
-                self.key_inputs['up'] = 1
+                self.key_inputs['up'] = True
             elif event.key == K_DOWN:
-                self.key_inputs['down'] = 1
+                self.key_inputs['down'] = True
             elif event.key == K_LEFT:
-                self.key_inputs['left'] = 1
+                self.key_inputs['left'] = True
             elif event.key == K_RIGHT:
-                self.key_inputs['right'] = 1
+                self.key_inputs['right'] = True
             elif event.key == K_LSHIFT:
-                self.key_inputs['atk'] = 1
+                self.key_inputs['atk'] = True
         if event.type == (KEYUP):
             if event.key == K_UP:
-                self.key_inputs['up'] = 0
+                self.key_inputs['up'] = False
             elif event.key == K_DOWN:
-                self.key_inputs['down'] = 0
+                self.key_inputs['down'] = False
             elif event.key == K_LEFT:
-                self.key_inputs['left'] = 0
+                self.key_inputs['left'] = False
             elif event.key == K_RIGHT:
-                self.key_inputs['right'] = 0
+                self.key_inputs['right'] = False
             elif event.key == K_LSHIFT:
-                self.key_inputs['atk'] = 0
+                self.key_inputs['atk'] = False
         

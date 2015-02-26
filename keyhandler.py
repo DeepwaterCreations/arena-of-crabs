@@ -12,7 +12,7 @@ def handle(event):
 class Keylistener:
     
     def __init__(self):
-        self.keyListening = 1;
+        self.keyListening = True;
         keylisteners.append(self)
     
     def handleKey(self, event):
