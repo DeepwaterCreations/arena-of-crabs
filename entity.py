@@ -2,13 +2,13 @@ import pygame
 from pygame.locals import *
 pygame.init()
 
-import drawable
+from drawable import Drawable
 
-class Entity(drawable.Drawable, pygame.Rect):
+class Entity(Drawable, pygame.Rect):
     
     #TODO: Rect constructors
     def __init__(self):
-        drawable.Drawable.__init__(self)
+        Drawable.__init__(self)
         
         self.x = 0
         self.y = 0

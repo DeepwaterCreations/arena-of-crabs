@@ -2,9 +2,9 @@ import sys, pygame
 from pygame.locals import *
 pygame.init()
 
-import character
-import cricket
-import crab
+from character import Character
+from cricket import Cricket
+from crab import Crab
 import keyhandler
 import timerhandler
 
@@ -14,10 +14,10 @@ display = pygame.display.set_mode(screensize)
 
 blue = 0, 0, 255
 
-cricket = cricket.Cricket()
+cricket = Cricket()
 cricket.loadSprites()
 
-testcrab = crab.Crab()
+testcrab = Crab()
 
 clock = pygame.time.Clock()
 

@@ -4,35 +4,35 @@ import pygame
 from pygame.locals import *
 pygame.init()
 
-import drawable
-import character
-import keyhandler
-import entity
+from drawable import Drawable, loadImage
+from character import Character
+from keyhandler import Keylistener
+from entity import Entity
 
 #This should not be the final structure of this!
 #TODO: Structure for multiple held objects (weapons)
-class Knife(entity.Entity):
+class Knife(Entity):
     def __init__(self):
-        entity.Entity.__init__(self)
+        Entity.__init__(self)
         
         self.visible = False
     
-        self.sprites[character.Character.Direction.UP] = drawable.loadImage('knifeb.bmp')
-        self.sprites[character.Character.Direction.DOWN] = drawable.loadImage('knifef.bmp')
-        self.sprites[character.Character.Direction.LEFT] = drawable.loadImage('knifel.bmp')
-        self.sprites[character.Character.Direction.RIGHT] = drawable.loadImage('knifer.bmp')
+        self.sprites[Character.Direction.UP] = loadImage('knifeb.bmp')
+        self.sprites[Character.Direction.DOWN] = loadImage('knifef.bmp')
+        self.sprites[Character.Direction.LEFT] = loadImage('knifel.bmp')
+        self.sprites[Character.Direction.RIGHT] = loadImage('knifer.bmp')
     
-        self.facing = character.Character.Direction.DOWN
+        self.facing = Character.Direction.DOWN
         
     def draw(self, surface):
         if self.visible:         
             surface.blit(self.sprites[self.facing], (self.x, self.y))
 
-class Cricket(character.Character, keyhandler.Keylistener):
+class Cricket(Character, Keylistener):
     
     def __init__(self):
-        character.Character.__init__(self)
-        keyhandler.Keylistener.__init__(self)
+        Character.__init__(self)
+        Keylistener.__init__(self)
         
         self.speed = 200;
         
@@ -59,10 +59,10 @@ class Cricket(character.Character, keyhandler.Keylistener):
     #In fact, I don't need animations yet. I should add a single crab next, and then a dumb sword thing after that, and get to animations later.  
     
     def loadSprites(self):
-        self.sprites[character.Character.Direction.UP] = drawable.loadImage('Cricket1b.bmp')
-        self.sprites[character.Character.Direction.DOWN] = drawable.loadImage('Cricket1f.bmp')
-        self.sprites[character.Character.Direction.LEFT] = drawable.loadImage('Cricket1l.bmp')
-        self.sprites[character.Character.Direction.RIGHT] = drawable.loadImage('Cricket1r.bmp')
+        self.sprites[Character.Direction.UP] = loadImage('Cricket1b.bmp')
+        self.sprites[Character.Direction.DOWN] = loadImage('Cricket1f.bmp')
+        self.sprites[Character.Direction.LEFT] = loadImage('Cricket1l.bmp')
+        self.sprites[Character.Direction.RIGHT] = loadImage('Cricket1r.bmp')
         
         
     def update(self, dt):
@@ -73,39 +73,39 @@ class Cricket(character.Character, keyhandler.Keylistener):
         #When the first key is released, if the second is still being held down, immediately move in the other direction.
         if self.key_inputs['up']:
             self.y -= math.floor(self.speed * (dt/1000.0))
-            self.facing = character.Character.Direction.UP
+            self.facing = Character.Direction.UP
         elif self.key_inputs['down']:
             self.y += math.floor(self.speed * (dt/1000.0))
-            self.facing = character.Character.Direction.DOWN
+            self.facing = Character.Direction.DOWN
             
         if self.key_inputs['left']:
             self.x -= math.floor(self.speed * (dt/1000.0))
-            self.facing = character.Character.Direction.LEFT
+            self.facing = Character.Direction.LEFT
         elif self.key_inputs['right']:
             self.x += math.floor(self.speed * (dt/1000.0))            
-            self.facing = character.Character.Direction.RIGHT
+            self.facing = Character.Direction.RIGHT
             
         if self.key_inputs['atk']:
-            if self.facing == character.Character.Direction.UP:
-                self.knife.facing = character.Character.Direction.UP
+            if self.facing == Character.Direction.UP:
+                self.knife.facing = Character.Direction.UP
                 self.knife.x = self.x
                 self.knife.y = self.y - self.knife.height
                 self.knife.visible = True
                 
-            elif self.facing == character.Character.Direction.DOWN:
-                self.knife.facing = character.Character.Direction.DOWN
+            elif self.facing == Character.Direction.DOWN:
+                self.knife.facing = Character.Direction.DOWN
                 self.knife.x = self.x
                 self.knife.y = self.y + self.height
                 self.knife.visible = True            
             
-            elif self.facing == character.Character.Direction.LEFT:
-                self.knife.facing = character.Character.Direction.LEFT
+            elif self.facing == Character.Direction.LEFT:
+                self.knife.facing = Character.Direction.LEFT
                 self.knife.x = self.x - self.knife.width
                 self.knife.y = self.y 
                 self.knife.visible = True
             
-            elif self.facing == character.Character.Direction.RIGHT:
-                self.knife.facing = character.Character.Direction.RIGHT
+            elif self.facing == Character.Direction.RIGHT:
+                self.knife.facing = Character.Direction.RIGHT
                 self.knife.x = self.x + self.width
                 self.knife.y = self.y 
                 self.knife.visible = True
@@ -113,12 +113,12 @@ class Cricket(character.Character, keyhandler.Keylistener):
             self.knife.visible = False
         
     def draw(self, surface):
-        character.Character.draw(self, surface)
+        Character.draw(self, surface)
         self.knife.draw(surface)
         
         
     def handleKey(self, event):
-        keyhandler.Keylistener.handleKey(self, event)
+        Keylistener.handleKey(self, event)
         
         if event.type == (KEYDOWN):
             if event.key == K_UP:

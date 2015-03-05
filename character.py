@@ -4,15 +4,15 @@ import pygame
 from pygame.locals import *
 pygame.init()
 
-import drawable
-import entity
+#from drawable import Drawable
+from entity import Entity
 
-class Character(entity.Entity):
+class Character(Entity):
     
     Direction = Enum("Direction", "UP RIGHT DOWN LEFT");
     
     def __init__(self):
-        entity.Entity.__init__(self)
+        Entity.__init__(self)
         
         self.speed = 100
         
