@@ -19,7 +19,6 @@ def loadImage(filepath):
 class Drawable:
     def __init__(self):
         self.visible = True;
-        self.rect = pygame.Rect(0,0,0,0)
         
     def draw(self, surface):
         pass

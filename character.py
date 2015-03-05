@@ -5,19 +5,14 @@ from pygame.locals import *
 pygame.init()
 
 import drawable
+import entity
 
-class Character(drawable.Drawable):
+class Character(entity.Entity):
     
     Direction = Enum("Direction", "UP RIGHT DOWN LEFT");
     
     def __init__(self):
-        drawable.Drawable.__init__(self)
-        
-        #TODO: Why not just inherit from Rect?
-        self.rect.x = 0
-        self.rect.y = 0
-        self.rect.width = 64
-        self.rect.height = 64
+        entity.Entity.__init__(self)
         
         self.speed = 100
         
@@ -32,4 +27,4 @@ class Character(drawable.Drawable):
     
     def draw(self, surface):
         if self.visible:         
-            surface.blit(self.sprites[self.facing], (self.rect.x, self.rect.y))
+            surface.blit(self.sprites[self.facing], (self.x, self.y))

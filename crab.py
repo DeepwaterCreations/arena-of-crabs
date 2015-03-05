@@ -11,8 +11,8 @@ class Crab(character.Character, timerhandler.Timerlistener):
     def __init__(self):
         character.Character.__init__(self)
         timerhandler.Timerlistener.__init__(self)
-        self.rect.x = 250
-        self.rect.y = 250
+        self.x = 250
+        self.y = 250
         self.facing = character.Character.Direction.UP
         
         spritesheet = drawable.loadImage("MonstersBeach.bmp");

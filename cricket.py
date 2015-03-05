@@ -7,11 +7,13 @@ pygame.init()
 import drawable
 import character
 import keyhandler
+import entity
 
 #This should not be the final structure of this!
-class Knife(character.Character):
+#TODO: Structure for multiple held objects (weapons)
+class Knife(entity.Entity):
     def __init__(self):
-        character.Character.__init__(self)
+        entity.Entity.__init__(self)
         
         self.visible = False
     
@@ -20,6 +22,11 @@ class Knife(character.Character):
         self.sprites[character.Character.Direction.LEFT] = drawable.loadImage('knifel.bmp')
         self.sprites[character.Character.Direction.RIGHT] = drawable.loadImage('knifer.bmp')
     
+        self.facing = character.Character.Direction.DOWN
+        
+    def draw(self, surface):
+        if self.visible:         
+            surface.blit(self.sprites[self.facing], (self.x, self.y))
 
 class Cricket(character.Character, keyhandler.Keylistener):
     
@@ -65,42 +72,42 @@ class Cricket(character.Character, keyhandler.Keylistener):
         #TODO: I want the currently held horizontal/vertical key to override a second key, so if I hold down two keys at once, I keep moving in the first direction.
         #When the first key is released, if the second is still being held down, immediately move in the other direction.
         if self.key_inputs['up']:
-            self.rect.y -= math.floor(self.speed * (dt/1000.0))
+            self.y -= math.floor(self.speed * (dt/1000.0))
             self.facing = character.Character.Direction.UP
         elif self.key_inputs['down']:
-            self.rect.y += math.floor(self.speed * (dt/1000.0))
+            self.y += math.floor(self.speed * (dt/1000.0))
             self.facing = character.Character.Direction.DOWN
             
         if self.key_inputs['left']:
-            self.rect.x -= math.floor(self.speed * (dt/1000.0))
+            self.x -= math.floor(self.speed * (dt/1000.0))
             self.facing = character.Character.Direction.LEFT
         elif self.key_inputs['right']:
-            self.rect.x += math.floor(self.speed * (dt/1000.0))            
+            self.x += math.floor(self.speed * (dt/1000.0))            
             self.facing = character.Character.Direction.RIGHT
             
         if self.key_inputs['atk']:
             if self.facing == character.Character.Direction.UP:
                 self.knife.facing = character.Character.Direction.UP
-                self.knife.rect.x = self.rect.x
-                self.knife.rect.y = self.rect.y - self.knife.rect.height
+                self.knife.x = self.x
+                self.knife.y = self.y - self.knife.height
                 self.knife.visible = True
                 
             elif self.facing == character.Character.Direction.DOWN:
                 self.knife.facing = character.Character.Direction.DOWN
-                self.knife.rect.x = self.rect.x
-                self.knife.rect.y = self.rect.y + self.rect.height
+                self.knife.x = self.x
+                self.knife.y = self.y + self.height
                 self.knife.visible = True            
             
             elif self.facing == character.Character.Direction.LEFT:
                 self.knife.facing = character.Character.Direction.LEFT
-                self.knife.rect.x = self.rect.x - self.knife.rect.width
-                self.knife.rect.y = self.rect.y 
+                self.knife.x = self.x - self.knife.width
+                self.knife.y = self.y 
                 self.knife.visible = True
             
             elif self.facing == character.Character.Direction.RIGHT:
                 self.knife.facing = character.Character.Direction.RIGHT
-                self.knife.rect.x = self.rect.x + self.rect.width
-                self.knife.rect.y = self.rect.y 
+                self.knife.x = self.x + self.width
+                self.knife.y = self.y 
                 self.knife.visible = True
         else:
             self.knife.visible = False
