@@ -1,3 +1,7 @@
+import pdb
+
+import math
+
 from enum import Enum
 
 import pygame
@@ -14,7 +18,8 @@ class Character(Entity):
     def __init__(self):
         Entity.__init__(self)
         
-        self.speed = 100
+        self.max_speed = 100
+        self.movement = {'h':0.0, 'v':0.0} #Should range from -1 to 1. TODO: Do I want a unit vector?
         
         self.sprites = {
             Character.Direction.UP : 0, 
@@ -23,7 +28,16 @@ class Character(Entity):
             Character.Direction.LEFT : 0
                 }
         self.facing = Character.Direction.DOWN
-        
+
+    #This should typically be called by a subclass's update function.
+    def make_move(self, dt):
+        speed = self.current_speed * (dt/1000.0)
+        self.x += int(math.floor(self.movement['h'] * speed))
+        self.y += int(math.floor(self.movement['v'] * speed))
+    
+    #By default, charactes will move when updated.
+    def update(self, dt):
+        self.make_move(dt)
     
     def draw(self, surface):
         if self.visible:         

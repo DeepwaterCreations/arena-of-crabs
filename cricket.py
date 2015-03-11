@@ -1,3 +1,4 @@
+import pdb
 import math
 
 import pygame
@@ -34,7 +35,7 @@ class Cricket(Character, Keylistener):
         Character.__init__(self)
         Keylistener.__init__(self)
         
-        self.speed = 200;
+        self.max_speed = 200;
         
         self.key_inputs = {'up': False, 
                            'down': False, 
@@ -69,21 +70,41 @@ class Cricket(Character, Keylistener):
         if dt == 0:
             return
         
-        #TODO: I want the currently held horizontal/vertical key to override a second key, so if I hold down two keys at once, I keep moving in the first direction.
+        # I want the currently held horizontal/vertical key to override a second key, so if I hold down two keys at once, I keep moving in the first direction.
         #When the first key is released, if the second is still being held down, immediately move in the other direction.
-        if self.key_inputs['up']:
-            self.y -= math.floor(self.speed * (dt/1000.0))
-            self.facing = Character.Direction.UP
-        elif self.key_inputs['down']:
-            self.y += math.floor(self.speed * (dt/1000.0))
-            self.facing = Character.Direction.DOWN
+        #Therefore, check for the opposite key before setting the movement variables for a given key.
+        if not self.key_inputs['down']:
+            if self.key_inputs['up']:
+                self.movement['v'] = -1 
+                self.facing = Character.Direction.UP
+            else:        
+                self.movement['v'] = 0
+                
+        if not self.key_inputs['up']:
+            if self.key_inputs['down']:
+                self.movement['v'] = 1
+                self.facing = Character.Direction.DOWN
+            else:
+                self.movement['v'] = 0
+        
+        if not self.key_inputs['right']:
+            if self.key_inputs['left']: 
+                self.movement['h'] = -1
+                self.facing = Character.Direction.LEFT
+            else:
+                self.movement['h'] = 0
+                
+        if not self.key_inputs['left']:
+            if self.key_inputs['right']:
+                self.movement['h'] = 1
+                self.facing = Character.Direction.RIGHT
+            else:
+                self.movement['h'] = 0
             
-        if self.key_inputs['left']:
-            self.x -= math.floor(self.speed * (dt/1000.0))
-            self.facing = Character.Direction.LEFT
-        elif self.key_inputs['right']:
-            self.x += math.floor(self.speed * (dt/1000.0))            
-            self.facing = Character.Direction.RIGHT
+        if self.key_inputs['up'] or self.key_inputs['down'] or self.key_inputs['left'] or self.key_inputs['right']:
+            self.current_speed = self.max_speed
+        else:
+            self.current_speed = 0
             
         if self.key_inputs['atk']:
             if self.facing == Character.Direction.UP:
@@ -111,6 +132,8 @@ class Cricket(Character, Keylistener):
                 self.knife.visible = True
         else:
             self.knife.visible = False
+        
+        Character.update(self, dt)
         
     def draw(self, surface):
         Character.draw(self, surface)
