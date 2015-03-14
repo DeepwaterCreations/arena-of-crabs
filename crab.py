@@ -5,12 +5,15 @@ pygame.init()
 from character import Character
 from drawable import loadImage
 from timerhandler import Timerlistener
+from attackhandler import Attackable
 
-class Crab(Character, Timerlistener):
+class Crab(Character, Timerlistener, Attackable):
     
     def __init__(self):
         Character.__init__(self)
         Timerlistener.__init__(self)
+        Attackable.__init__(self)
+        
         self.x = 250
         self.y = 250
         self.facing = Character.Direction.UP
@@ -39,3 +42,15 @@ class Crab(Character, Timerlistener):
         #Spin in a circle
         facingIndex = self.facing.value
         self.facing = Character.Direction((facingIndex % 4) + 1)
+        
+    def onWeaponHit(self, other):
+        print "Ow!"
+        #Get the direction from the location of other to the location of self
+        #direction = {'x': other.x - self.x, 'y': other.y - self.y}
+        #length = math.sqrt(math.pow(direction['x'], 2) + math.pow(direction['y']))
+        #direction['x'] /= length
+        #direction['y'] /= length
+        
+        #Move in that direction at a calculated speed (based on "traction" stat and attack power?)
+        #Set a timer to stop the motion? Duration based on attack power?
+    

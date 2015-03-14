@@ -5,10 +5,12 @@ import pygame
 from pygame.locals import *
 pygame.init()
 
+import attackhandler
 from drawable import Drawable, loadImage
 from character import Character
 from keyhandler import Keylistener
 from entity import Entity
+
 
 #This should not be the final structure of this!
 #TODO: Structure for multiple held objects (weapons)
@@ -28,6 +30,9 @@ class Knife(Entity):
     def draw(self, surface):
         if self.visible:         
             surface.blit(self.sprites[self.facing], (self.x, self.y))
+                
+    def attack(self):
+        attackhandler.makeAttack(self)
 
 class Cricket(Character, Keylistener):
     
@@ -44,9 +49,11 @@ class Cricket(Character, Keylistener):
                            'atk': False}
         
         self.knife = Knife()
+        
+        
     
     
-        #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
+    #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
     #and all that jazz.
     #Uhh, sprites. So. I have 
     #1. Different sprites for different states, such as walking, standing still, or swinging a sword. 
@@ -129,11 +136,15 @@ class Cricket(Character, Keylistener):
                 self.knife.facing = Character.Direction.RIGHT
                 self.knife.x = self.x + self.width
                 self.knife.y = self.y 
-                self.knife.visible = True
+                self.knife.visible = True          
+        
+            self.knife.attack()
+        
         else:
             self.knife.visible = False
         
-        Character.update(self, dt)
+        Character.make_move(self, dt)
+    
         
     def draw(self, surface):
         Character.draw(self, surface)
