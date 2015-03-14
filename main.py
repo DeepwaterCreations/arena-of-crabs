@@ -21,8 +21,6 @@ testcrab = Crab()
 
 clock = pygame.time.Clock()
 
-timerhandler.startTimer(timerhandler.TIMEREVENT, 1000)
-
 while 1:
     clock.tick(60)
     
@@ -31,8 +29,10 @@ while 1:
             sys.exit()
         if((event.type == KEYDOWN) or (event.type == KEYUP)):
             keyhandler.handle(event)
-        if event.type == timerhandler.TIMEREVENT:
+        else:
+            #TODO: Is there a way to filter out specifically timer events?
             timerhandler.handle(event)
+        
                 
     cricket.update(clock.get_time())
 				
