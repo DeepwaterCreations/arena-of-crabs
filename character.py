@@ -6,7 +6,6 @@ from enum import Enum
 
 import pygame
 from pygame.locals import *
-pygame.init()
 
 #from drawable import Drawable
 from entity import Entity

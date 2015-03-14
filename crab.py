@@ -1,6 +1,5 @@
 import pygame
 from pygame.locals import *
-pygame.init()
 
 from character import Character
 from drawable import loadImage

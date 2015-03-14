@@ -3,7 +3,6 @@ import math
 
 import pygame
 from pygame.locals import *
-pygame.init()
 
 import attackhandler
 from drawable import Drawable, loadImage

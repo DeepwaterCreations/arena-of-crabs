@@ -1,6 +1,5 @@
 import pygame
 from pygame.locals import *
-pygame.init()
 
 def loadImage(filepath):
     try:

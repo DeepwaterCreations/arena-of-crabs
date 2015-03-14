@@ -2,7 +2,6 @@ import pdb
 
 import pygame
 from pygame.locals import *
-pygame.init()
 
 from drawable import Drawable
 

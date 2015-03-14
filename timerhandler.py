@@ -1,6 +1,5 @@
 import pygame
 from pygame.locals import *
-pygame.init()
 
 #TODO: It may be that I want separate timer instances with separate listener lists.
 timerlisteners = []
