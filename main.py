@@ -29,14 +29,18 @@ while 1:
             sys.exit()
         if((event.type == KEYDOWN) or (event.type == KEYUP)):
             keyhandler.handle(event)
-        else:
+        #else:
             #TODO: Is there a way to filter out specifically timer events?
-            timerhandler.handle(event)
+            #timerhandler.handle(event)
         
-                
-    cricket.update(clock.get_time())
+    
+    dt = clock.get_time()
+    timerhandler.updateTimers(dt)
+    #TODO: List of things to update            
+    cricket.update(dt)
 				
     display.fill(blue)
+    #TODO: List of things to draw
     cricket.draw(display)
     testcrab.draw(display)
     pygame.display.flip()

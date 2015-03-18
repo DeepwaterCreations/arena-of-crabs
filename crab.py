@@ -40,12 +40,13 @@ class Crab(Character, Attackable):
         self.sprites[Character.Direction.LEFT].set_colorkey(self.sprites[Character.Direction.LEFT].get_at((0,0)), RLEACCEL)
         
         #Set timer for turning
-        turntimer = Timer(self.turnFreq, self.handletimer, shouldRepeat = True)
+        self.turntimer = Timer(self.turnFreq, self.handletimer, should_repeat = True)
         
-    def handletimer(self, event):        
+    def handletimer(self, timer):
         #Spin in a circle
-        facingIndex = self.facing.value
-        self.facing = Character.Direction((facingIndex % 4) + 1)
+        if(timer == self.turntimer):
+            facingIndex = self.facing.value
+            self.facing = Character.Direction((facingIndex % 4) + 1)
         
     def onWeaponHit(self, other):
         #pdb.set_trace()
@@ -66,6 +67,6 @@ class Crab(Character, Attackable):
    
         #TODO: Some kind of state setting to override regular movement? 
         
-    def endWeaponHit(self, event):
-        print "Event: ", event.type 
+    def endWeaponHit(self, timer):
+        print "Timer: ", timer 
         print "I am done being hit."

@@ -3,54 +3,63 @@ import pdb
 import pygame
 from pygame.locals import *
 
-#Main currently catches events and sends them here, where the individual timers will sort out for themselves which event IDs they 
-#care about.  
+#Main calls this every frame.
 timers = []
-def handle(event):
+def updateTimers(dt):
     for timer in timers:
-        timer.handle(event)
-      
-#Generators, eh? Okay, I'll try it out.
-#BIG ISSUE: Pygame only gives me 9 events between USEREVENT (24) and MAXEVENT (32)! That means I can have nine timers max at any moment.
-#For non-timer events, I can use sub-attributes to maybe work things out. Timers, alas, don't appear to let me do this. (So StackExchange claims.)
-#Obviously, this won't at all work with my current design. So um...? SDL?
-def getEventID():
-    eventID = pygame.USEREVENT 
-    while(True):
-        eventID += 1
-        yield eventID
+        timer.update(dt)
  
-#Sets itself on creation. 
-#listeners is a list of Timerlisteners.    
-#milliseconds is the timer's duration.
+#Timers get an Update method. It will add dt to an elapsed time counter, then check that against the timer length.
+#If the one is greater than the other, they'll fire. 
+#Waits for 'duration' milliseconds after creation, then calls 'callback' with itself as an argument. If 'should_repeat' is true, it will
+#immediately reset itself upon firing.
 class Timer:
     
-    idGenerator = getEventID()
-    
-    def __init__(self, milliseconds, callback, shouldRepeat = False):
+    #Duration is in milliseconds
+    def __init__(self, duration, callback, should_repeat = False):
         self.callback = callback
-        self.shouldRepeat = shouldRepeat
+        self.should_repeat = should_repeat
+        self.elapsed_time = 0
+        self.duration = duration
+        
         timers.append(self)
         
-        self.eventid = Timer.idGenerator.next()
-        print "Registered ", self.eventid
-        pygame.time.set_timer(self.eventid, milliseconds)
+        self.dead = False
         
-    def handle(self, event):
-        if event.type != self.eventid:
-            return False
-                    
-        self.callback(event)
-        if(not self.shouldRepeat):
-            pygame.time.set_timer(self.eventid, 0)
+    def reset(self, new_duration = None):
+        if not new_duration is None:
+            self.duration = new_duration
+        self.elapsed_time = 0
+        self.dead = False
+        if not self in timers:
+            timers.append(self)
+        
+    def getRemainingTime(self):
+        return self.duration - self.elapsed_time
+        
+    def trigger(self):
+        self.callback(self)
+        if(self.should_repeat):
+            self.elapsed_time = 0
+        else:
+            self.dead = True
+            timers.remove(self) #TODO: Do I want this for sure? It would probably be better to make timers reusable. 
+            
+    def update(self, dt):
+        if(self.dead):
+            print "ERROR: Dead timer still running. ID ", self.timer_id
+            return
+        self.elapsed_time += dt
+        if self.elapsed_time >= self.duration:
+            self.trigger()
+        
             
 #When this timer finishes, it restarts itself immediately.            
 #class RepeatingTimer(Timer):
-    #def __init__(self, milliseconds, callback):
-        #Timer.__init__(self, milliseconds, callback)
-        #self.milliseconds = milliseconds
+    #def __init__(self, duration, callback):
+        #Timer.__init__(self, duration, callback)        
         
-        
-    #def handle(self, event):
-        #if Timer.handle(self, event):
-            #pygame.time.set_timer(self.eventid, self.milliseconds)
+    #def trigger(self):
+        #Timer.trigger(self)
+        #self.elapsed_time = 0
+        #pygame.time.set_timer(self.eventid, self.milliseconds)
