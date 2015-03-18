@@ -1,9 +1,13 @@
+import pdb
+
+import math
+
 import pygame
 from pygame.locals import *
 
 from character import Character
 from drawable import loadImage
-from timerhandler import RepeatingTimer
+from timerhandler import Timer#, RepeatingTimer
 from attackhandler import Attackable
 
 class Crab(Character, Attackable):
@@ -36,7 +40,7 @@ class Crab(Character, Attackable):
         self.sprites[Character.Direction.LEFT].set_colorkey(self.sprites[Character.Direction.LEFT].get_at((0,0)), RLEACCEL)
         
         #Set timer for turning
-        turntimer = RepeatingTimer(self.turnFreq, self.handletimer)
+        turntimer = Timer(self.turnFreq, self.handletimer, shouldRepeat = True)
         
     def handletimer(self, event):        
         #Spin in a circle
@@ -44,19 +48,24 @@ class Crab(Character, Attackable):
         self.facing = Character.Direction((facingIndex % 4) + 1)
         
     def onWeaponHit(self, other):
-        pass
+        #pdb.set_trace()
         #Get the direction from the location of other to the location of self
-        #direction = {'x': other.x - self.x, 'y': other.y - self.y}
-        #length = math.sqrt(math.pow(direction['x'], 2) + math.pow(direction['y']))
-        #direction['x'] /= length
-        #direction['y'] /= length
-        #self.movement['x'] = direction['x']
-        #self.movement['y'] = direction['y']
+        direction = {'x': other.x - self.x, 'y': other.y - self.y}
+        length = math.sqrt(math.pow(direction['x'], 2) + math.pow(direction['y'], 2))
+        direction['x'] /= length
+        direction['y'] /= length
+        self.movement['x'] = direction['x']
+        self.movement['y'] = direction['y']
         
         #Move in that direction at a calculated speed (based on "traction" stat and attack power?)
-        #speed = 32 #TODO: Calculated number instead of magic, if you please.
+        self.current_speed = 32 #TODO: Calculated number instead of magic, if you please.
         
         #Set a timer to stop the motion? Duration based on attack power?
-        
+        hittimer = Timer(400, self.endWeaponHit) #TODO: Another place where I don't want a magic number.
+        print "I've been hit!"
    
         #TODO: Some kind of state setting to override regular movement? 
+        
+    def endWeaponHit(self, event):
+        print "Event: ", event.type 
+        print "I am done being hit."
