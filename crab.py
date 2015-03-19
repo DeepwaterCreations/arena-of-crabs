@@ -21,6 +21,8 @@ class Crab(Character, Attackable):
         self.facing = Character.Direction.UP
         self.turnFreq = 1000
         
+        self.being_knocked_back = False #TODO: I'll probably want to make this more robust.
+        
         spritesheet = loadImage("MonstersBeach.bmp");
         
         self.sprites[Character.Direction.UP] = pygame.Surface((64, 64))    
@@ -44,29 +46,36 @@ class Crab(Character, Attackable):
         
     def handletimer(self, timer):
         #Spin in a circle
-        if(timer == self.turntimer):
-            facingIndex = self.facing.value
-            self.facing = Character.Direction((facingIndex % 4) + 1)
+        if timer == self.turntimer:
+            if not self.being_knocked_back:
+                facingIndex = self.facing.value
+                self.facing = Character.Direction((facingIndex % 4) + 1)
         
-    def onWeaponHit(self, other):
-        #pdb.set_trace()
-        #Get the direction from the location of other to the location of self
-        direction = {'x': other.x - self.x, 'y': other.y - self.y}
-        length = math.sqrt(math.pow(direction['x'], 2) + math.pow(direction['y'], 2))
-        direction['x'] /= length
-        direction['y'] /= length
-        self.movement['x'] = direction['x']
-        self.movement['y'] = direction['y']
+    def onWeaponHit(self, weapon):
+        #TODO: Allow multiple hits in a row?
+        if self.being_knocked_back:
+            return 
+        self.being_knocked_back = True
+        
+        #Get the direction from the location of the weapon's attack origin to the location of self.
+        self.hit_direction = {'x': self.centerx - weapon.atk_origin[0], 'y':  self.centery - weapon.atk_origin[1]}
+        length = math.sqrt(math.pow(self.hit_direction['x'], 2) + math.pow(self.hit_direction['y'], 2))
+        self.hit_direction['x'] /= length
+        self.hit_direction['y'] /= length
+        self.movement['h'] += self.hit_direction['x']
+        self.movement['v'] += self.hit_direction['y']
         
         #Move in that direction at a calculated speed (based on "traction" stat and attack power?)
-        self.current_speed = 32 #TODO: Calculated number instead of magic, if you please.
+        self.current_speed = 640 #TODO: Calculated number instead of magic, if you please.
         
         #Set a timer to stop the motion? Duration based on attack power?
-        hittimer = Timer(400, self.endWeaponHit) #TODO: Another place where I don't want a magic number.
-        print "I've been hit!"
+        hittimer = Timer(200, self.endWeaponHit) #TODO: Another place where I don't want a magic number.
    
-        #TODO: Some kind of state setting to override regular movement? 
         
     def endWeaponHit(self, timer):
-        print "Timer: ", timer 
-        print "I am done being hit."
+        #BUG: This will cause bad things to happen if onWeaponHit is called twice before we get here. 
+        self.movement['h'] -= self.hit_direction['x']
+        self.movement['v'] -= self.hit_direction['y']
+        self.current_speed = 0 #TODO: This is also wrong.
+        self.being_knocked_back = False
+        

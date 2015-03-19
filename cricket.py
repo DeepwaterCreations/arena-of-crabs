@@ -24,14 +24,42 @@ class Knife(Entity):
         self.sprites[Character.Direction.LEFT] = loadImage('knifel.bmp')
         self.sprites[Character.Direction.RIGHT] = loadImage('knifer.bmp')
     
+        self.atk_origin = [0, 0]
+    
         self.facing = Character.Direction.DOWN
         
     def draw(self, surface):
         if self.visible:         
             surface.blit(self.sprites[self.facing], (self.x, self.y))
                 
-    def attack(self):
+    def attack(self, attacker, direction):
+        #Set the position and facing
+        self.facing = direction
+        
+        if direction == Character.Direction.UP:
+            #self.x = attacker.x
+            #self.y = attacker.y - self.height
+            self.atk_origin = self.midbottom = attacker.midtop
+            
+        elif direction == Character.Direction.DOWN:
+            #self.x = attacker.x
+            #self.y = attacker.y + attacker.height
+            self.atk_origin = self.midtop = attacker.midbottom
+        
+        elif direction == Character.Direction.LEFT:
+            #self.x = attacker.x - self.width
+            #self.y = attacker.y 
+            self.atk_origin = self.midright = attacker.midleft
+        
+        elif direction == Character.Direction.RIGHT:
+            #self.x = attacker.x + attacker.width
+            #self.y = attacker.y
+            self.atk_origin = self.midleft = attacker.midright
+        
+        self.visible = True
         attackhandler.makeAttack(self)
+
+        
 
 class Cricket(Character, Keylistener):
     
@@ -113,32 +141,7 @@ class Cricket(Character, Keylistener):
             self.current_speed = 0
             
         if self.key_inputs['atk']:
-            if self.facing == Character.Direction.UP:
-                self.knife.facing = Character.Direction.UP
-                self.knife.x = self.x
-                self.knife.y = self.y - self.knife.height
-                self.knife.visible = True
-                
-            elif self.facing == Character.Direction.DOWN:
-                self.knife.facing = Character.Direction.DOWN
-                self.knife.x = self.x
-                self.knife.y = self.y + self.height
-                self.knife.visible = True            
-            
-            elif self.facing == Character.Direction.LEFT:
-                self.knife.facing = Character.Direction.LEFT
-                self.knife.x = self.x - self.knife.width
-                self.knife.y = self.y 
-                self.knife.visible = True
-            
-            elif self.facing == Character.Direction.RIGHT:
-                self.knife.facing = Character.Direction.RIGHT
-                self.knife.x = self.x + self.width
-                self.knife.y = self.y 
-                self.knife.visible = True          
-        
-            self.knife.attack()
-        
+            self.knife.attack(self, self.facing)        
         else:
             self.knife.visible = False
         

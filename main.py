@@ -1,3 +1,5 @@
+import pdb
+
 import sys, pygame
 from pygame.locals import *
 pygame.init()
@@ -29,15 +31,13 @@ while 1:
             sys.exit()
         if((event.type == KEYDOWN) or (event.type == KEYUP)):
             keyhandler.handle(event)
-        #else:
-            #TODO: Is there a way to filter out specifically timer events?
-            #timerhandler.handle(event)
         
     
     dt = clock.get_time()
     timerhandler.updateTimers(dt)
     #TODO: List of things to update            
     cricket.update(dt)
+    testcrab.update(dt)
 				
     display.fill(blue)
     #TODO: List of things to draw

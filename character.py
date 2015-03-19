@@ -18,6 +18,7 @@ class Character(Entity):
         Entity.__init__(self)
         
         self.max_speed = 100
+        self.current_speed = 0
         self.movement = {'h':0.0, 'v':0.0} #Should range from -1 to 1. TODO: Do I want a unit vector?
         
         self.sprites = {
