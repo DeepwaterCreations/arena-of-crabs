@@ -77,7 +77,7 @@ class Cricket(Character, Keylistener):
         
         self.knife = Knife()
         
-        
+        self.lock_face = False
     
     
     #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
@@ -110,28 +110,28 @@ class Cricket(Character, Keylistener):
         if not self.key_inputs['down']:
             if self.key_inputs['up']:
                 self.movement['v'] = -1 
-                self.facing = Character.Direction.UP
+                if not self.lock_face: self.facing = Character.Direction.UP
             else:        
                 self.movement['v'] = 0
                 
         if not self.key_inputs['up']:
             if self.key_inputs['down']:
                 self.movement['v'] = 1
-                self.facing = Character.Direction.DOWN
+                if not self.lock_face: self.facing = Character.Direction.DOWN
             else:
                 self.movement['v'] = 0
         
         if not self.key_inputs['right']:
             if self.key_inputs['left']: 
                 self.movement['h'] = -1
-                self.facing = Character.Direction.LEFT
+                if not self.lock_face: self.facing = Character.Direction.LEFT
             else:
                 self.movement['h'] = 0
                 
         if not self.key_inputs['left']:
             if self.key_inputs['right']:
                 self.movement['h'] = 1
-                self.facing = Character.Direction.RIGHT
+                if not self.lock_face: self.facing = Character.Direction.RIGHT
             else:
                 self.movement['h'] = 0
             
@@ -141,9 +141,11 @@ class Cricket(Character, Keylistener):
             self.current_speed = 0
             
         if self.key_inputs['atk']:
-            self.knife.attack(self, self.facing)        
+            self.knife.attack(self, self.facing)
+            self.lock_face = True
         else:
             self.knife.visible = False
+            self.lock_face = False
         
         Character.make_move(self, dt)
     
