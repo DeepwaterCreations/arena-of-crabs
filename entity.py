@@ -3,7 +3,7 @@ import pdb
 import pygame
 from pygame.locals import *
 
-from drawable import Drawable
+from drawable import Drawable, loadImage
 
 class Entity(Drawable, pygame.sprite.Sprite, pygame.Rect):
     
@@ -20,9 +20,8 @@ class Entity(Drawable, pygame.sprite.Sprite, pygame.Rect):
         self.width = 64
         self.height = 64
         
-        self.sprites = {} #TODO Rename this. >.-.< 
+        self.sprites = {0: loadImage("no_image.bmp")} #TODO Rename this. >.-.< 
         
         
-    def draw(self, surface):
-        if self.visible:         
-            surface.blit(self.sprites[0], (self.rect.x, self.rect.y))
+    def draw(self, surface):        
+        surface.blit(self.sprites[0], (self.rect.x, self.rect.y))
