@@ -39,6 +39,5 @@ class Character(Entity):
     def update(self, dt):
         self.make_move(dt)
     
-    def draw(self, surface):
-        if self.visible:         
-            surface.blit(self.sprites[self.facing], (self.x, self.y))
+    def updateImage(self):
+        self.image = self.sprites[self.facing]

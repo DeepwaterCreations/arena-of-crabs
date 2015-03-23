@@ -17,7 +17,7 @@ class Knife(Entity):
     def __init__(self):
         Entity.__init__(self)
         
-        self.visible = False
+        self.setVisible(False)
     
         self.sprites[Character.Direction.UP] = loadImage('knifeb.bmp')
         self.sprites[Character.Direction.DOWN] = loadImage('knifef.bmp')
@@ -28,35 +28,26 @@ class Knife(Entity):
     
         self.facing = Character.Direction.DOWN
         
-    def draw(self, surface):
-        if self.visible:         
-            surface.blit(self.sprites[self.facing], (self.x, self.y))
+    def updateImage(self):
+        self.image = self.sprites[self.facing]
                 
     def attack(self, attacker, direction):
         #Set the position and facing
         self.facing = direction
         
         if direction == Character.Direction.UP:
-            #self.x = attacker.x
-            #self.y = attacker.y - self.height
             self.atk_origin = self.midbottom = attacker.midtop
             
         elif direction == Character.Direction.DOWN:
-            #self.x = attacker.x
-            #self.y = attacker.y + attacker.height
             self.atk_origin = self.midtop = attacker.midbottom
         
         elif direction == Character.Direction.LEFT:
-            #self.x = attacker.x - self.width
-            #self.y = attacker.y 
             self.atk_origin = self.midright = attacker.midleft
         
         elif direction == Character.Direction.RIGHT:
-            #self.x = attacker.x + attacker.width
-            #self.y = attacker.y
             self.atk_origin = self.midleft = attacker.midright
         
-        self.visible = True
+        self.setVisible(True)
         attackhandler.makeAttack(self)
 
         
@@ -144,15 +135,15 @@ class Cricket(Character, Keylistener):
             self.knife.attack(self, self.facing)
             self.lock_face = True
         else:
-            self.knife.visible = False
+            self.knife.setVisible(False) #TODO: Instead, call knife.endAttack()
             self.lock_face = False
         
         Character.make_move(self, dt)
     
         
-    def draw(self, surface):
-        Character.draw(self, surface)
-        self.knife.draw(surface)
+    def updateImage(self):
+        Character.updateImage(self)
+        self.knife.updateImage()
         
         
     def handleKey(self, event):

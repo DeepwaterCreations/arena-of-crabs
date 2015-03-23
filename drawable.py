@@ -15,18 +15,33 @@ def loadImage(filepath):
     return image
         
 
-class Drawable():
-    drawable_list = []
+class Drawable(pygame.sprite.Sprite):
+    #drawable_list = []
+    drawable_group = pygame.sprite.RenderUpdates()
     
     @staticmethod
     def drawAll(surface):
-        for whatever in Drawable.drawable_list:
+        for whatever in Drawable.drawable_group:
             if whatever.visible:
-                whatever.draw(surface)
-
-    def __init__(self):
-        self.visible = True;
-        Drawable.drawable_list.append(self)
+                whatever.updateImage()
+        return Drawable.drawable_group.draw(surface)
         
-    def draw(self, surface):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.visible = True;
+        self.image = loadImage('no_image.bmp')
+        #Drawable.drawable_list.append(self)
+        Drawable.drawable_group.add(self)
+        
+    def updateImage(self):
+        """Set the value of self.image to something appropriate."""
         pass
+    
+    def setVisible(self, visible):
+        """Add or remove the sprite from the draw group"""
+        if self.visible != visible:
+            self.visible = visible
+            if self.visible:
+                Drawable.drawable_group.add(self)
+            else:
+                Drawable.drawable_group.remove(self)

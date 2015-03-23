@@ -5,12 +5,11 @@ from pygame.locals import *
 
 from drawable import Drawable, loadImage
 
-class Entity(Drawable, pygame.sprite.Sprite, pygame.Rect):
+class Entity(Drawable, pygame.Rect):
     
     #TODO: Rect constructors
     def __init__(self):
         Drawable.__init__(self)
-        pygame.sprite.Sprite.__init__(self)
         
         #Assuming this even works, it's for my convenience with the sprite stuff.
         self.rect = self
@@ -23,5 +22,5 @@ class Entity(Drawable, pygame.sprite.Sprite, pygame.Rect):
         self.sprites = {0: loadImage("no_image.bmp")} #TODO Rename this. >.-.< 
         
         
-    def draw(self, surface):        
-        surface.blit(self.sprites[0], (self.rect.x, self.rect.y))
+    def draw(self):        
+        self.image = self.sprites[0]

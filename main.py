@@ -28,6 +28,9 @@ update_list.append(testcrab)
 
 clock = pygame.time.Clock()
 
+display.fill(blue)
+pygame.display.flip()
+
 while 1:
     clock.tick(60)
     
@@ -40,16 +43,10 @@ while 1:
     
     dt = clock.get_time()
     timerhandler.updateTimers(dt)
-    #TODO: List of things to update            
-    #cricket.update(dt)
-    #testcrab.update(dt)
     for thing_that_needs_updating in update_list:
         thing_that_needs_updating.update(dt)
-	
+
     display.fill(blue)
-    #TODO: List of things to draw
-    #cricket.draw(display)
-    #testcrab.draw(display)
-    Drawable.drawAll(display)
-    pygame.display.flip()
+    dirty_rects = Drawable.drawAll(display)
+    pygame.display.update(dirty_rects) 
 		
