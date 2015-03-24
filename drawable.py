@@ -1,7 +1,10 @@
+import os
+
 import pygame
 from pygame.locals import *
 
-def loadImage(filepath):
+def loadImage(filename):
+    filepath = os.path.join('images', filename)
     try:
         image = pygame.image.load(filepath)
     except pygame.error, message:

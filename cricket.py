@@ -9,6 +9,7 @@ from drawable import Drawable, loadImage
 from character import Character
 from keyhandler import Keylistener
 from entity import Entity
+from animation import Animation
 
 
 #This should not be the final structure of this!
@@ -69,7 +70,9 @@ class Cricket(Character, Keylistener):
         self.knife = Knife()
         
         self.lock_face = False
+        self.walking = False
     
+        self.anim_timer = 0
     
     #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
     #and all that jazz.
@@ -77,12 +80,6 @@ class Cricket(Character, Keylistener):
     #1. Different sprites for different states, such as walking, standing still, or swinging a sword. 
     #2. Different sprites that form the frames of an animation.
     #Each frame, I'll return exactly 1 of these sprites. Which one, however, is a bit complicated.
-    #I have no idea if pygame's sprite stuff is useful here. What, for instance, constitutes a group? Are all the frames of an animation a group? All the animations for a single character?
-    #My read of it is that an appropriate group is something more like "enemies". 
-    #The collision detection and all would be nice to have. But, it isn't clear how to use the pygame sprites for animations.
-    #I guess it's not like I can't extend the class.
-    #Let's first make this work the quick and dirty way, with just four sprites for each direction, and then go from there. 
-    #In fact, I don't need animations yet. I should add a single crab next, and then a dumb sword thing after that, and get to animations later.  
     
     def loadSprites(self):
         self.sprites[Character.Direction.UP] = loadImage('Cricket1b.bmp')
@@ -90,6 +87,14 @@ class Cricket(Character, Keylistener):
         self.sprites[Character.Direction.LEFT] = loadImage('Cricket1l.bmp')
         self.sprites[Character.Direction.RIGHT] = loadImage('Cricket1r.bmp')
         
+        self.walk_anim = {}
+        self.walk_anim[Character.Direction.UP] = Animation([(loadImage('Cricket1b.bmp'), 128), 
+                                                  (loadImage('Cricket1bwalkl.bmp'), 128), 
+                                                  (loadImage('Cricket1b.bmp'), 128),
+                                                  (loadImage('Cricket1bwalkr.bmp'), 128)])
+        self.walk_anim[Character.Direction.DOWN] = [loadImage('Cricket1f.bmp')]
+        self.walk_anim[Character.Direction.LEFT] = [loadImage('Cricket1l.bmp')]
+        self.walk_anim[Character.Direction.RIGHT] = [loadImage('Cricket1r.bmp')]
         
     def update(self, dt):
         if dt == 0:
@@ -98,6 +103,7 @@ class Cricket(Character, Keylistener):
         # I want the currently held horizontal/vertical key to override a second key, so if I hold down two keys at once, I keep moving in the first direction.
         #When the first key is released, if the second is still being held down, immediately move in the other direction.
         #Therefore, check for the opposite key before setting the movement variables for a given key.
+        #TODO: Set these relative instead of absolute, so as not to override movement inflicted from a different source
         if not self.key_inputs['down']:
             if self.key_inputs['up']:
                 self.movement['v'] = -1 
@@ -128,8 +134,10 @@ class Cricket(Character, Keylistener):
             
         if self.key_inputs['up'] or self.key_inputs['down'] or self.key_inputs['left'] or self.key_inputs['right']:
             self.current_speed = self.max_speed
+            self.walking = True
         else:
             self.current_speed = 0
+            self.walking = False
             
         if self.key_inputs['atk']:
             self.knife.attack(self, self.facing)
@@ -139,10 +147,14 @@ class Cricket(Character, Keylistener):
             self.lock_face = False
         
         Character.make_move(self, dt)
-    
+        
+        #TODO: Maybe self.current_anim.update()? Or maybe it's high time I made Updatable a thing.
+        self.walk_anim[Character.Direction.UP].update(dt)
         
     def updateImage(self):
         Character.updateImage(self)
+        if self.walking and self.facing == Character.Direction.UP:
+            self.image = self.walk_anim[Character.Direction.UP].getCurrentFrame() 
         self.knife.updateImage()
         
         
