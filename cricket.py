@@ -39,14 +39,15 @@ class Knife(Entity):
         if direction == Character.Direction.UP:
             self.atk_origin = self.midbottom = attacker.midtop
             
+        elif direction == Character.Direction.RIGHT:
+            self.atk_origin = self.midleft = attacker.midright
+            
         elif direction == Character.Direction.DOWN:
             self.atk_origin = self.midtop = attacker.midbottom
         
         elif direction == Character.Direction.LEFT:
-            self.atk_origin = self.midright = attacker.midleft
-        
-        elif direction == Character.Direction.RIGHT:
-            self.atk_origin = self.midleft = attacker.midright
+            self.atk_origin = self.midright = attacker.midleft       
+
         
         self.setVisible(True)
         attackhandler.makeAttack(self)
@@ -62,9 +63,9 @@ class Cricket(Character, Keylistener):
         self.max_speed = 200;
         
         self.key_inputs = {'up': False, 
+                           'right': False,
                            'down': False, 
-                           'left': False, 
-                           'right': False, 
+                           'left': False,  
                            'atk': False}
         
         self.knife = Knife()
@@ -92,9 +93,19 @@ class Cricket(Character, Keylistener):
                                                   (loadImage('Cricket1bwalkl.bmp'), 128), 
                                                   (loadImage('Cricket1b.bmp'), 128),
                                                   (loadImage('Cricket1bwalkr.bmp'), 128)])
-        self.walk_anim[Character.Direction.DOWN] = [loadImage('Cricket1f.bmp')]
-        self.walk_anim[Character.Direction.LEFT] = [loadImage('Cricket1l.bmp')]
-        self.walk_anim[Character.Direction.RIGHT] = [loadImage('Cricket1r.bmp')]
+        self.walk_anim[Character.Direction.RIGHT] = Animation([(loadImage('Cricket1r.bmp'), 128), 
+                                                  (loadImage('Cricket1rwalkl.bmp'), 128), 
+                                                  (loadImage('Cricket1r.bmp'), 128),
+                                                  (loadImage('Cricket1rwalkr.bmp'), 128)])
+        self.walk_anim[Character.Direction.DOWN] = Animation([(loadImage('Cricket1f.bmp'), 128), 
+                                                  (loadImage('Cricket1fwalkl.bmp'), 128), 
+                                                  (loadImage('Cricket1f.bmp'), 128),
+                                                  (loadImage('Cricket1fwalkr.bmp'), 128)])
+        self.walk_anim[Character.Direction.LEFT] = Animation([(loadImage('Cricket1l.bmp'), 128), 
+                                                  (loadImage('Cricket1lwalkl.bmp'), 128), 
+                                                  (loadImage('Cricket1l.bmp'), 128),
+                                                  (loadImage('Cricket1lwalkr.bmp'), 128)])
+
         
     def update(self, dt):
         if dt == 0:
@@ -111,6 +122,13 @@ class Cricket(Character, Keylistener):
             else:        
                 self.movement['v'] = 0
                 
+        if not self.key_inputs['left']:
+            if self.key_inputs['right']:
+                self.movement['h'] = 1
+                if not self.lock_face: self.facing = Character.Direction.RIGHT
+            else:
+                self.movement['h'] = 0
+                
         if not self.key_inputs['up']:
             if self.key_inputs['down']:
                 self.movement['v'] = 1
@@ -123,16 +141,10 @@ class Cricket(Character, Keylistener):
                 self.movement['h'] = -1
                 if not self.lock_face: self.facing = Character.Direction.LEFT
             else:
-                self.movement['h'] = 0
-                
-        if not self.key_inputs['left']:
-            if self.key_inputs['right']:
-                self.movement['h'] = 1
-                if not self.lock_face: self.facing = Character.Direction.RIGHT
-            else:
-                self.movement['h'] = 0
+                self.movement['h'] = 0              
+
             
-        if self.key_inputs['up'] or self.key_inputs['down'] or self.key_inputs['left'] or self.key_inputs['right']:
+        if self.key_inputs['up'] or self.key_inputs['right'] or self.key_inputs['down'] or self.key_inputs['left']:
             self.current_speed = self.max_speed
             self.walking = True
         else:
@@ -150,11 +162,14 @@ class Cricket(Character, Keylistener):
         
         #TODO: Maybe self.current_anim.update()? Or maybe it's high time I made Updatable a thing.
         self.walk_anim[Character.Direction.UP].update(dt)
+        self.walk_anim[Character.Direction.RIGHT].update(dt)
+        self.walk_anim[Character.Direction.DOWN].update(dt)
+        self.walk_anim[Character.Direction.LEFT].update(dt)
         
     def updateImage(self):
         Character.updateImage(self)
-        if self.walking and self.facing == Character.Direction.UP:
-            self.image = self.walk_anim[Character.Direction.UP].getCurrentFrame() 
+        if self.walking:
+            self.image = self.walk_anim[self.facing].getCurrentFrame() 
         self.knife.updateImage()
         
         
@@ -164,23 +179,23 @@ class Cricket(Character, Keylistener):
         if event.type == (KEYDOWN):
             if event.key == K_UP:
                 self.key_inputs['up'] = True
+            elif event.key == K_RIGHT:
+                self.key_inputs['right'] = True
             elif event.key == K_DOWN:
                 self.key_inputs['down'] = True
             elif event.key == K_LEFT:
                 self.key_inputs['left'] = True
-            elif event.key == K_RIGHT:
-                self.key_inputs['right'] = True
             elif event.key == K_LSHIFT:
                 self.key_inputs['atk'] = True
         if event.type == (KEYUP):
             if event.key == K_UP:
                 self.key_inputs['up'] = False
+            elif event.key == K_RIGHT:
+                self.key_inputs['right'] = False
             elif event.key == K_DOWN:
                 self.key_inputs['down'] = False
             elif event.key == K_LEFT:
                 self.key_inputs['left'] = False
-            elif event.key == K_RIGHT:
-                self.key_inputs['right'] = False
             elif event.key == K_LSHIFT:
                 self.key_inputs['atk'] = False
         
