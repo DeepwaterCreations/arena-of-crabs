@@ -57,6 +57,7 @@ class Crab(Character, Attackable):
     def makeWalk(self, timer):
         """Make the crab walk in the direction it's currently facing"""
         #if not self.being_knocked_back:
+        self.turntimer.pause()
         if self.facing == Character.Direction.UP:
             self.movement['v'] = -1 
         elif self.facing == Character.Direction.RIGHT:
@@ -75,6 +76,7 @@ class Crab(Character, Attackable):
         self.movement['h'] = 0
         self.current_speed = 0
         Timer(self.walk_freq, self.makeWalk)
+        self.turntimer.unpause()
         
     def onWeaponHit(self, weapon):
         #TODO: Allow multiple hits in a row?
