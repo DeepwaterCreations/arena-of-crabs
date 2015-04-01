@@ -19,7 +19,10 @@ class Crab(Character, Attackable):
         self.x = 250
         self.y = 250
         self.facing = Character.Direction.UP
-        self.turnFreq = 1000
+        self.turn_freq = 1024
+        self.walk_freq = 3072
+        self.walk_duration = 512
+        self.max_speed = 256 
         
         self.being_knocked_back = False #TODO: I'll probably want to make this more robust.
         
@@ -42,14 +45,36 @@ class Crab(Character, Attackable):
         self.sprites[Character.Direction.LEFT].set_colorkey(self.sprites[Character.Direction.LEFT].get_at((0,0)), RLEACCEL)
         
         #Set timer for turning
-        self.turntimer = Timer(self.turnFreq, self.handletimer, should_repeat = True)
+        self.turntimer = Timer(self.turn_freq, self.makeTurn, should_repeat = True)
+        Timer(self.walk_freq, self.makeWalk)
         
-    def handletimer(self, timer):
-        #Spin in a circle
-        if timer == self.turntimer:
-            if not self.being_knocked_back:
-                facingIndex = self.facing.value
-                self.facing = Character.Direction((facingIndex % 4) + 1)
+    def makeTurn(self, timer):
+        """Spin in a circle"""
+        if not self.being_knocked_back:
+            facingIndex = self.facing.value
+            self.facing = Character.Direction((facingIndex % 4) + 1)
+        
+    def makeWalk(self, timer):
+        """Make the crab walk in the direction it's currently facing"""
+        #if not self.being_knocked_back:
+        if self.facing == Character.Direction.UP:
+            self.movement['v'] = -1 
+        elif self.facing == Character.Direction.RIGHT:
+            self.movement['h'] = 1
+        elif self.facing == Character.Direction.DOWN:
+            self.movement['v'] = 1
+        elif self.facing == Character.Direction.LEFT:
+            self.movement['h'] = -1
+        self.current_speed = self.max_speed
+        Timer(self.walk_duration, self.endWalk)
+        
+    def endWalk(self, timer):
+        """Stop the crab from walking forward"""
+        #TODO: Make this more robust
+        self.movement['v'] = 0
+        self.movement['h'] = 0
+        self.current_speed = 0
+        Timer(self.walk_freq, self.makeWalk)
         
     def onWeaponHit(self, weapon):
         #TODO: Allow multiple hits in a row?
