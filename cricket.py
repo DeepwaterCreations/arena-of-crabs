@@ -10,6 +10,7 @@ from character import Character
 from keyhandler import Keylistener
 from entity import Entity
 from animation import Animation
+from timerhandler import Timer
 
 
 #This should not be the final structure of this!
@@ -17,7 +18,9 @@ from animation import Animation
 class Knife(Entity):
     def __init__(self):
         Entity.__init__(self)
-        
+    
+        self.damage_output = 1
+    
         self.setVisible(False)
     
         self.sprites[Character.Direction.UP] = loadImage('knifeb.bmp')
@@ -60,7 +63,7 @@ class Cricket(Character, Keylistener):
         Character.__init__(self)
         Keylistener.__init__(self)
         
-        self.max_speed = 200;
+        self.max_speed = 256;
         
         self.key_inputs = {'up': False, 
                            'right': False,
@@ -72,8 +75,10 @@ class Cricket(Character, Keylistener):
         
         self.lock_face = False
         self.walking = False
+        self.invulnerable = False
     
         self.anim_timer = 0
+        self.hit_invuln_duration = 256
     
     #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
     #and all that jazz.
@@ -199,3 +204,15 @@ class Cricket(Character, Keylistener):
             elif event.key == K_LSHIFT:
                 self.key_inputs['atk'] = False
         
+    def onHit(self, enemy, damage):
+        if not self.invulnerable:
+            #TODO: I want a separate function to handle depleting hp, so I can check for death and so forth.
+            self.current_hitpoints -= damage
+            print "Ouch! ", self.current_hitpoints 
+            #TODO: Set up invulnerability flashes or whatever.
+            self.invulnerable = True
+            Timer(self.hit_invuln_duration, self.endInvuln)
+            #TODO: Hit knockback
+            
+    def endInvuln(self, timer):
+        self.invulnerable = False

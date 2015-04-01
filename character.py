@@ -10,6 +10,9 @@ from pygame.locals import *
 #from drawable import Drawable
 from entity import Entity
 
+enemies = pygame.sprite.Group()
+
+
 class Character(Entity):
     
     Direction = Enum("Direction", "UP RIGHT DOWN LEFT");
@@ -20,6 +23,8 @@ class Character(Entity):
         self.max_speed = 100
         self.current_speed = 0
         self.movement = {'h':0.0, 'v':0.0} #Should range from -1 to 1. TODO: Do I want a unit vector?
+        
+        self.max_hitpoints = self.current_hitpoints = 10
         
         self.sprites = {
             Character.Direction.UP : 0, 
@@ -41,3 +46,14 @@ class Character(Entity):
     
     def updateImage(self):
         self.image = self.sprites[self.facing]
+        
+    def setHostile(self, is_hostile = True):
+        """Add or remove this character from the group that can collide with the player for damage"""
+        if is_hostile:
+            enemies.add(self)
+        else:
+            enemies.remove(self)
+        
+    #TODO: Should be abstracted out into an interface?
+    def onPlayerCollision(self, player):
+        pass

@@ -4,6 +4,7 @@ import sys, pygame
 from pygame.locals import *
 pygame.init()
 
+import character
 from character import Character
 from cricket import Cricket
 from crab import Crab
@@ -45,6 +46,8 @@ while 1:
     timerhandler.updateTimers(dt)
     for thing_that_needs_updating in update_list:
         thing_that_needs_updating.update(dt)
+    for enemy in pygame.sprite.spritecollide(cricket, character.enemies, False):
+        enemy.onPlayerCollision(cricket)
 
     display.fill(blue)
     dirty_rects = Drawable.drawAll(display)

@@ -24,7 +24,12 @@ class Crab(Character, Attackable):
         self.walk_duration = 512
         self.max_speed = 256 
         
+        self.damage_output = 1
+        self.current_hitpoints = self.max_hitpoints = 3
+        
         self.being_knocked_back = False #TODO: I'll probably want to make this more robust.
+        
+        self.setHostile()
         
         spritesheet = loadImage("MonstersBeach.bmp");
         
@@ -84,6 +89,9 @@ class Crab(Character, Attackable):
             return 
         self.being_knocked_back = True
         
+        self.current_hitpoints -= weapon.damage_output
+        print "Aah! ", self.current_hitpoints
+        
         #Get the direction from the location of the weapon's attack origin to the location of self.
         self.hit_direction = {'x': self.centerx - weapon.atk_origin[0], 'y':  self.centery - weapon.atk_origin[1]}
         length = math.sqrt(math.pow(self.hit_direction['x'], 2) + math.pow(self.hit_direction['y'], 2))
@@ -106,3 +114,5 @@ class Crab(Character, Attackable):
         self.current_speed = 0 #TODO: This is also wrong.
         self.being_knocked_back = False
         
+    def onPlayerCollision(self, player):
+        player.onHit(self, self.damage_output)
