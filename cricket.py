@@ -158,7 +158,7 @@ class Cricket(Character, Keylistener):
             self.knife.setVisible(False) #TODO: Instead, call knife.endAttack()
             self.lock_face = False
         
-        Character.make_move(self, dt)
+        Character.makeMove(self, dt)
         
         #TODO: Maybe self.current_anim.update()? Or maybe it's high time I made Updatable a thing.
         self.walk_anim[Character.Direction.UP].update(dt)

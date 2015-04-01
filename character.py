@@ -30,14 +30,14 @@ class Character(Entity):
         self.facing = Character.Direction.DOWN
 
     #This should typically be called by a subclass's update function.
-    def make_move(self, dt):
+    def makeMove(self, dt):
         speed = self.current_speed * (dt/1000.0)
         self.x += int(math.floor(self.movement['h'] * speed))
         self.y += int(math.floor(self.movement['v'] * speed))
     
     #By default, charactes will move when updated.
     def update(self, dt):
-        self.make_move(dt)
+        self.makeMove(dt)
     
     def updateImage(self):
         self.image = self.sprites[self.facing]
