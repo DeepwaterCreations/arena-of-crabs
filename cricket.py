@@ -4,58 +4,14 @@ import math
 import pygame
 from pygame.locals import *
 
-import attackhandler
+#import attackhandler
+import weapons
 from drawable import Drawable, loadImage
 from character import Character
 from keyhandler import Keylistener
 from entity import Entity
 from animation import Animation
-from timerhandler import Timer
-
-
-#This should not be the final structure of this!
-#TODO: Structure for multiple held objects (weapons)
-class Knife(Entity):
-    def __init__(self):
-        Entity.__init__(self)
-    
-        self.damage_output = 1
-    
-        self.setVisible(False)
-    
-        self.sprites[Character.Direction.UP] = loadImage('knifeb.bmp')
-        self.sprites[Character.Direction.DOWN] = loadImage('knifef.bmp')
-        self.sprites[Character.Direction.LEFT] = loadImage('knifel.bmp')
-        self.sprites[Character.Direction.RIGHT] = loadImage('knifer.bmp')
-    
-        self.atk_origin = [0, 0]
-    
-        self.facing = Character.Direction.DOWN
-        
-    def updateImage(self):
-        self.image = self.sprites[self.facing]
-                
-    def attack(self, attacker, direction):
-        #Set the position and facing
-        self.facing = direction
-        
-        if direction == Character.Direction.UP:
-            self.atk_origin = self.midbottom = attacker.midtop
-            
-        elif direction == Character.Direction.RIGHT:
-            self.atk_origin = self.midleft = attacker.midright
-            
-        elif direction == Character.Direction.DOWN:
-            self.atk_origin = self.midtop = attacker.midbottom
-        
-        elif direction == Character.Direction.LEFT:
-            self.atk_origin = self.midright = attacker.midleft       
-
-        
-        self.setVisible(True)
-        attackhandler.makeAttack(self)
-
-        
+from timerhandler import Timer      
 
 class Cricket(Character, Keylistener):
     
@@ -71,7 +27,7 @@ class Cricket(Character, Keylistener):
                            'left': False,  
                            'atk': False}
         
-        self.knife = Knife()
+        self.knife = weapons.Knife()
         
         self.lock_face = False
         self.walking = False
@@ -160,7 +116,7 @@ class Cricket(Character, Keylistener):
             self.knife.attack(self, self.facing)
             self.lock_face = True
         else:
-            self.knife.setVisible(False) #TODO: Instead, call knife.endAttack()
+            self.knife.endAttack()
             self.lock_face = False
         
         Character.makeMove(self, dt)
