@@ -45,6 +45,9 @@ class Character(Entity):
         self.makeMove(dt)
     
     def updateImage(self):
+        '''Set the sprite's image property based on its current state.
+            This is what will be drawn to the screen for the current frame.
+        ''' 
         self.image = self.sprites[self.facing]
         
     def setHostile(self, is_hostile = True):

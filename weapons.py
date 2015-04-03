@@ -56,7 +56,6 @@ class Knife(Entity):
             self.is_slash = True
             self.sprites = self.swing_sprites   
         
-            #Timer(self.slash_duration, self.finishSlash)
             self.slash_timer.reset()
             self.slash_timer.unpause()
         
