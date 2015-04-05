@@ -11,6 +11,7 @@ from crab import Crab
 import keyhandler
 import timerhandler
 from drawable import Drawable
+from updatable import Updatable
 
 screensize = width, height = 640, 576
 
@@ -23,9 +24,9 @@ cricket.loadSprites()
 
 testcrab = Crab()
 
-update_list = []
-update_list.append(cricket)
-update_list.append(testcrab)
+#update_list = []
+#update_list.append(cricket)
+#update_list.append(testcrab)
 
 clock = pygame.time.Clock()
 
@@ -44,8 +45,9 @@ while 1:
     
     dt = clock.get_time()
     timerhandler.updateTimers(dt)
-    for thing_that_needs_updating in update_list:
-        thing_that_needs_updating.update(dt)
+    #for thing_that_needs_updating in update_list:
+    #    thing_that_needs_updating.update(dt)
+    Updatable.updateAll(dt)
     for enemy in pygame.sprite.spritecollide(cricket, character.enemies, False):
         enemy.onPlayerCollision(cricket)
 

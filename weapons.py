@@ -46,7 +46,7 @@ class Knife(Entity):
     def updateImage(self):
         self.image = self.sprites[self.facing]
                
-               
+    #TODO: I want it to do the full swing even if I release the button before it's finished. 
     def attack(self, attacker, direction):
         self.facing = direction
         self.attacker = attacker

@@ -19,7 +19,6 @@ def loadImage(filename):
         
 
 class Drawable(pygame.sprite.Sprite):
-    #drawable_list = []
     drawable_group = pygame.sprite.RenderUpdates()
     
     @staticmethod
@@ -33,7 +32,6 @@ class Drawable(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.visible = True;
         self.image = loadImage('no_image.bmp')
-        #Drawable.drawable_list.append(self)
         Drawable.drawable_group.add(self)
         
     def updateImage(self):

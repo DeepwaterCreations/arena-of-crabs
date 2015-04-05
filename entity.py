@@ -4,12 +4,14 @@ import pygame
 from pygame.locals import *
 
 from drawable import Drawable, loadImage
+from updatable import Updatable
 
-class Entity(Drawable, pygame.Rect):
+class Entity(Drawable, Updatable, pygame.Rect):
     
     #TODO: Rect constructors
     def __init__(self):
         Drawable.__init__(self)
+        Updatable.__init__(self) 
         
         #Assuming this even works, it's for my convenience with the sprite stuff.
         self.rect = self

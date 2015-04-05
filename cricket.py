@@ -121,11 +121,6 @@ class Cricket(Character, Keylistener):
         
         Character.makeMove(self, dt)
         
-        #TODO: Maybe self.current_anim.update()? Or maybe it's high time I made Updatable a thing.
-        self.walk_anim[Character.Direction.UP].update(dt)
-        self.walk_anim[Character.Direction.RIGHT].update(dt)
-        self.walk_anim[Character.Direction.DOWN].update(dt)
-        self.walk_anim[Character.Direction.LEFT].update(dt)
         
     def updateImage(self):
         Character.updateImage(self)

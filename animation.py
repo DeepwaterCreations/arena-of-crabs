@@ -3,12 +3,15 @@ import pdb
 import pygame
 from pygame.locals import *
 
-class Animation:
+from updatable import Updatable
+
+class Animation(Updatable):
     
     def __init__(self, frames):
         """
         @param frames: A list of tuples, each containing an image and a duration in ms for that image to be displayed.   
         """
+        Updatable.__init__(self)
         self.frames = frames
         self.position = 0
         self.length = 0
