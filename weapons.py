@@ -96,3 +96,5 @@ class Knife(Entity):
         self.setVisible(False)
         self.attacking = False
                
+    def isSlashing(self):
+        return self.is_slash

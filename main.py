@@ -24,10 +24,6 @@ cricket.loadSprites()
 
 testcrab = Crab()
 
-#update_list = []
-#update_list.append(cricket)
-#update_list.append(testcrab)
-
 clock = pygame.time.Clock()
 
 display.fill(blue)
@@ -45,8 +41,6 @@ while 1:
     
     dt = clock.get_time()
     timerhandler.updateTimers(dt)
-    #for thing_that_needs_updating in update_list:
-    #    thing_that_needs_updating.update(dt)
     Updatable.updateAll(dt)
     for enemy in pygame.sprite.spritecollide(cricket, character.enemies, False):
         enemy.onPlayerCollision(cricket)

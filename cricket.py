@@ -31,6 +31,8 @@ class Cricket(Character, Keylistener):
         
         self.lock_face = False
         self.walking = False
+        self.swinging = False
+        self.holding = False
         self.invulnerable = False
     
         self.anim_timer = 0
@@ -44,29 +46,52 @@ class Cricket(Character, Keylistener):
     #Each frame, I'll return exactly 1 of these sprites. Which one, however, is a bit complicated.
     
     def loadSprites(self):
-        self.sprites[Character.Direction.UP] = loadImage('Cricket1b.bmp')
-        self.sprites[Character.Direction.DOWN] = loadImage('Cricket1f.bmp')
-        self.sprites[Character.Direction.LEFT] = loadImage('Cricket1l.bmp')
-        self.sprites[Character.Direction.RIGHT] = loadImage('Cricket1r.bmp')
         
-        self.walk_anim = {}
-        self.walk_anim[Character.Direction.UP] = Animation([(loadImage('Cricket1b.bmp'), 128), 
+        self.sprites["not_walking"] = {}
+        self.sprites["not_walking"][Character.Direction.UP] = loadImage('Cricket1b.bmp')
+        self.sprites["not_walking"][Character.Direction.RIGHT] = loadImage('Cricket1r.bmp')
+        self.sprites["not_walking"][Character.Direction.DOWN] = loadImage('Cricket1f.bmp')
+        self.sprites["not_walking"][Character.Direction.LEFT] = loadImage('Cricket1l.bmp')
+                
+        self.sprites["walking"] = {}
+        #self.walk_anim = {}
+        self.sprites["walking"][Character.Direction.UP] = Animation([(loadImage('Cricket1b.bmp'), 128), 
                                                   (loadImage('Cricket1bwalkl.bmp'), 128), 
                                                   (loadImage('Cricket1b.bmp'), 128),
                                                   (loadImage('Cricket1bwalkr.bmp'), 128)])
-        self.walk_anim[Character.Direction.RIGHT] = Animation([(loadImage('Cricket1r.bmp'), 128), 
+        self.sprites["walking"][Character.Direction.RIGHT] = Animation([(loadImage('Cricket1r.bmp'), 128), 
                                                   (loadImage('Cricket1rwalkl.bmp'), 128), 
                                                   (loadImage('Cricket1r.bmp'), 128),
                                                   (loadImage('Cricket1rwalkr.bmp'), 128)])
-        self.walk_anim[Character.Direction.DOWN] = Animation([(loadImage('Cricket1f.bmp'), 128), 
+        self.sprites["walking"][Character.Direction.DOWN] = Animation([(loadImage('Cricket1f.bmp'), 128), 
                                                   (loadImage('Cricket1fwalkl.bmp'), 128), 
                                                   (loadImage('Cricket1f.bmp'), 128),
                                                   (loadImage('Cricket1fwalkr.bmp'), 128)])
-        self.walk_anim[Character.Direction.LEFT] = Animation([(loadImage('Cricket1l.bmp'), 128), 
+        self.sprites["walking"][Character.Direction.LEFT] = Animation([(loadImage('Cricket1l.bmp'), 128), 
                                                   (loadImage('Cricket1lwalkl.bmp'), 128), 
                                                   (loadImage('Cricket1l.bmp'), 128),
                                                   (loadImage('Cricket1lwalkr.bmp'), 128)])
-
+        
+        #self.swing_anim = {}
+        #self.swing_anim[Character.Direction.UP] = Animation([(loadImage('cricket1bswing1.bmp'), 64),
+                                                             #loadImage('cricket1bswing2.bmp'), 64)])
+        #self.swing_anim[Character.Direction.RIGHT] = Animation([(loadImage('cricket1rswing1.bmp'), 64),
+                                                             #loadImage('cricket1rswing2.bmp'), 64)])
+        #self.swing_anim[Character.Direction.DOWN] = Animation([(loadImage('cricket1fswing1.bmp'), 64),
+                                                             #loadImage('cricket1fswing2.bmp'), 64)])
+        #self.swing_anim[Character.Direction.LEFT] = Animation([(loadImage('cricket1lswing1.bmp'), 64),
+                                                             #loadImage('cricket1lswing2.bmp'), 64)])
+        self.sprites["not_walking"]["holding"] = {}
+        self.sprites["not_walking"]["holding"][Character.Direction.UP] = loadImage('Cricket1bswing2.bmp')
+        self.sprites["not_walking"]["holding"][Character.Direction.RIGHT] = loadImage('Cricket1rswing2.bmp')
+        self.sprites["not_walking"]["holding"][Character.Direction.DOWN] = loadImage('Cricket1fswing2.bmp')
+        self.sprites["not_walking"]["holding"][Character.Direction.LEFT] = loadImage('Cricket1lswing2.bmp')
+        
+        self.sprites["not_walking"]["swinging"] = {}
+        self.sprites["not_walking"]["swinging"][Character.Direction.UP] = loadImage('Cricket1bswing1.bmp')
+        self.sprites["not_walking"]["swinging"][Character.Direction.RIGHT] = loadImage('Cricket1rswing1.bmp')
+        self.sprites["not_walking"]["swinging"][Character.Direction.DOWN] = loadImage('Cricket1fswing1.bmp')
+        self.sprites["not_walking"]["swinging"][Character.Direction.LEFT] = loadImage('Cricket1lswing1.bmp')
         
     def update(self, dt):
         if dt == 0:
@@ -118,16 +143,26 @@ class Cricket(Character, Keylistener):
         else:
             self.knife.endAttack()
             self.lock_face = False
+            
+        #TODO: "holding" state determination code needs to be made better.
+        self.holding = self.key_inputs['atk']
+        
+        self.swinging = self.knife.isSlashing() 
         
         Character.makeMove(self, dt)
         
         
     def updateImage(self):
-        Character.updateImage(self)
         if self.walking:
-            self.image = self.walk_anim[self.facing].getCurrentFrame() 
+            self.image = self.sprites["walking"][self.facing].getCurrentFrame() 
+        else:
+            if self.swinging:
+                self.image = self.sprites["not_walking"]["swinging"][self.facing]
+            elif self.holding:
+                self.image = self.sprites["not_walking"]["holding"][self.facing]
+            else:
+                self.image = self.sprites["not_walking"][self.facing]
         self.knife.updateImage()
-        
         
     def handleKey(self, event):
         Keylistener.handleKey(self, event)
