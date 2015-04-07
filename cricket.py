@@ -6,7 +6,7 @@ from pygame.locals import *
 
 #import attackhandler
 import weapons
-from drawable import Drawable, loadImage
+from drawable import Drawable, loadImage, getSpritesheetSprite
 from character import Character
 from keyhandler import Keylistener
 from entity import Entity
@@ -47,14 +47,44 @@ class Cricket(Character, Keylistener):
     
     def loadSprites(self):
         
+        spritesheet = loadImage("Cricketbigsheet_reduced.bmp")
+        
         self.sprites["not_walking"] = {}
-        self.sprites["not_walking"][Character.Direction.UP] = loadImage('Cricket1b.bmp')
-        self.sprites["not_walking"][Character.Direction.RIGHT] = loadImage('Cricket1r.bmp')
-        self.sprites["not_walking"][Character.Direction.DOWN] = loadImage('Cricket1f.bmp')
-        self.sprites["not_walking"][Character.Direction.LEFT] = loadImage('Cricket1l.bmp')
-                
+        self.sprites["not_walking"][Character.Direction.UP] = getSpritesheetSprite(0, 2, spritesheet)
+        self.sprites["not_walking"][Character.Direction.RIGHT] = getSpritesheetSprite(0, 1, spritesheet)
+        self.sprites["not_walking"][Character.Direction.DOWN] = getSpritesheetSprite(0, 0, spritesheet)
+        self.sprites["not_walking"][Character.Direction.LEFT] = getSpritesheetSprite(0, 3, spritesheet)
+        
+        #self.sprites["not_walking"][Character.Direction.UP] = pygame.Surface((64, 64))
+        #self.sprites["not_walking"][Character.Direction.UP].blit(spritesheet, (0,0), (4, 140, 64, 64))   
+        #self.sprites["not_walking"][Character.Direction.UP].set_colorkey(self.sprites["not_walking"][Character.Direction.UP].get_at((0,0)), RLEACCEL)
+        
+        #self.sprites["not_walking"][Character.Direction.RIGHT] = pygame.Surface((64, 64))
+        #self.sprites["not_walking"][Character.Direction.RIGHT].blit(spritesheet, (0,0), (4, 72, 64, 64))   
+        #self.sprites["not_walking"][Character.Direction.RIGHT].set_colorkey(self.sprites["not_walking"][Character.Direction.RIGHT].get_at((0,0)), RLEACCEL)
+        
+        #self.sprites["not_walking"][Character.Direction.DOWN] = pygame.Surface((64, 64))
+        #self.sprites["not_walking"][Character.Direction.DOWN].blit(spritesheet, (0,0), (4, 4, 64, 64))   
+        #self.sprites["not_walking"][Character.Direction.DOWN].set_colorkey(self.sprites["not_walking"][Character.Direction.DOWN].get_at((0,0)), RLEACCEL)
+        
+        #self.sprites["not_walking"][Character.Direction.LEFT] = pygame.Surface((64, 64))
+        #self.sprites["not_walking"][Character.Direction.LEFT].blit(spritesheet, (0,0), (4, 208, 64, 64))   
+        #self.sprites["not_walking"][Character.Direction.LEFT].set_colorkey(self.sprites["not_walking"][Character.Direction.LEFT].get_at((0,0)), RLEACCEL)
+        
+        #TODO: Move these over from the sprite sheet
+        self.sprites["not_walking"]["holding"] = {}
+        self.sprites["not_walking"]["holding"][Character.Direction.UP] = loadImage('Cricket1bswing2.bmp')
+        self.sprites["not_walking"]["holding"][Character.Direction.RIGHT] = loadImage('Cricket1rswing2.bmp')
+        self.sprites["not_walking"]["holding"][Character.Direction.DOWN] = loadImage('Cricket1fswing2.bmp')
+        self.sprites["not_walking"]["holding"][Character.Direction.LEFT] = loadImage('Cricket1lswing2.bmp')
+        
+        self.sprites["not_walking"]["swinging"] = {}
+        self.sprites["not_walking"]["swinging"][Character.Direction.UP] = loadImage('Cricket1bswing1.bmp')
+        self.sprites["not_walking"]["swinging"][Character.Direction.RIGHT] = loadImage('Cricket1rswing1.bmp')
+        self.sprites["not_walking"]["swinging"][Character.Direction.DOWN] = loadImage('Cricket1fswing1.bmp')
+        self.sprites["not_walking"]["swinging"][Character.Direction.LEFT] = loadImage('Cricket1lswing1.bmp')
+        
         self.sprites["walking"] = {}
-        #self.walk_anim = {}
         self.sprites["walking"][Character.Direction.UP] = Animation([(loadImage('Cricket1b.bmp'), 128), 
                                                   (loadImage('Cricket1bwalkl.bmp'), 128), 
                                                   (loadImage('Cricket1b.bmp'), 128),
@@ -72,26 +102,24 @@ class Cricket(Character, Keylistener):
                                                   (loadImage('Cricket1l.bmp'), 128),
                                                   (loadImage('Cricket1lwalkr.bmp'), 128)])
         
-        #self.swing_anim = {}
-        #self.swing_anim[Character.Direction.UP] = Animation([(loadImage('cricket1bswing1.bmp'), 64),
-                                                             #loadImage('cricket1bswing2.bmp'), 64)])
-        #self.swing_anim[Character.Direction.RIGHT] = Animation([(loadImage('cricket1rswing1.bmp'), 64),
-                                                             #loadImage('cricket1rswing2.bmp'), 64)])
-        #self.swing_anim[Character.Direction.DOWN] = Animation([(loadImage('cricket1fswing1.bmp'), 64),
-                                                             #loadImage('cricket1fswing2.bmp'), 64)])
-        #self.swing_anim[Character.Direction.LEFT] = Animation([(loadImage('cricket1lswing1.bmp'), 64),
-                                                             #loadImage('cricket1lswing2.bmp'), 64)])
-        self.sprites["not_walking"]["holding"] = {}
-        self.sprites["not_walking"]["holding"][Character.Direction.UP] = loadImage('Cricket1bswing2.bmp')
-        self.sprites["not_walking"]["holding"][Character.Direction.RIGHT] = loadImage('Cricket1rswing2.bmp')
-        self.sprites["not_walking"]["holding"][Character.Direction.DOWN] = loadImage('Cricket1fswing2.bmp')
-        self.sprites["not_walking"]["holding"][Character.Direction.LEFT] = loadImage('Cricket1lswing2.bmp')
+        self.sprites["walking"]["holding"] = {}
+        self.sprites["walking"]["holding"][Character.Direction.UP] = Animation([(getSpritesheetSprite(4, 2, spritesheet), 128), 
+                                                  (getSpritesheetSprite(6, 2, spritesheet), 128), 
+                                                  (getSpritesheetSprite(4, 2, spritesheet), 128),
+                                                  (getSpritesheetSprite(5, 2, spritesheet), 128)])
+        self.sprites["walking"]["holding"][Character.Direction.RIGHT] = Animation([(getSpritesheetSprite(4, 1, spritesheet), 128), 
+                                                  (getSpritesheetSprite(6, 1, spritesheet), 128), 
+                                                  (getSpritesheetSprite(4, 1, spritesheet), 128),
+                                                  (getSpritesheetSprite(5, 1, spritesheet), 128)])
+        self.sprites["walking"]["holding"][Character.Direction.DOWN] = Animation([(getSpritesheetSprite(4, 0, spritesheet), 128), 
+                                                  (getSpritesheetSprite(6, 0, spritesheet), 128), 
+                                                  (getSpritesheetSprite(4, 0, spritesheet), 128),
+                                                  (getSpritesheetSprite(5, 0, spritesheet), 128)])
+        self.sprites["walking"]["holding"][Character.Direction.LEFT] = Animation([(getSpritesheetSprite(4, 3, spritesheet), 128), 
+                                                  (getSpritesheetSprite(6, 3, spritesheet), 128), 
+                                                  (getSpritesheetSprite(4, 3, spritesheet), 128),
+                                                  (getSpritesheetSprite(5, 3, spritesheet), 128)])
         
-        self.sprites["not_walking"]["swinging"] = {}
-        self.sprites["not_walking"]["swinging"][Character.Direction.UP] = loadImage('Cricket1bswing1.bmp')
-        self.sprites["not_walking"]["swinging"][Character.Direction.RIGHT] = loadImage('Cricket1rswing1.bmp')
-        self.sprites["not_walking"]["swinging"][Character.Direction.DOWN] = loadImage('Cricket1fswing1.bmp')
-        self.sprites["not_walking"]["swinging"][Character.Direction.LEFT] = loadImage('Cricket1lswing1.bmp')
         
     def update(self, dt):
         if dt == 0:
@@ -154,7 +182,10 @@ class Cricket(Character, Keylistener):
         
     def updateImage(self):
         if self.walking:
-            self.image = self.sprites["walking"][self.facing].getCurrentFrame() 
+            if self.holding:
+                self.image = self.sprites["walking"]["holding"][self.facing].getCurrentFrame()
+            else:
+                self.image = self.sprites["walking"][self.facing].getCurrentFrame() 
         else:
             if self.swinging:
                 self.image = self.sprites["not_walking"]["swinging"][self.facing]
