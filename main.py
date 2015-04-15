@@ -4,6 +4,7 @@ import sys, pygame
 from pygame.locals import *
 pygame.init()
 
+import entity
 import character
 from character import Character
 from cricket import Cricket
@@ -24,6 +25,12 @@ cricket.loadSprites()
 
 testcrab = Crab()
 
+#test_wall = entity.Wall(screensize[0]/2, screensize[1]/2, 128, 128)
+top_wall = entity.Wall(0, 0, screensize[0], 64)
+bottom_wall = entity.Wall(0, screensize[1] - 64, screensize[0], 64)
+left_wall = entity.Wall(0, 64, 64, screensize[1] - 128)
+right_wall = entity.Wall(screensize[0] - 64, 64, 64, screensize[1] - 128)
+
 clock = pygame.time.Clock()
 
 display.fill(blue)
@@ -42,8 +49,11 @@ while 1:
     dt = clock.get_time()
     timerhandler.updateTimers(dt)
     Updatable.updateAll(dt)
+    #for (collider, wall) in pygame.sprite.groupcollide(character.wall_colliders, entity.walls, False, False):
+    #    collider.onWallCollision(wall)
     for enemy in pygame.sprite.spritecollide(cricket, character.enemies, False):
         enemy.onPlayerCollision(cricket)
+    
 
     display.fill(blue)
     dirty_rects = Drawable.drawAll(display)

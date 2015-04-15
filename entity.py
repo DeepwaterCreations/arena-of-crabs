@@ -6,6 +6,8 @@ from pygame.locals import *
 from drawable import Drawable, loadImage
 from updatable import Updatable
 
+walls = pygame.sprite.Group()
+
 class Entity(Drawable, Updatable, pygame.Rect):
     
     #TODO: Rect constructors
@@ -23,6 +25,22 @@ class Entity(Drawable, Updatable, pygame.Rect):
         
         self.sprites = {0: loadImage("no_image.bmp")} #TODO Rename this. >.-.< 
         
+    def setWall(self, is_wall = True):
+        """Add or remove this entity from the group that will block most characters"""
+        if is_wall:
+            walls.add(self)
+        else:
+            walls.remove(self)
         
     def draw(self):        
         self.image = self.sprites[0]
+        
+class Wall(Entity):
+    def __init__(self, x, y, w, h):
+        Entity.__init__(self)
+        pygame.Rect.__init__(self, x, y, w, h)
+        
+        self.setWall()
+        
+        self.image = pygame.Surface((self.w, self.h))
+        self.image.fill((255, 0, 255))

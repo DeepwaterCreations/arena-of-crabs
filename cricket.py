@@ -19,6 +19,10 @@ class Cricket(Character, Keylistener):
         Character.__init__(self)
         Keylistener.__init__(self)
         
+        #TODO: These values are just for testing. 
+        self.x = 74
+        self.y = 74
+        
         self.max_speed = 256;
         
         self.key_inputs = {'up': False, 
