@@ -11,8 +11,8 @@ walls = pygame.sprite.Group()
 class Entity(Drawable, Updatable, pygame.Rect):
     
     #TODO: Rect constructors
-    def __init__(self):
-        Drawable.__init__(self)
+    def __init__(self, layer="Character"):
+        Drawable.__init__(self, layer)
         Updatable.__init__(self) 
         
         #Assuming this even works, it's for my convenience with the sprite stuff.
@@ -37,7 +37,7 @@ class Entity(Drawable, Updatable, pygame.Rect):
         
 class Wall(Entity):
     def __init__(self, x, y, w, h):
-        Entity.__init__(self)
+        Entity.__init__(self, layer="Floor")
         pygame.Rect.__init__(self, x, y, w, h)
         
         self.setWall()

@@ -33,7 +33,13 @@ def getSpritesheetSprite(x, y, spritesheet):
     return surface
 
 class Drawable(pygame.sprite.Sprite):
-    drawable_group = pygame.sprite.RenderUpdates()
+    
+    Layer = {
+        "Floor": -1,
+        "Character": 0
+        }
+    
+    drawable_group = pygame.sprite.LayeredUpdates()
     
     @staticmethod
     def drawAll(surface):
@@ -42,10 +48,11 @@ class Drawable(pygame.sprite.Sprite):
                 whatever.updateImage()
         return Drawable.drawable_group.draw(surface)
         
-    def __init__(self):
+    def __init__(self, layer="Floor"):
         pygame.sprite.Sprite.__init__(self)
         self.visible = True;
         self.image = loadImage('no_image.bmp')
+        self.layer = Drawable.Layer[layer]
         Drawable.drawable_group.add(self)
         
     def updateImage(self):
