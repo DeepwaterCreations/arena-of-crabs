@@ -107,5 +107,13 @@ class Character(Entity):
         pass
     
     def onWallCollision(self, wall):
-        #print "Bam!"
         pass
+    
+    def takeDamage(self, damage_amount):
+        self.current_hitpoints -= damage_amount
+        if self.current_hitpoints <= 0:
+            self.die()
+    
+    def die(self):
+        '''Play a death animation and remove this object from the game'''
+        self.kill()

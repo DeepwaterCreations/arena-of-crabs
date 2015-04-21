@@ -89,8 +89,8 @@ class Crab(Character, Attackable):
             return 
         self.being_knocked_back = True
         
-        self.current_hitpoints -= weapon.damage_output
-        print "Aah! ", self.current_hitpoints
+        #self.current_hitpoints -= weapon.damage_output
+        #print "Aah! ", self.current_hitpoints
         
         #Get the direction from the location of the weapon's attack origin to the location of self.
         self.hit_direction = {'x': self.centerx - weapon.atk_origin[0], 'y':  self.centery - weapon.atk_origin[1]}
@@ -105,7 +105,8 @@ class Crab(Character, Attackable):
         
         #Set a timer to stop the motion? Duration based on attack power?
         hittimer = Timer(200, self.endWeaponHit) #TODO: Another place where I don't want a magic number.
-   
+        
+        self.takeDamage(weapon.damage_output)
         
     def endWeaponHit(self, timer):
         #BUG: This will cause bad things to happen if onWeaponHit is called twice before we get here. 
