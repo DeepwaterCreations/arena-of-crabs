@@ -22,6 +22,7 @@ class Cricket(Character, Keylistener):
         #TODO: These values are just for testing. 
         self.x = 74
         self.y = 74
+        #
         
         self.max_speed = 256;
         
@@ -58,23 +59,7 @@ class Cricket(Character, Keylistener):
         self.sprites["not_walking"][Character.Direction.RIGHT] = getSpritesheetSprite(0, 1, spritesheet)
         self.sprites["not_walking"][Character.Direction.DOWN] = getSpritesheetSprite(0, 0, spritesheet)
         self.sprites["not_walking"][Character.Direction.LEFT] = getSpritesheetSprite(0, 3, spritesheet)
-        
-        #self.sprites["not_walking"][Character.Direction.UP] = pygame.Surface((64, 64))
-        #self.sprites["not_walking"][Character.Direction.UP].blit(spritesheet, (0,0), (4, 140, 64, 64))   
-        #self.sprites["not_walking"][Character.Direction.UP].set_colorkey(self.sprites["not_walking"][Character.Direction.UP].get_at((0,0)), RLEACCEL)
-        
-        #self.sprites["not_walking"][Character.Direction.RIGHT] = pygame.Surface((64, 64))
-        #self.sprites["not_walking"][Character.Direction.RIGHT].blit(spritesheet, (0,0), (4, 72, 64, 64))   
-        #self.sprites["not_walking"][Character.Direction.RIGHT].set_colorkey(self.sprites["not_walking"][Character.Direction.RIGHT].get_at((0,0)), RLEACCEL)
-        
-        #self.sprites["not_walking"][Character.Direction.DOWN] = pygame.Surface((64, 64))
-        #self.sprites["not_walking"][Character.Direction.DOWN].blit(spritesheet, (0,0), (4, 4, 64, 64))   
-        #self.sprites["not_walking"][Character.Direction.DOWN].set_colorkey(self.sprites["not_walking"][Character.Direction.DOWN].get_at((0,0)), RLEACCEL)
-        
-        #self.sprites["not_walking"][Character.Direction.LEFT] = pygame.Surface((64, 64))
-        #self.sprites["not_walking"][Character.Direction.LEFT].blit(spritesheet, (0,0), (4, 208, 64, 64))   
-        #self.sprites["not_walking"][Character.Direction.LEFT].set_colorkey(self.sprites["not_walking"][Character.Direction.LEFT].get_at((0,0)), RLEACCEL)
-        
+                
         #TODO: Move these over from the sprite sheet
         self.sprites["not_walking"]["holding"] = {}
         self.sprites["not_walking"]["holding"][Character.Direction.UP] = loadImage('Cricket1bswing2.bmp')
