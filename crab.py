@@ -7,7 +7,7 @@ from pygame.locals import *
 
 from character import Character
 from drawable import loadImage
-from timerhandler import Timer#, RepeatingTimer
+from timerhandler import Timer
 from attackhandler import Attackable
 
 class Crab(Character, Attackable):
@@ -95,6 +95,8 @@ class Crab(Character, Attackable):
         #Get the direction from the location of the weapon's attack origin to the location of self.
         self.hit_direction = {'x': self.centerx - weapon.atk_origin[0], 'y':  self.centery - weapon.atk_origin[1]}
         length = math.sqrt(math.pow(self.hit_direction['x'], 2) + math.pow(self.hit_direction['y'], 2))
+        if length == 0:
+            length = 1
         self.hit_direction['x'] /= length
         self.hit_direction['y'] /= length
         self.movement['h'] += self.hit_direction['x']
