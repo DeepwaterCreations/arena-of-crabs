@@ -13,6 +13,7 @@ import keyhandler
 import timerhandler
 from drawable import Drawable
 from updatable import Updatable
+from crabspawner import CrabSpawner
 
 screensize = width, height = 640, 576
 
@@ -23,7 +24,9 @@ blue = 0, 0, 255
 cricket = Cricket()
 cricket.loadSprites()
 
-testcrab = Crab()
+#testcrab = Crab()
+crabzone = Rect(64, 64, width - 64, height - 64)
+crabspawner = CrabSpawner(crabzone)
 
 #test_wall = entity.Wall(screensize[0]/2, screensize[1]/2, 128, 128)
 top_wall = entity.Wall(0, 0, screensize[0], 64)

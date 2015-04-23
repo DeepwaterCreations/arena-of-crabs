@@ -35,6 +35,14 @@ class Entity(Drawable, Updatable, pygame.Rect):
     def draw(self):        
         self.image = self.sprites[0]
         
+    def setLocation(self, x = None, y = None):
+        if x is None:
+            x = self.x
+        if y is None:
+            y = self.y
+        self.x = x
+        self.y = y
+        
 class Wall(Entity):
     def __init__(self, x, y, w, h):
         Entity.__init__(self, layer="Floor")
