@@ -44,13 +44,13 @@ class Drawable(pygame.sprite.Sprite):
     @staticmethod
     def drawAll(surface):
         for whatever in Drawable.drawable_group:
-            if whatever.visible:
+            if whatever.isVisible():
                 whatever.updateImage()
         return Drawable.drawable_group.draw(surface)
         
     def __init__(self, layer="Floor"):
         pygame.sprite.Sprite.__init__(self)
-        self.visible = True;
+        self._visible = True
         self.image = loadImage('no_image.bmp')
         self.layer = Drawable.Layer[layer]
         Drawable.drawable_group.add(self)
@@ -61,9 +61,12 @@ class Drawable(pygame.sprite.Sprite):
     
     def setVisible(self, visible):
         """Add or remove the sprite from the draw group"""
-        if self.visible != visible:
-            self.visible = visible
-            if self.visible:
+        if self._visible != visible:
+            self._visible = visible
+            if self._visible:
                 Drawable.drawable_group.add(self)
             else:
                 Drawable.drawable_group.remove(self)
+                
+    def isVisible(self):
+        return self._visible
