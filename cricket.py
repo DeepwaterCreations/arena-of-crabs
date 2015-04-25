@@ -212,13 +212,16 @@ class Cricket(Character, Keylistener):
         
     def onHit(self, enemy, damage):
         if not self.invulnerable:
-            #TODO: I want a separate function to handle depleting hp, so I can check for death and so forth.
-            self.current_hitpoints -= damage
+            self.takeDamage(damage)
             print "Ouch! ", self.current_hitpoints 
             #TODO: Set up invulnerability flashes or whatever.
             self.invulnerable = True
             Timer(self.hit_invuln_duration, self.endInvuln)
             #TODO: Hit knockback
+            
+    def takeDamage(self, damage_amount):
+        self.current_hitpoints -= damage_amount
+        #TODO: Die
             
     def endInvuln(self, timer):
         self.invulnerable = False
