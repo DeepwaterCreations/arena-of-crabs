@@ -41,7 +41,8 @@ class Cricket(Character, Keylistener):
         self.invulnerable = False
     
         self.anim_timer = 0
-        self.hit_invuln_duration = 256
+        self.hit_invuln_duration = 1024
+        self.invuln_flash_frequency = 32
     
     #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
     #and all that jazz.
@@ -214,9 +215,10 @@ class Cricket(Character, Keylistener):
         if not self.invulnerable:
             self.takeDamage(damage)
             print "Ouch! ", self.current_hitpoints 
-            #TODO: Set up invulnerability flashes or whatever.
             self.invulnerable = True
+            self.setVisible(False)
             Timer(self.hit_invuln_duration, self.endInvuln)
+            Timer(self.invuln_flash_frequency, self.invulnFlashTimer)
             #TODO: Hit knockback
             
     def takeDamage(self, damage_amount):
@@ -225,3 +227,10 @@ class Cricket(Character, Keylistener):
             
     def endInvuln(self, timer):
         self.invulnerable = False
+        
+    def invulnFlashTimer(self, timer):
+        if self.invulnerable:
+            self.setVisible(not self.isVisible())
+            Timer(self.invuln_flash_frequency, self.invulnFlashTimer)
+        else:
+            self.setVisible(True)
