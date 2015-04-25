@@ -21,18 +21,17 @@ display = pygame.display.set_mode(screensize)
 
 blue = 0, 0, 255
 
-cricket = Cricket()
-cricket.loadSprites()
-
-#testcrab = Crab()
-crabzone = Rect(64, 64, width - 64, height - 64)
-crabspawner = CrabSpawner(crabzone)
-
 #test_wall = entity.Wall(screensize[0]/2, screensize[1]/2, 128, 128)
 top_wall = entity.Wall(0, 0, screensize[0], 64)
 bottom_wall = entity.Wall(0, screensize[1] - 64, screensize[0], 64)
 left_wall = entity.Wall(0, 64, 64, screensize[1] - 128)
 right_wall = entity.Wall(screensize[0] - 64, 64, 64, screensize[1] - 128)
+
+cricket = Cricket()
+cricket.loadSprites()
+
+crabzone = Rect(left_wall.right, top_wall.bottom, (width - (left_wall.width + right_wall.width)), height - (top_wall.height + bottom_wall.height))
+crabspawner = CrabSpawner(crabzone)
 
 clock = pygame.time.Clock()
 
