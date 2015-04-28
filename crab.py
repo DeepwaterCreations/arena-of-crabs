@@ -22,7 +22,7 @@ class Crab(Character, Attackable):
         self.turn_freq = 1024
         self.walk_freq = 3072
         self.walk_duration = 512
-        self.max_speed = 256 
+        self.walk_speed = 256 
         
         self.damage_output = 1
         self.current_hitpoints = self.max_hitpoints = 3
@@ -63,23 +63,12 @@ class Crab(Character, Attackable):
         """Make the crab walk in the direction it's currently facing"""
         #if not self.being_knocked_back:
         self.turntimer.pause()
-        if self.facing == Character.Direction.UP:
-            self.movement['v'] = -1 
-        elif self.facing == Character.Direction.RIGHT:
-            self.movement['h'] = 1
-        elif self.facing == Character.Direction.DOWN:
-            self.movement['v'] = 1
-        elif self.facing == Character.Direction.LEFT:
-            self.movement['h'] = -1
-        self.current_speed = self.max_speed
+        self.setWalking(self.facing)
         Timer(self.walk_duration, self.endWalk)
         
     def endWalk(self, timer):
         """Stop the crab from walking forward"""
-        #TODO: Make this more robust
-        self.movement['v'] = 0
-        self.movement['h'] = 0
-        self.current_speed = 0
+        self.haltWalking()
         Timer(self.walk_freq, self.makeWalk)
         self.turntimer.unpause()
         
@@ -89,32 +78,26 @@ class Crab(Character, Attackable):
             return 
         self.being_knocked_back = True
         
-        #self.current_hitpoints -= weapon.damage_output
-        #print "Aah! ", self.current_hitpoints
-        
         #Get the direction from the location of the weapon's attack origin to the location of self.
-        self.hit_direction = {'x': self.centerx - weapon.atk_origin[0], 'y':  self.centery - weapon.atk_origin[1]}
-        length = math.sqrt(math.pow(self.hit_direction['x'], 2) + math.pow(self.hit_direction['y'], 2))
+        hit_direction = {'x': self.centerx - weapon.atk_origin[0], 'y':  self.centery - weapon.atk_origin[1]}
+        #Normalize
+        length = math.sqrt(math.pow(hit_direction['x'], 2) + math.pow(hit_direction['y'], 2))
         if length == 0:
             length = 1
-        self.hit_direction['x'] /= length
-        self.hit_direction['y'] /= length
-        self.movement['h'] += self.hit_direction['x']
-        self.movement['v'] += self.hit_direction['y']
-        
-        #Move in that direction at a calculated speed (based on "traction" stat and attack power?)
-        self.current_speed = 640 #TODO: Calculated number instead of magic, if you please.
-        
+        hit_direction['x'] /= length
+        hit_direction['y'] /= length
+        #Combine the hit direction with the weapon force to get a knockback movement vector 
+        #TODO: Could amend the attack force after getting it from the weapon. Weapon resistance, for instance. 
+        self.knockback_vector = (hit_direction['x'] * weapon.getForce(), hit_direction['y'] * weapon.getForce()) 
+        self.addMovementVector(self.knockback_vector[0], self.knockback_vector[1])
+                
         #Set a timer to stop the motion? Duration based on attack power?
         hittimer = Timer(200, self.endWeaponHit) #TODO: Another place where I don't want a magic number.
         
         self.takeDamage(weapon.damage_output)
         
     def endWeaponHit(self, timer):
-        #BUG: This will cause bad things to happen if onWeaponHit is called twice before we get here. 
-        self.movement['h'] -= self.hit_direction['x']
-        self.movement['v'] -= self.hit_direction['y']
-        self.current_speed = 0 #TODO: This is also wrong.
+        self.addMovementVector(-self.knockback_vector[0], -self.knockback_vector[1])
         self.being_knocked_back = False
         
     def onPlayerCollision(self, player):

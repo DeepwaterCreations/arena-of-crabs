@@ -22,9 +22,14 @@ class Character(Entity):
         
         self.collide_walls = True
         
-        self.max_speed = 100
-        self.current_speed = 0
-        self.movement = {'h':0.0, 'v':0.0} #Should range from -1 to 1. TODO: Do I want a unit vector?
+        self.walk_speed = 100
+        self._movement_vectors = []
+        self._walking = {
+            Character.Direction.UP : False, 
+            Character.Direction.RIGHT : False, 
+            Character.Direction.DOWN : False, 
+            Character.Direction.LEFT : False
+                }        
         
         self.max_hitpoints = self.current_hitpoints = 10
         
@@ -38,9 +43,13 @@ class Character(Entity):
 
     #This should typically be called by a subclass's update function.
     def makeMove(self, dt):
-        speed = self.current_speed * (dt/1000.0)
-        x_change = int(math.floor(self.movement['h'] * speed))
-        y_change = int(math.floor(self.movement['v'] * speed))
+        walking_vector = self.getWalkingVector()
+        move_x = sum(vector[0] for vector in self._movement_vectors) + walking_vector[0]
+        move_y = sum(vector[1] for vector in self._movement_vectors) + walking_vector[1]
+        movement = (move_x, move_y)
+        
+        x_change = movement[0] * (dt/1000.0)
+        y_change = movement[1] * (dt/1000.0)
        
         #Check for wall collisions
         def moveCollide(source, wall):
@@ -77,7 +86,39 @@ class Character(Entity):
         if collision:
             self.onWallCollision(collision)
     
-    
+    def addMovementVector(self, x, y):
+        """Add a vector to the character's movement that will impact the direction/speed he moves when makeMove() is called""" 
+        self._movement_vectors.append((x, y))
+        
+     
+    def setWalking(self, direction, is_walking = True):
+        """Set the character's walking state for the given direction.
+        
+            Every direction the character is walking will add a vector to movement in the given direction, at the character's max speed.
+        """
+        self._walking[direction] = is_walking
+        
+    def haltWalking(self):
+        """Stop the character from walking"""
+        self._walking = self._walking.fromkeys(self._walking, False)
+        
+    def getWalkingVector(self):
+        """Return a vector to represent the character's current attempt to move itself"""
+        x = 0
+        y = 0
+        if self._walking[Character.Direction.UP]:
+            y -= self.walk_speed
+        if self._walking[Character.Direction.RIGHT]:
+            x += self.walk_speed
+        if self._walking[Character.Direction.DOWN]:
+            y += self.walk_speed
+        if self._walking[Character.Direction.LEFT]:
+            x -= self.walk_speed
+        return (x, y)
+            
+    def isWalking(self):
+        return self._walking[Character.Direction.UP] or self._walking[Character.Direction.RIGHT] or self._walking[Character.Direction.DOWN] or self._walking[Character.Direction.LEFT] 
+            
     #By default, charactes will move when updated.
     def update(self, dt):
         self.makeMove(dt)

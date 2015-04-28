@@ -24,7 +24,7 @@ class Cricket(Character, Keylistener):
         self.y = 74
         #
         
-        self.max_speed = 256;
+        self.walk_speed = 256;
         
         self.key_inputs = {'up': False, 
                            'right': False,
@@ -35,7 +35,6 @@ class Cricket(Character, Keylistener):
         self.knife = weapons.Knife()
         
         self.lock_face = False
-        self.walking = False
         self.swinging = False
         self.holding = False
         self.invulnerable = False
@@ -113,48 +112,25 @@ class Cricket(Character, Keylistener):
         
     def update(self, dt):
         if dt == 0:
-            return
+            return      
+            
+        #Set the walking state
+        self.setWalking(Character.Direction.UP, self.key_inputs['up'])
+        self.setWalking(Character.Direction.RIGHT, self.key_inputs['right'])
+        self.setWalking(Character.Direction.DOWN, self.key_inputs['down'])
+        self.setWalking(Character.Direction.LEFT, self.key_inputs['left'])
         
-        # I want the currently held horizontal/vertical key to override a second key, so if I hold down two keys at once, I keep moving in the first direction.
-        #When the first key is released, if the second is still being held down, immediately move in the other direction.
-        #Therefore, check for the opposite key before setting the movement variables for a given key.
-        #TODO: Set these relative instead of absolute, so as not to override movement inflicted from a different source
-        if not self.key_inputs['down']:
-            if self.key_inputs['up']:
-                self.movement['v'] = -1 
-                if not self.lock_face: self.facing = Character.Direction.UP
-            else:        
-                self.movement['v'] = 0
-                
-        if not self.key_inputs['left']:
-            if self.key_inputs['right']:
-                self.movement['h'] = 1
-                if not self.lock_face: self.facing = Character.Direction.RIGHT
-            else:
-                self.movement['h'] = 0
-                
-        if not self.key_inputs['up']:
-            if self.key_inputs['down']:
-                self.movement['v'] = 1
-                if not self.lock_face: self.facing = Character.Direction.DOWN
-            else:
-                self.movement['v'] = 0
-        
-        if not self.key_inputs['right']:
-            if self.key_inputs['left']: 
-                self.movement['h'] = -1
-                if not self.lock_face: self.facing = Character.Direction.LEFT
-            else:
-                self.movement['h'] = 0              
+        #Set the facing direction
+        if not self.lock_face:
+            if (not self.key_inputs['down']) and self.key_inputs['up']:
+                self.facing = Character.Direction.UP
+            if (not self.key_inputs['up']) and self.key_inputs['down']:
+                self.facing = Character.Direction.DOWN
+            if (not self.key_inputs['left']) and self.key_inputs['right']:
+                self.facing = Character.Direction.RIGHT
+            if (not self.key_inputs['right']) and self.key_inputs['left']:
+                self.facing = Character.Direction.LEFT
 
-            
-        if self.key_inputs['up'] or self.key_inputs['right'] or self.key_inputs['down'] or self.key_inputs['left']:
-            self.current_speed = self.max_speed
-            self.walking = True
-        else:
-            self.current_speed = 0
-            self.walking = False
-            
         if self.key_inputs['atk']:
             self.knife.attack(self, self.facing)
             self.lock_face = True
@@ -171,7 +147,7 @@ class Cricket(Character, Keylistener):
         
         
     def updateImage(self):
-        if self.walking:
+        if self.isWalking():
             if self.holding:
                 self.image = self.sprites["walking"]["holding"][self.facing].getCurrentFrame()
             else:
