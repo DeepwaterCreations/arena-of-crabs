@@ -16,6 +16,7 @@ class Knife(Entity):
     
         self.slash_duration = 64
         self.damage_output = 1
+        self._force = 640 #TODO: This is just a placeholder value.
     
         self.setVisible(False)
     
@@ -98,3 +99,6 @@ class Knife(Entity):
                
     def isSlashing(self):
         return self.is_slash
+    
+    def getForce(self):
+        return self._force
