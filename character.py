@@ -9,6 +9,7 @@ from pygame.locals import *
 
 import entity
 from entity import Entity
+from timerhandler import KnockbackTimer 
 
 enemies = pygame.sprite.Group()
 #wall_colliders = pygame.sprite.Group()
@@ -119,6 +120,25 @@ class Character(Entity):
     def isWalking(self):
         return self._walking[Character.Direction.UP] or self._walking[Character.Direction.RIGHT] or self._walking[Character.Direction.DOWN] or self._walking[Character.Direction.LEFT] 
             
+    def addKnockbackVector(self, source_position, force):
+        """Add a movement vector away from source_position, then set a timer to remove it."""
+        #Get the direction from source_position to the location of self.
+        hit_direction = {'x': self.centerx - source_position[0], 'y':  self.centery - source_position[1]}
+        #Normalize
+        length = math.sqrt(math.pow(hit_direction['x'], 2) + math.pow(hit_direction['y'], 2))
+        if length == 0:
+            length = 1
+        hit_direction['x'] /= length
+        hit_direction['y'] /= length
+        #Combine the hit direction with the force to get a knockback movement vector 
+        self.knockback_vector = (hit_direction['x'] * force, hit_direction['y'] * force) 
+        self.addMovementVector(self.knockback_vector[0], self.knockback_vector[1])
+        #Set a timer
+        hittimer = KnockbackTimer(200, self.knockback_vector, self.endWeaponHit)
+        
+    def endWeaponHit(self, timer):
+        pass
+        
     #By default, charactes will move when updated.
     def update(self, dt):
         self.makeMove(dt)

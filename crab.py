@@ -77,23 +77,7 @@ class Crab(Character, Attackable):
         if self.being_knocked_back:
             return 
         self.being_knocked_back = True
-        
-        #Get the direction from the location of the weapon's attack origin to the location of self.
-        hit_direction = {'x': self.centerx - weapon.atk_origin[0], 'y':  self.centery - weapon.atk_origin[1]}
-        #Normalize
-        length = math.sqrt(math.pow(hit_direction['x'], 2) + math.pow(hit_direction['y'], 2))
-        if length == 0:
-            length = 1
-        hit_direction['x'] /= length
-        hit_direction['y'] /= length
-        #Combine the hit direction with the weapon force to get a knockback movement vector 
-        #TODO: Could amend the attack force after getting it from the weapon. Weapon resistance, for instance. 
-        self.knockback_vector = (hit_direction['x'] * weapon.getForce(), hit_direction['y'] * weapon.getForce()) 
-        self.addMovementVector(self.knockback_vector[0], self.knockback_vector[1])
-                
-        #Set a timer to stop the motion? Duration based on attack power?
-        hittimer = Timer(200, self.endWeaponHit) #TODO: Another place where I don't want a magic number.
-        
+        self.addKnockbackVector(weapon.getAttackOrigin(), weapon.getForce())
         self.takeDamage(weapon.damage_output)
         
     def endWeaponHit(self, timer):

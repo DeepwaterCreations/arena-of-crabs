@@ -40,7 +40,7 @@ class Knife(Entity):
         self.attacking = False
         self.is_slash = False
         
-        self.atk_origin = [0, 0]
+        self._atk_origin = [0, 0]
         self.slash_timer = Timer(self.slash_duration, self.finishSlash)
         self.slash_timer.pause()
         
@@ -62,27 +62,27 @@ class Knife(Entity):
         
         if self.facing == Character.Direction.UP:
             if self.is_slash:
-                self.atk_origin = self.bottomleft = self.attacker.topright
+                self._atk_origin = self.bottomleft = self.attacker.topright
             else:
-                self.atk_origin = self.midbottom = self.attacker.midtop
+                self._atk_origin = self.midbottom = self.attacker.midtop
             
         elif self.facing == Character.Direction.RIGHT:
             if self.is_slash:
-                self.atk_origin = self.topleft = self.attacker.bottomright
+                self._atk_origin = self.topleft = self.attacker.bottomright
             else:
-                self.atk_origin = self.midleft = self.attacker.midright
+                self._atk_origin = self.midleft = self.attacker.midright
             
         elif self.facing == Character.Direction.DOWN:
             if self.is_slash:
-                self.atk_origin = self.topright = self.attacker.bottomleft
+                self._atk_origin = self.topright = self.attacker.bottomleft
             else:
-                self.atk_origin = self.midtop = self.attacker.midbottom
+                self._atk_origin = self.midtop = self.attacker.midbottom
                 
         elif self.facing == Character.Direction.LEFT:
             if self.is_slash:
-                self.atk_origin = self.bottomright = self.attacker.topleft
+                self._atk_origin = self.bottomright = self.attacker.topleft
             else:
-                self.atk_origin = self.midright = self.attacker.midleft
+                self._atk_origin = self.midright = self.attacker.midleft
         
         self.setVisible(True)
         attackhandler.makeAttack(self)
@@ -102,3 +102,6 @@ class Knife(Entity):
     
     def getForce(self):
         return self._force
+    
+    def getAttackOrigin(self):
+        return self._atk_origin

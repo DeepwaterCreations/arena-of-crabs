@@ -74,3 +74,14 @@ class Timer:
         #Timer.trigger(self)
         #self.elapsed_time = 0
         #pygame.time.set_timer(self.eventid, self.milliseconds)
+        
+class KnockbackTimer(Timer):
+    def __init__(self, duration, vector, addl_callback = None):
+        Timer.__init__(self, duration, self.endTimer)
+        self.vector = vector
+        self.addl_callback = addl_callback
+       
+    def endTimer(self, timer):
+        del self.vector
+        if self.addl_callback:
+            self.addl_callback(self)
