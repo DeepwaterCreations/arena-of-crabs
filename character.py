@@ -44,6 +44,12 @@ class Character(Entity):
 
     #This should typically be called by a subclass's update function.
     def makeMove(self, dt):
+        
+        #Remove empty vectors. These are vectors that have timed out/become irrelevant.
+        for vector in self._movement_vectors:
+            if len(vector) == 0:
+                self._movement_vectors.remove(vector)
+                
         walking_vector = self.getWalkingVector()
         move_x = sum(vector[0] for vector in self._movement_vectors) + walking_vector[0]
         move_y = sum(vector[1] for vector in self._movement_vectors) + walking_vector[1]
@@ -89,7 +95,7 @@ class Character(Entity):
     
     def addMovementVector(self, x, y):
         """Add a vector to the character's movement that will impact the direction/speed he moves when makeMove() is called""" 
-        self._movement_vectors.append((x, y))
+        self._movement_vectors.append([x, y])
         
      
     def setWalking(self, direction, is_walking = True):
@@ -131,11 +137,12 @@ class Character(Entity):
         hit_direction['x'] /= length
         hit_direction['y'] /= length
         #Combine the hit direction with the force to get a knockback movement vector 
-        self.knockback_vector = (hit_direction['x'] * force, hit_direction['y'] * force) 
-        self.addMovementVector(self.knockback_vector[0], self.knockback_vector[1])
+        self.knockback_vector = [hit_direction['x'] * force, hit_direction['y'] * force] 
+        #self.addMovementVector(self.knockback_vector[0], self.knockback_vector[1])
+        self._movement_vectors.append(self.knockback_vector)
         #Set a timer
         hittimer = KnockbackTimer(200, self.knockback_vector, self.endWeaponHit)
-        
+
     def endWeaponHit(self, timer):
         pass
         

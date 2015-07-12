@@ -82,6 +82,7 @@ class KnockbackTimer(Timer):
         self.addl_callback = addl_callback
        
     def endTimer(self, timer):
-        del self.vector
+        #Empty the vector. Empty vectors should get deleted when the movement list tries to use them.
+        del self.vector[:] 
         if self.addl_callback:
             self.addl_callback(self)

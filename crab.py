@@ -81,8 +81,8 @@ class Crab(Character, Attackable):
         self.takeDamage(weapon.damage_output)
         
     def endWeaponHit(self, timer):
-        self.addMovementVector(-self.knockback_vector[0], -self.knockback_vector[1])
-        self.being_knocked_back = False
+        #self.addMovementVector(-self.knockback_vector[0], -self.knockback_vector[1])
+        self.being_knocked_back = False #TODO: Make this part of character?
         
     def onPlayerCollision(self, player):
         player.onHit(self, self.damage_output)

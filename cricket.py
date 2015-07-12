@@ -195,7 +195,7 @@ class Cricket(Character, Keylistener):
             self.setVisible(False)
             Timer(self.hit_invuln_duration, self.endInvuln)
             Timer(self.invuln_flash_frequency, self.invulnFlashTimer)
-            #TODO: Hit knockback
+            self.addKnockbackVector((enemy.x, enemy.y), 640) #TODO: Figure out better values
             
     def takeDamage(self, damage_amount):
         self.current_hitpoints -= damage_amount
