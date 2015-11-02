@@ -15,8 +15,6 @@ from drawable import Drawable
 from updatable import Updatable
 from crabspawner import CrabSpawner
 
-#Git test
-
 screensize = width, height = 640, 576
 
 display = pygame.display.set_mode(screensize)
