@@ -33,6 +33,8 @@ class Character(Entity):
                 }        
         
         self.max_hitpoints = self.current_hitpoints = 10
+        self.hitbar_health_color = 0, 255, 0
+        self.hitbar_damage_color = 255, 0, 0
         
         self.sprites = {
             Character.Direction.UP : 0, 
@@ -155,6 +157,13 @@ class Character(Entity):
             This is what will be drawn to the screen for the current frame.
         ''' 
         self.image = self.sprites[self.facing]
+        #Draw the hitpoint bar:
+        bar_height = self.image.get_height()
+        pygame.draw.rect(self.image, self.hitbar_health_color, Rect(0,0,3,bar_height))
+        #Only draw damage if there is damage. (A bar with 0 height still shows as one pixel.)
+        if self.current_hitpoints < self.max_hitpoints:
+            damage_bar_height = (bar_height/self.max_hitpoints)*(self.max_hitpoints - self.current_hitpoints)
+            pygame.draw.rect(self.image, self.hitbar_damage_color, Rect(0,0,3,damage_bar_height))
         
     def setHostile(self, is_hostile = True):
         """Add or remove this character from the group that can collide with the player for damage"""
