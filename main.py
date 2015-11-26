@@ -35,6 +35,7 @@ crabspawner = CrabSpawner(crabzone)
 clock = pygame.time.Clock()
 
 display.fill(blue)
+pygame.draw.rect(display, (0,0,0), Rect(0,bottom_wall.bottom,width,height-left_wall.height))
 pygame.display.flip()
 
 while 1:
@@ -57,6 +58,7 @@ while 1:
     
 
     display.fill(blue)
+    pygame.draw.rect(display, (0,0,0), Rect(0,bottom_wall.bottom,width,height-left_wall.height))
     dirty_rects = Drawable.drawAll(display)
     pygame.display.update(dirty_rects) 
 		
