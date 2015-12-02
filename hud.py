@@ -15,7 +15,11 @@ class Hud(Drawable, Updatable):
         Updatable.__init__(self)
 
         self.rect = hud_space
-
+        
+        #Make a black box for the background
+        self.background = pygame.Surface( (self.rect.width, self.rect.height) )
+        #self.background = pygame.Surface( (64, 64) )
+        self.background.fill( (0,0,0) )
     
-    def draw(self):
-        pass
+    def updateImage(self):
+        self.image = self.background

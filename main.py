@@ -27,7 +27,7 @@ bottom_wall = entity.Wall(0, height - 128, width, 64)
 left_wall = entity.Wall(0, 64, 64, height - 128)
 right_wall = entity.Wall(width - 64, 64, 64, height - 128)
 
-hud_space = Rect(0, bottom_wall.bottom, width, height - (top_wall.height + left_wall.height + bottom_wall.height))
+hud_space = Rect(0, bottom_wall.bottom, width, height - left_wall.height)
 hud = Hud(hud_space)
 
 cricket = Cricket()
@@ -63,4 +63,3 @@ while 1:
     display.fill(blue)
     dirty_rects = Drawable.drawAll(display)
     pygame.display.update(dirty_rects) 
-		
