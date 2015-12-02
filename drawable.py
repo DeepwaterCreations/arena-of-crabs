@@ -36,7 +36,8 @@ class Drawable(pygame.sprite.Sprite):
     
     Layer = {
         "Floor": -1,
-        "Character": 0
+        "Character": 0,
+        "Hud": 5
         }
     
     drawable_group = pygame.sprite.LayeredUpdates()
