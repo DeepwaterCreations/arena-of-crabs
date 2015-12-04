@@ -5,6 +5,7 @@ from pygame.locals import *
 
 from drawable import Drawable
 from updatable import Updatable
+from cricket import Cricket 
 
 class Hud(Drawable, Updatable):
 
@@ -24,10 +25,14 @@ class Hud(Drawable, Updatable):
         health_bar_box = pygame.Rect(self.rect.width/2 + 64, 16, self.rect.width/2 - 128, 32)
         health_bar_box.x += self.rect.x
         health_bar_box.y += self.rect.y
-        health_bar = HealthBar(health_bar_box) 
+        self.health_bar = HealthBar(health_bar_box) 
     
     def updateImage(self):
         self.image = self.background
+
+    #TODO: Make this suck less. Totally rough draft code.
+    def registerListeners(self, cricket):
+        cricket.addTakeDamageListener(self.health_bar)
 
 
 class HudElement(Drawable, Updatable):
@@ -52,3 +57,11 @@ class HealthBar(HudElement):
         self.image.fill((255,0,0))
         green_bar = pygame.Rect(0, 0, self.rect.width * self.filled, self.rect.height)
         self.image.fill((0,255,0), green_bar) 
+
+    def onCricketTakesDamage(self, current_hitpoints, max_hitpoints):
+        #Poor man's typecast. I hear this is better than actually casting, because it 
+        #behaves better for certain types that max_hitpoints might be (but let's face
+        #it, won't ever actually.) Anyway, I have to do something, or it's integer
+        #division and herp de derp.
+        self.filled = current_hitpoints / (max_hitpoints * 1.0)
+        print self.filled

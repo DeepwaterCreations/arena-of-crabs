@@ -27,11 +27,12 @@ bottom_wall = entity.Wall(0, height - 128, width, 64)
 left_wall = entity.Wall(0, 64, 64, height - 128)
 right_wall = entity.Wall(width - 64, 64, 64, height - 128)
 
-hud_space = Rect(0, bottom_wall.bottom, width, height - left_wall.height)
-hud = Hud(hud_space)
-
 cricket = Cricket()
 cricket.loadSprites()
+
+hud_space = Rect(0, bottom_wall.bottom, width, height - left_wall.height)
+hud = Hud(hud_space)
+hud.registerListeners(cricket)
 
 crabzone = Rect(left_wall.right, top_wall.bottom, right_wall.left - left_wall.width, bottom_wall.top - top_wall.height)
 crabspawner = CrabSpawner(crabzone)

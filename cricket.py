@@ -42,6 +42,8 @@ class Cricket(Character, Keylistener):
         self.anim_timer = 0
         self.hit_invuln_duration = 1024
         self.invuln_flash_frequency = 32
+
+        self.take_damage_listeners = []
     
     #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
     #and all that jazz.
@@ -199,7 +201,19 @@ class Cricket(Character, Keylistener):
             
     def takeDamage(self, damage_amount):
         self.current_hitpoints -= damage_amount
+
+        #Call listeners - I need to find something more elegant/flexible than observer pattern eventually,
+        #but for this project, I'm favoring quick-and-dirty. So I'll stick with it for now.
+        #Also, let's cut it out with the "handler" interfaces or whatever that was.
+        for listener in self.take_damage_listeners:
+            #TODO: Can my listeners be passed-in functions, instead of objects with this one weird method?
+            listener.onCricketTakesDamage(self.current_hitpoints, self.max_hitpoints)
+
+
         #TODO: Die
+
+    def addTakeDamageListener(self, listener):
+        self.take_damage_listeners.append(listener)
             
     def endInvuln(self, timer):
         self.invulnerable = False
