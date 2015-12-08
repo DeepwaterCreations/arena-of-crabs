@@ -20,8 +20,8 @@ class Cricket(Character, Keylistener):
         Keylistener.__init__(self)
         
         #TODO: These values are just for testing. 
-        self.x = 74
-        self.y = 74
+        self.x = 320
+        self.y = 320
         #
         
         self.walk_speed = 256;
