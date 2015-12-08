@@ -38,7 +38,7 @@ hud_space = Rect(0, bottom_wall.bottom, width, height - left_wall.height)
 hud = Hud(hud_space)
 hud.registerListeners(cricket)
 
-crabzone = Rect(left_wall.right, top_wall.bottom, right_wall.left - left_wall.width, bottom_wall.top - top_wall.height)
+crabzone = Rect(left_wall.right + 64, top_wall.bottom + 64, right_wall.left - left_wall.width - 128, bottom_wall.top - top_wall.height - 128)
 crabspawner = CrabSpawner(crabzone)
 
 clock = pygame.time.Clock()
