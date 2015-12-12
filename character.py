@@ -46,7 +46,11 @@ class Character(Entity):
 
     #This should typically be called by a subclass's update function.
     def makeMove(self, dt):
-        
+        """Combines movement and walking vectors into a single vector, checks collisions,
+        moves the character, and calls the wall collision handler if relevant.
+
+        Yuck. This should be, what, four different methods? I should change that soon.
+        """
         #Remove empty vectors. These are vectors that have timed out/become irrelevant.
         for vector in self._movement_vectors:
             if len(vector) == 0:
@@ -63,18 +67,29 @@ class Character(Entity):
         #Check for wall collisions
         def moveCollide(source, wall):
             source_move = source.copy()
+            #First, expand the source rect's width based on the movement distance.
+            #This will move the right side of the rect out while keeping the left stationary.
             source_move.width += abs(x_change)
+            #Then, if the movement is to the left, move the rect left.
+            #The result will be a rect that covers both the original bounding box, and all the 
+            #space that the rect will pass over or touch when it moves
             source_move.x = min(source.x, source.x + x_change)
+            #Do the same for vertical movement, of course.
+            #NOTE: We'll get slop here, won't we? Diagonal movement
+            #makes a box that covers more than just the movement. Could that be the source of my bug?
+            #Or am I only getting a list of possible collision candidates? 
             source_move.height += abs(y_change)
             source_move.y = min(source.y, source.y + y_change)
+            #Finally, check if the movement box intersects with the wall and return the result.  
             return source_move.colliderect(wall) #pygame.sprite.collide_rect(source_move, wall)
         walls = pygame.sprite.spritecollide(self, entity.walls, False, moveCollide)
         
         collision = None
         #Compare the difference between the character and the wall with the distance they're going to move.
         #If the latter is greater than the former, set the latter to the former and get the wall that's being collided with.
-        for wall in walls:
-            if wall.top < self.top < wall.bottom or wall.top < self.bottom < wall.bottom:
+        #Note that "walls" is only walls which the previous function call caught as potential collisions.
+        for wall in walls: 
+            if wall.top <= self.top < wall.bottom or wall.top < self.bottom <= wall.bottom:
                 if x_change > 0 and wall.left - self.right <= x_change:
                     collision = wall
                     x_change = wall.left - self.right
@@ -82,7 +97,7 @@ class Character(Entity):
                     collision = wall
                     x_change = wall.right - self.left 
             
-            if wall.left < self.left < wall.right or wall.left < self.right < wall.right:
+            if wall.left <= self.left < wall.right or wall.left < self.right <= wall.right:
                 if y_change > 0 and wall.top - self.bottom <= y_change:
                     collision = wall
                     y_change = wall.top - self.bottom
