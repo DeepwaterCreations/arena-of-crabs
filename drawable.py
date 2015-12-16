@@ -3,7 +3,12 @@ import os
 import pygame
 from pygame.locals import *
 
-def loadImage(filename):
+def loadImage(filename, use_transparency = True):
+    """Load the image at images/"filename" into a PyGame Surface and return it.
+        If "use_transparency" isn't set to false, it will take the color at 0,0 in the image as the transparent
+        color.
+        """
+
     filepath = os.path.join('images', filename)
     try:
         image = pygame.image.load(filepath)
@@ -12,8 +17,9 @@ def loadImage(filename):
         raise SystemExit, message
     
     image = image.convert()
-    colorkey = image.get_at((0,0))
-    image.set_colorkey(colorkey, RLEACCEL)
+    if use_transparency:
+        colorkey = image.get_at((0,0))
+        image.set_colorkey(colorkey, RLEACCEL)
     
     return image
 
