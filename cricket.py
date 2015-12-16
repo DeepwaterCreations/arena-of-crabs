@@ -137,7 +137,8 @@ class Cricket(Character, Keylistener):
             self.knife.attack(self, self.facing)
             self.lock_face = True
         else:
-            self.knife.endAttack()
+            if self.knife.attacking:
+                self.knife.endAttack()
             self.lock_face = False
             
         #TODO: "holding" state determination code needs to be made better.
