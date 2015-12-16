@@ -52,3 +52,4 @@ class Wall(Entity):
         
         self.image = pygame.Surface((self.w, self.h))
         self.image.fill((255, 0, 255))
+        self.visible = False
