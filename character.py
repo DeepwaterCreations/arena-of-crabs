@@ -66,20 +66,20 @@ class Character(Entity):
        
         #Check for wall collisions
         def moveCollide(source, wall):
-            source_move = source.copy()
+            source_move = source.rect.copy()
             #First, expand the source rect's width based on the movement distance.
             #This will move the right side of the rect out while keeping the left stationary.
             source_move.width += abs(x_change)
             #Then, if the movement is to the left, move the rect left.
             #The result will be a rect that covers both the original bounding box, and all the 
             #space that the rect will pass over or touch when it moves
-            source_move.x = min(source.x, source.x + x_change)
+            source_move.x = min(source.rect.x, source.rect.x + x_change)
             #Do the same for vertical movement, of course.
             #NOTE: We'll get slop here, won't we? Diagonal movement
             #makes a box that covers more than just the movement. Could that be the source of my bug?
             #Or am I only getting a list of possible collision candidates? 
             source_move.height += abs(y_change)
-            source_move.y = min(source.y, source.y + y_change)
+            source_move.y = min(source.rect.y, source.rect.y + y_change)
             #Finally, check if the movement box intersects with the wall and return the result.  
             return source_move.colliderect(wall) #pygame.sprite.collide_rect(source_move, wall)
         walls = pygame.sprite.spritecollide(self, entity.walls, False, moveCollide)
@@ -89,24 +89,24 @@ class Character(Entity):
         #If the latter is greater than the former, set the latter to the former and get the wall that's being collided with.
         #Note that "walls" is only walls which the previous function call caught as potential collisions.
         for wall in walls: 
-            if wall.top <= self.top < wall.bottom or wall.top < self.bottom <= wall.bottom:
-                if x_change > 0 and wall.left - self.right <= x_change:
+            if wall.rect.top <= self.rect.top < wall.rect.bottom or wall.rect.top < self.rect.bottom <= wall.rect.bottom:
+                if x_change > 0 and wall.rect.left - self.rect.right <= x_change:
                     collision = wall
-                    x_change = wall.left - self.right
-                elif x_change < 0 and wall.right - self.left >= x_change:
+                    x_change = wall.rect.left - self.rect.right
+                elif x_change < 0 and wall.rect.right - self.rect.left >= x_change:
                     collision = wall
-                    x_change = wall.right - self.left 
+                    x_change = wall.rect.right - self.rect.left 
             
-            if wall.left <= self.left < wall.right or wall.left < self.right <= wall.right:
-                if y_change > 0 and wall.top - self.bottom <= y_change:
+            if wall.rect.left <= self.rect.left < wall.rect.right or wall.rect.left < self.rect.right <= wall.rect.right:
+                if y_change > 0 and wall.rect.top - self.rect.bottom <= y_change:
                     collision = wall
-                    y_change = wall.top - self.bottom
-                elif y_change < 0 and wall.bottom - self.top >= y_change:
+                    y_change = wall.rect.top - self.rect.bottom
+                elif y_change < 0 and wall.rect.bottom - self.rect.top >= y_change:
                     collision = wall
-                    y_change = wall.bottom - self.top
+                    y_change = wall.rect.bottom - self.rect.top
         
-        self.x += x_change 
-        self.y += y_change
+        self.rect.x += x_change 
+        self.rect.y += y_change
         if collision:
             self.onWallCollision(collision)
     
@@ -146,7 +146,7 @@ class Character(Entity):
     def addKnockbackVector(self, source_position, force):
         """Add a movement vector away from source_position, then set a timer to remove it."""
         #Get the direction from source_position to the location of self.
-        hit_direction = {'x': self.centerx - source_position[0], 'y':  self.centery - source_position[1]}
+        hit_direction = {'x': self.rect.centerx - source_position[0], 'y':  self.rect.centery - source_position[1]}
         #Normalize
         length = math.sqrt(math.pow(hit_direction['x'], 2) + math.pow(hit_direction['y'], 2))
         if length == 0:

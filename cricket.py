@@ -20,8 +20,8 @@ class Cricket(Character, Keylistener):
         Keylistener.__init__(self)
         
         #TODO: These values are just for testing. 
-        self.x = 320
-        self.y = 320
+        self.rect.x = 320
+        self.rect.y = 320
         #
         
         self.walk_speed = 256;
@@ -198,7 +198,7 @@ class Cricket(Character, Keylistener):
             self.setVisible(False)
             Timer(self.hit_invuln_duration, self.endInvuln)
             Timer(self.invuln_flash_frequency, self.invulnFlashTimer)
-            self.addKnockbackVector((enemy.x, enemy.y), 640) #TODO: Figure out better values
+            self.addKnockbackVector((enemy.rect.x, enemy.rect.y), 640) #TODO: Figure out better values
             
     def takeDamage(self, damage_amount):
         self.current_hitpoints -= damage_amount

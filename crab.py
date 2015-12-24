@@ -16,8 +16,8 @@ class Crab(Character, Attackable):
         Character.__init__(self)
         Attackable.__init__(self)
         
-        self.x = 250
-        self.y = 250
+        self.rect.x = 250
+        self.rect.y = 250
         self.facing = Character.Direction.UP
         self.turn_freq = 1024
         self.walk_freq = 3072

@@ -22,8 +22,8 @@ class CrabSpawner:
     def spawnCrab(self):
         '''Create a new crab within the spawn_rect'''
         new_crab = Crab()
-        x = random.randint(self.spawn_rect.left, (self.spawn_rect.right - new_crab.width))
-        y = random.randint(self.spawn_rect.top, (self.spawn_rect.bottom - new_crab.height))
+        x = random.randint(self.spawn_rect.left, (self.spawn_rect.right - new_crab.rect.width))
+        y = random.randint(self.spawn_rect.top, (self.spawn_rect.bottom - new_crab.rect.height))
         new_crab.setLocation(x, y)
         self.crab_group.add(new_crab)
         

@@ -62,27 +62,27 @@ class Knife(Entity):
         
         if self.facing == Character.Direction.UP:
             if self.is_slash:
-                self._atk_origin = self.bottomleft = self.attacker.topright
+                self._atk_origin = self.rect.bottomleft = self.attacker.rect.topright
             else:
-                self._atk_origin = self.midbottom = self.attacker.midtop
+                self._atk_origin = self.rect.midbottom = self.attacker.rect.midtop
             
         elif self.facing == Character.Direction.RIGHT:
             if self.is_slash:
-                self._atk_origin = self.topleft = self.attacker.bottomright
+                self._atk_origin = self.rect.topleft = self.attacker.rect.bottomright
             else:
-                self._atk_origin = self.midleft = self.attacker.midright
+                self._atk_origin = self.rect.midleft = self.attacker.rect.midright
             
         elif self.facing == Character.Direction.DOWN:
             if self.is_slash:
-                self._atk_origin = self.topright = self.attacker.bottomleft
+                self._atk_origin = self.rect.topright = self.attacker.rect.bottomleft
             else:
-                self._atk_origin = self.midtop = self.attacker.midbottom
+                self._atk_origin = self.rect.midtop = self.attacker.rect.midbottom
                 
         elif self.facing == Character.Direction.LEFT:
             if self.is_slash:
-                self._atk_origin = self.bottomright = self.attacker.topleft
+                self._atk_origin = self.rect.bottomright = self.attacker.rect.topleft
             else:
-                self._atk_origin = self.midright = self.attacker.midleft
+                self._atk_origin = self.rect.midright = self.attacker.rect.midleft
         
         self.setVisible(True)
         attackhandler.makeAttack(self)
