@@ -64,4 +64,3 @@ class HealthBar(HudElement):
         #it, won't ever actually.) Anyway, I have to do something, or it's integer
         #division and herp de derp.
         self.filled = current_hitpoints / (max_hitpoints * 1.0)
-        print self.filled
