@@ -48,8 +48,6 @@ class Character(Entity):
     def makeMove(self, dt):
         """Combines movement and walking vectors into a single vector, checks collisions,
         moves the character, and calls the wall collision handler if relevant.
-
-        Yuck. This should be, what, four different methods? I should change that soon.
         """
         #Remove empty vectors. These are vectors that have timed out/become irrelevant.
         for vector in self._movement_vectors:
@@ -64,7 +62,17 @@ class Character(Entity):
         x_change = movement[0] * (dt/1000.0)
         y_change = movement[1] * (dt/1000.0)
        
-        #Check for wall collisions
+        walls = self._getMovementCollisionWalls(x_change, y_change)
+               
+        x_change, y_change = self._truncateMovementByCollisions(x_change, y_change, walls)
+               
+        self.rect.x += x_change 
+        self.rect.y += y_change
+
+    def _getMovementCollisionWalls(self, x_change, y_change):
+        """Returns a list of walls that the character might collide with if it is translated x_change pixels 
+        horizontally and y_change pixels vertically.    
+        """
         def moveCollide(source, wall):
             source_move = source.rect.copy()
             #First, expand the source rect's width based on the movement distance.
@@ -76,14 +84,17 @@ class Character(Entity):
             source_move.x = min(source.rect.x, source.rect.x + x_change)
             #Do the same for vertical movement, of course.
             #NOTE: We'll get slop here, won't we? Diagonal movement
-            #makes a box that covers more than just the movement. Could that be the source of my bug?
-            #Or am I only getting a list of possible collision candidates? 
+            #makes a box that covers more than just the movement. 
             source_move.height += abs(y_change)
             source_move.y = min(source.rect.y, source.rect.y + y_change)
             #Finally, check if the movement box intersects with the wall and return the result.  
             return source_move.colliderect(wall) #pygame.sprite.collide_rect(source_move, wall)
-        walls = pygame.sprite.spritecollide(self, entity.walls, False, moveCollide)
-        
+        return pygame.sprite.spritecollide(self, entity.walls, False, moveCollide)
+
+    def _truncateMovementByCollisions(self, x_change, y_change, walls):
+        """Returns a x, y tuple representing the portion of x_change and y_change that the character can travel
+        before colliding with the nearest wall in walls.
+        """
         collision = None
         #Compare the difference between the character and the wall with the distance they're going to move.
         #If the latter is greater than the former, set the latter to the former and get the wall that's being collided with.
@@ -104,12 +115,13 @@ class Character(Entity):
                 elif y_change < 0 and wall.rect.bottom - self.rect.top >= y_change:
                     collision = wall
                     y_change = wall.rect.bottom - self.rect.top
-        
-        self.rect.x += x_change 
-        self.rect.y += y_change
+
+        #TODO: Is it bad that I call the wall collision method before actually moving the character?
         if collision:
             self.onWallCollision(collision)
-    
+
+        return (x_change, y_change)
+ 
     def addMovementVector(self, x, y):
         """Add a vector to the character's movement that will impact the direction/speed he moves when makeMove() is called""" 
         self._movement_vectors.append([x, y])
