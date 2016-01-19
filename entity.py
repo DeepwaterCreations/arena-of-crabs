@@ -16,10 +16,6 @@ class Entity(Drawable, Updatable):
         Updatable.__init__(self) 
         
         self.rect = pygame.Rect(0, 0, 64, 64)
-        #self.rect.x = 0
-        #self.rect.y = 0
-        #self.rect.width = 64
-        #self.rect.height = 64
         
         self.sprites = {0: loadImage("no_image.bmp")} #TODO Rename this. >.-.< 
         

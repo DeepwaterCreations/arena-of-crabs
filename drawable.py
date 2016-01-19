@@ -23,11 +23,12 @@ def loadImage(filename, use_transparency = True):
     
     return image
 
-def getSpritesheetSprite(x, y, spritesheet):
+def getSpritesheetSprite(x, y, spritesheet, border_width = 4):
     '''Return a surface with image data from the sub-cell of the spritesheet at index x, y'''
     sprite_width = 64
     sprite_height = 64
-    border_width = 4 #I'll leave these numbers hard-coded since I think all my sprite sheets are going to follow this same convention. 
+    #TODO: Make all my sprite sheets follow the same convention. *facepalm* Oh well, at least I made it easy to deal with. 
+    #border_width = 4 #I'll leave these numbers hard-coded since I think all my sprite sheets are going to follow this same convention. 
     surface = pygame.Surface((sprite_width, sprite_height))
     
     surface.blit(spritesheet, (0,0), 
