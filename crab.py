@@ -6,7 +6,7 @@ import pygame
 from pygame.locals import *
 
 from character import Character
-from drawable import loadImage
+from spritesheet import SpriteSheet
 from timerhandler import Timer
 from attackhandler import Attackable
 
@@ -31,23 +31,12 @@ class Crab(Character, Attackable):
         
         self.setHostile()
         
-        spritesheet = loadImage("MonstersBeach.bmp");
+        spritesheet = SpriteSheet("MonstersBeach.bmp", border = 4);
         
-        self.sprites[Character.Direction.UP] = pygame.Surface((64, 64))    
-        self.sprites[Character.Direction.UP].blit(spritesheet, (0,0), (4, 4, 64, 64))   
-        self.sprites[Character.Direction.UP].set_colorkey(self.sprites[Character.Direction.UP].get_at((0,0)), RLEACCEL)
-        
-        self.sprites[Character.Direction.RIGHT] = pygame.Surface((64, 64))    
-        self.sprites[Character.Direction.RIGHT].blit(spritesheet, (0,0), (140, 4, 64, 64))   
-        self.sprites[Character.Direction.RIGHT].set_colorkey(self.sprites[Character.Direction.RIGHT].get_at((0,0)), RLEACCEL)
-        
-        self.sprites[Character.Direction.DOWN] = pygame.Surface((64, 64))    
-        self.sprites[Character.Direction.DOWN].blit(spritesheet, (0,0), (140, 72, 64, 64))   
-        self.sprites[Character.Direction.DOWN].set_colorkey(self.sprites[Character.Direction.DOWN].get_at((0,0)), RLEACCEL)
-        
-        self.sprites[Character.Direction.LEFT] = pygame.Surface((64, 64))   
-        self.sprites[Character.Direction.LEFT].blit(spritesheet, (0,0), (4, 72, 64, 64))   
-        self.sprites[Character.Direction.LEFT].set_colorkey(self.sprites[Character.Direction.LEFT].get_at((0,0)), RLEACCEL)
+        self.sprites[Character.Direction.UP] = spritesheet.getSprite(0, 0)
+        self.sprites[Character.Direction.RIGHT] = spritesheet.getSprite(2, 0)
+        self.sprites[Character.Direction.DOWN] = spritesheet.getSprite(2, 1)
+        self.sprites[Character.Direction.LEFT] = spritesheet.getSprite(0, 1)
         
         #Set timer for turning
         self.turntimer = Timer(self.turn_freq, self.makeTurn, should_repeat = True)

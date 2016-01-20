@@ -20,6 +20,7 @@ class Knife(Entity):
     
         self.setVisible(False)
     
+        #TODO: Put sprites into a spritesheet
         self.hold_sprites = {}
         self.hold_sprites[Character.Direction.UP] = loadImage('knifeb.bmp')
         self.hold_sprites[Character.Direction.RIGHT] = loadImage('knifer.bmp')

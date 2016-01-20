@@ -5,7 +5,7 @@ from pygame.locals import *
 
 from character import Character
 from entity import Entity
-from drawable import loadImage, getSpritesheetSprite
+from spritesheet import SpriteSheet
 
 
 class Decoration(Entity):
@@ -37,11 +37,11 @@ class WallTorch(Decoration):
     def loadSprites(self):
         #TODO: Am I exporting this image with transparency already in? Why does "False" have no back-fill.
         #and True have no back-fill but also no shadow?
-        spritesheet = loadImage("torch_sheet_1_Large.bmp", use_transparency = False)
+        spritesheet = SpriteSheet("torch_sheet_1_Large.bmp", use_transparency = False)
 
-        self.sprites[0] = getSpritesheetSprite(0, self.facing.value - 1, spritesheet, border_width = 0)
-        self.sprites[1] = getSpritesheetSprite(1, self.facing.value - 1, spritesheet, border_width = 0)
-        self.sprites[2] = getSpritesheetSprite(2, self.facing.value - 1, spritesheet, border_width = 0)
+        self.sprites[0] = spritesheet.getSprite(0, self.facing.value - 1)
+        self.sprites[1] = spritesheet.getSprite(1, self.facing.value - 1)
+        self.sprites[2] = spritesheet.getSprite(2, self.facing.value - 1)
 
         self.image = self.sprites[self.anim_frame]
 
