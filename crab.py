@@ -12,7 +12,7 @@ from attackhandler import Attackable
 
 class Crab(Character, Attackable):
     
-    def __init__(self):
+    def __init__(self, crabspawner):
         Character.__init__(self)
         Attackable.__init__(self)
         
@@ -41,6 +41,8 @@ class Crab(Character, Attackable):
         #Set timer for turning
         self.turntimer = Timer(self.turn_freq, self.makeTurn, should_repeat = True)
         Timer(self.walk_freq, self.makeWalk)
+
+        self.parent_spawn = crabspawner 
         
     def makeTurn(self, timer):
         """Spin in a circle"""
@@ -75,3 +77,8 @@ class Crab(Character, Attackable):
         
     def onPlayerCollision(self, player):
         player.onHit(self, self.damage_output)
+
+    def die(self):
+        '''Play a death animation, alert the spawn, and remove this object from the game'''
+        self.parent_spawn.crabKilledTrigger()
+        self.kill()

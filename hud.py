@@ -3,9 +3,10 @@ import pdb
 import pygame
 from pygame.locals import *
 
-from drawable import Drawable
+from drawable import Drawable, loadImage
 from updatable import Updatable
 from cricket import Cricket 
+from spritesheet import SpriteSheet
 
 class Hud(Drawable, Updatable):
 
@@ -26,13 +27,20 @@ class Hud(Drawable, Updatable):
         health_bar_box.x += self.rect.x
         health_bar_box.y += self.rect.y
         self.health_bar = HealthBar(health_bar_box) 
+
+        #Make a kill counter
+        kill_counter_box = pygame.Rect(16, 0, (32 * 6), 64)
+        kill_counter_box.x += self.rect.x
+        kill_counter_box.y += self.rect.y
+        self.kill_counter = KillCounter(kill_counter_box)
     
     def updateImage(self):
         self.image = self.background
 
     #TODO: Make this suck less. Totally rough draft code.
-    def registerListeners(self, cricket):
+    def registerListeners(self, cricket, crabspawner):
         cricket.addTakeDamageListener(self.health_bar)
+        crabspawner.addCrabKilledListener(self.kill_counter)
 
 
 class HudElement(Drawable, Updatable):
@@ -64,3 +72,40 @@ class HealthBar(HudElement):
         #it, won't ever actually.) Anyway, I have to do something, or it's integer
         #division and herp de derp.
         self.filled = current_hitpoints / (max_hitpoints * 1.0)
+
+class KillCounter(HudElement):
+
+    def __init__(self, rect):
+        HudElement.__init__(self)
+
+        self.count = 0
+        self.rect = rect
+        self.image = pygame.Surface((32 + 32 + (32 * 4), 64)) #Crab symbol, "x", four digits.
+
+        self.number_sprites = []
+        self.loadSprites()
+
+    def loadSprites(self):
+        spritesheet = SpriteSheet("letters_large.bmp", spritewidth = 32) 
+
+        #Get a set of number sprites #TODO: Move this to a separate class?
+        for i in range(0, 10):
+            self.number_sprites.append(spritesheet.getSprite(i, 3))
+
+        #Draw the part of the image that won't ever change
+        crab_sprite = spritesheet.getSprite(0, 2)
+        x_sprite = spritesheet.getSprite(23, 1)
+        label_sprite = pygame.Surface((32 + 32, 64)) 
+        label_sprite.blit(crab_sprite, (0,0))
+        label_sprite.blit(x_sprite, (crab_sprite.get_width()+1, 0))
+        self.image.blit(label_sprite, (0,0))
+
+    def updateImage(self):
+        self.image.fill((0,0,0), pygame.Rect((2*32+1), 0, (4*32), 64))
+        self.image.blit(self.number_sprites[(self.count/1000)%10], (0+(2*32), 0))
+        self.image.blit(self.number_sprites[(self.count/100)%10], ((1*32)+(2*32), 0))
+        self.image.blit(self.number_sprites[(self.count/10)%10], ((2*32)+(2*32), 0))
+        self.image.blit(self.number_sprites[self.count%10], ((3*32)+(2*32), 0))
+
+    def onCrabKilled(self):
+        self.count += 1

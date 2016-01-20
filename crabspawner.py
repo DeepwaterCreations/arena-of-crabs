@@ -18,10 +18,12 @@ class CrabSpawner:
         self.spawn_freq = 5000
     
         self.spawnTimer = Timer(self.spawn_freq, self.onSpawnTimer, should_repeat = True)
+
+        self.crab_killed_listeners = []
     
     def spawnCrab(self):
         '''Create a new crab within the spawn_rect'''
-        new_crab = Crab()
+        new_crab = Crab(self)
         x = random.randint(self.spawn_rect.left, (self.spawn_rect.right - new_crab.rect.width))
         y = random.randint(self.spawn_rect.top, (self.spawn_rect.bottom - new_crab.rect.height))
         new_crab.setLocation(x, y)
@@ -31,3 +33,11 @@ class CrabSpawner:
         if len(self.crab_group.sprites()) < self.max_crabs:
             self.spawnCrab()   
         
+    def crabKilledTrigger(self):
+        '''Called by crabs when they die'''
+        for listener in self.crab_killed_listeners:
+            listener.onCrabKilled()
+
+    def addCrabKilledListener(self, listener):
+        self.crab_killed_listeners.append(listener)
+
