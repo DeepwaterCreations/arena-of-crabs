@@ -46,7 +46,9 @@ class Character(Entity):
 
     #This should typically be called by a subclass's update function.
     def makeMove(self, dt):
-        
+        """Combines movement and walking vectors into a single vector, checks collisions,
+        moves the character, and calls the wall collision handler if relevant.
+        """
         #Remove empty vectors. These are vectors that have timed out/become irrelevant.
         for vector in self._movement_vectors:
             if len(vector) == 0:
@@ -60,41 +62,66 @@ class Character(Entity):
         x_change = movement[0] * (dt/1000.0)
         y_change = movement[1] * (dt/1000.0)
        
-        #Check for wall collisions
+        walls = self._getMovementCollisionWalls(x_change, y_change)
+               
+        x_change, y_change = self._truncateMovementByCollisions(x_change, y_change, walls)
+               
+        self.rect.x += x_change 
+        self.rect.y += y_change
+
+    def _getMovementCollisionWalls(self, x_change, y_change):
+        """Returns a list of walls that the character might collide with if it is translated x_change pixels 
+        horizontally and y_change pixels vertically.    
+        """
         def moveCollide(source, wall):
-            source_move = source.copy()
+            source_move = source.rect.copy()
+            #First, expand the source rect's width based on the movement distance.
+            #This will move the right side of the rect out while keeping the left stationary.
             source_move.width += abs(x_change)
-            source_move.x = min(source.x, source.x + x_change)
+            #Then, if the movement is to the left, move the rect left.
+            #The result will be a rect that covers both the original bounding box, and all the 
+            #space that the rect will pass over or touch when it moves
+            source_move.x = min(source.rect.x, source.rect.x + x_change)
+            #Do the same for vertical movement, of course.
+            #NOTE: We'll get slop here, won't we? Diagonal movement
+            #makes a box that covers more than just the movement. 
             source_move.height += abs(y_change)
-            source_move.y = min(source.y, source.y + y_change)
+            source_move.y = min(source.rect.y, source.rect.y + y_change)
+            #Finally, check if the movement box intersects with the wall and return the result.  
             return source_move.colliderect(wall) #pygame.sprite.collide_rect(source_move, wall)
-        walls = pygame.sprite.spritecollide(self, entity.walls, False, moveCollide)
-        
+        return pygame.sprite.spritecollide(self, entity.walls, False, moveCollide)
+
+    def _truncateMovementByCollisions(self, x_change, y_change, walls):
+        """Returns a x, y tuple representing the portion of x_change and y_change that the character can travel
+        before colliding with the nearest wall in walls.
+        """
         collision = None
         #Compare the difference between the character and the wall with the distance they're going to move.
         #If the latter is greater than the former, set the latter to the former and get the wall that's being collided with.
-        for wall in walls:
-            if wall.top < self.top < wall.bottom or wall.top < self.bottom < wall.bottom:
-                if x_change > 0 and wall.left - self.right <= x_change:
+        #Note that "walls" is only walls which the previous function call caught as potential collisions.
+        for wall in walls: 
+            if wall.rect.top <= self.rect.top < wall.rect.bottom or wall.rect.top < self.rect.bottom <= wall.rect.bottom:
+                if x_change > 0 and wall.rect.left - self.rect.right <= x_change:
                     collision = wall
-                    x_change = wall.left - self.right
-                elif x_change < 0 and wall.right - self.left >= x_change:
+                    x_change = wall.rect.left - self.rect.right
+                elif x_change < 0 and wall.rect.right - self.rect.left >= x_change:
                     collision = wall
-                    x_change = wall.right - self.left 
+                    x_change = wall.rect.right - self.rect.left 
             
-            if wall.left < self.left < wall.right or wall.left < self.right < wall.right:
-                if y_change > 0 and wall.top - self.bottom <= y_change:
+            if wall.rect.left <= self.rect.left < wall.rect.right or wall.rect.left < self.rect.right <= wall.rect.right:
+                if y_change > 0 and wall.rect.top - self.rect.bottom <= y_change:
                     collision = wall
-                    y_change = wall.top - self.bottom
-                elif y_change < 0 and wall.bottom - self.top >= y_change:
+                    y_change = wall.rect.top - self.rect.bottom
+                elif y_change < 0 and wall.rect.bottom - self.rect.top >= y_change:
                     collision = wall
-                    y_change = wall.bottom - self.top
-        
-        self.x += x_change 
-        self.y += y_change
+                    y_change = wall.rect.bottom - self.rect.top
+
+        #TODO: Is it bad that I call the wall collision method before actually moving the character?
         if collision:
             self.onWallCollision(collision)
-    
+
+        return (x_change, y_change)
+ 
     def addMovementVector(self, x, y):
         """Add a vector to the character's movement that will impact the direction/speed he moves when makeMove() is called""" 
         self._movement_vectors.append([x, y])
@@ -131,7 +158,7 @@ class Character(Entity):
     def addKnockbackVector(self, source_position, force):
         """Add a movement vector away from source_position, then set a timer to remove it."""
         #Get the direction from source_position to the location of self.
-        hit_direction = {'x': self.centerx - source_position[0], 'y':  self.centery - source_position[1]}
+        hit_direction = {'x': self.rect.centerx - source_position[0], 'y':  self.rect.centery - source_position[1]}
         #Normalize
         length = math.sqrt(math.pow(hit_direction['x'], 2) + math.pow(hit_direction['y'], 2))
         if length == 0:

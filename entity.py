@@ -8,20 +8,14 @@ from updatable import Updatable
 
 walls = pygame.sprite.Group()
 
-class Entity(Drawable, Updatable, pygame.Rect):
+class Entity(Drawable, Updatable):
     
     #TODO: Rect constructors
     def __init__(self, layer="Character"):
         Drawable.__init__(self, layer)
         Updatable.__init__(self) 
         
-        #Assuming this even works, it's for my convenience with the sprite stuff.
-        self.rect = self
-        
-        self.x = 0
-        self.y = 0
-        self.width = 64
-        self.height = 64
+        self.rect = pygame.Rect(0, 0, 64, 64)
         
         self.sprites = {0: loadImage("no_image.bmp")} #TODO Rename this. >.-.< 
         
@@ -37,18 +31,21 @@ class Entity(Drawable, Updatable, pygame.Rect):
         
     def setLocation(self, x = None, y = None):
         if x is None:
-            x = self.x
+            x = self.rect.x
         if y is None:
-            y = self.y
-        self.x = x
-        self.y = y
+            y = self.rect.y
+        self.rect.x = x
+        self.rect.y = y
         
 class Wall(Entity):
     def __init__(self, x, y, w, h):
         Entity.__init__(self, layer="Floor")
-        pygame.Rect.__init__(self, x, y, w, h)
+        #pygame.Rect.__init__(self, x, y, w, h)
+
+        self.rect = pygame.Rect(x, y, w, h)
         
         self.setWall()
         
-        self.image = pygame.Surface((self.w, self.h))
+        self.image = pygame.Surface((self.rect.w, self.rect.h))
         self.image.fill((255, 0, 255))
+        self.visible = False

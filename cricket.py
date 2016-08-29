@@ -6,7 +6,8 @@ from pygame.locals import *
 
 #import attackhandler
 import weapons
-from drawable import Drawable, loadImage, getSpritesheetSprite
+from drawable import Drawable
+from spritesheet import SpriteSheet
 from character import Character
 from keyhandler import Keylistener
 from entity import Entity
@@ -20,8 +21,8 @@ class Cricket(Character, Keylistener):
         Keylistener.__init__(self)
         
         #TODO: These values are just for testing. 
-        self.x = 74
-        self.y = 74
+        self.rect.x = 320
+        self.rect.y = 320
         #
         
         self.walk_speed = 256;
@@ -42,6 +43,8 @@ class Cricket(Character, Keylistener):
         self.anim_timer = 0
         self.hit_invuln_duration = 1024
         self.invuln_flash_frequency = 32
+
+        self.take_damage_listeners = []
     
     #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
     #and all that jazz.
@@ -52,62 +55,65 @@ class Cricket(Character, Keylistener):
     
     def loadSprites(self):
         
-        spritesheet = loadImage("Cricketbigsheet_reduced.bmp")
+        spritesheet = SpriteSheet("Cricketbigsheet_reduced.bmp", border = 4)
         
         self.sprites["not_walking"] = {}
-        self.sprites["not_walking"][Character.Direction.UP] = getSpritesheetSprite(0, 2, spritesheet)
-        self.sprites["not_walking"][Character.Direction.RIGHT] = getSpritesheetSprite(0, 1, spritesheet)
-        self.sprites["not_walking"][Character.Direction.DOWN] = getSpritesheetSprite(0, 0, spritesheet)
-        self.sprites["not_walking"][Character.Direction.LEFT] = getSpritesheetSprite(0, 3, spritesheet)
+        self.sprites["not_walking"][Character.Direction.UP] = spritesheet.getSprite(0, 2)
+        self.sprites["not_walking"][Character.Direction.RIGHT] = spritesheet.getSprite(0, 1)
+        self.sprites["not_walking"][Character.Direction.DOWN] = spritesheet.getSprite(0, 0)
+        self.sprites["not_walking"][Character.Direction.LEFT] = spritesheet.getSprite(0, 3)
                 
-        #TODO: Move these over from the sprite sheet
         self.sprites["not_walking"]["holding"] = {}
-        self.sprites["not_walking"]["holding"][Character.Direction.UP] = loadImage('Cricket1bswing2.bmp')
-        self.sprites["not_walking"]["holding"][Character.Direction.RIGHT] = loadImage('Cricket1rswing2.bmp')
-        self.sprites["not_walking"]["holding"][Character.Direction.DOWN] = loadImage('Cricket1fswing2.bmp')
-        self.sprites["not_walking"]["holding"][Character.Direction.LEFT] = loadImage('Cricket1lswing2.bmp')
+        self.sprites["not_walking"]["holding"][Character.Direction.UP] = spritesheet.getSprite(3, 4)
+        self.sprites["not_walking"]["holding"][Character.Direction.RIGHT] = spritesheet.getSprite(1, 4)
+        self.sprites["not_walking"]["holding"][Character.Direction.DOWN] = spritesheet.getSprite(0, 4)
+        self.sprites["not_walking"]["holding"][Character.Direction.LEFT] = spritesheet.getSprite(2, 4)
         
         self.sprites["not_walking"]["swinging"] = {}
-        self.sprites["not_walking"]["swinging"][Character.Direction.UP] = loadImage('Cricket1bswing1.bmp')
-        self.sprites["not_walking"]["swinging"][Character.Direction.RIGHT] = loadImage('Cricket1rswing1.bmp')
-        self.sprites["not_walking"]["swinging"][Character.Direction.DOWN] = loadImage('Cricket1fswing1.bmp')
-        self.sprites["not_walking"]["swinging"][Character.Direction.LEFT] = loadImage('Cricket1lswing1.bmp')
+        self.sprites["not_walking"]["swinging"][Character.Direction.UP] = spritesheet.getSprite(3, 5)
+        self.sprites["not_walking"]["swinging"][Character.Direction.RIGHT] = spritesheet.getSprite(1, 5)
+        self.sprites["not_walking"]["swinging"][Character.Direction.DOWN] = spritesheet.getSprite(0, 5)
+        self.sprites["not_walking"]["swinging"][Character.Direction.LEFT] = spritesheet.getSprite(2, 5)
         
         self.sprites["walking"] = {}
-        self.sprites["walking"][Character.Direction.UP] = Animation([(loadImage('Cricket1b.bmp'), 128), 
-                                                  (loadImage('Cricket1bwalkl.bmp'), 128), 
-                                                  (loadImage('Cricket1b.bmp'), 128),
-                                                  (loadImage('Cricket1bwalkr.bmp'), 128)])
-        self.sprites["walking"][Character.Direction.RIGHT] = Animation([(loadImage('Cricket1r.bmp'), 128), 
-                                                  (loadImage('Cricket1rwalkl.bmp'), 128), 
-                                                  (loadImage('Cricket1r.bmp'), 128),
-                                                  (loadImage('Cricket1rwalkr.bmp'), 128)])
-        self.sprites["walking"][Character.Direction.DOWN] = Animation([(loadImage('Cricket1f.bmp'), 128), 
-                                                  (loadImage('Cricket1fwalkl.bmp'), 128), 
-                                                  (loadImage('Cricket1f.bmp'), 128),
-                                                  (loadImage('Cricket1fwalkr.bmp'), 128)])
-        self.sprites["walking"][Character.Direction.LEFT] = Animation([(loadImage('Cricket1l.bmp'), 128), 
-                                                  (loadImage('Cricket1lwalkl.bmp'), 128), 
-                                                  (loadImage('Cricket1l.bmp'), 128),
-                                                  (loadImage('Cricket1lwalkr.bmp'), 128)])
+        self.sprites["walking"][Character.Direction.UP] = Animation([
+                                                  (spritesheet.getSprite(0, 2), 128), 
+                                                  (spritesheet.getSprite(2, 2), 128), 
+                                                  (spritesheet.getSprite(0, 2), 128),
+                                                  (spritesheet.getSprite(1, 2), 128)])
+        self.sprites["walking"][Character.Direction.RIGHT] = Animation([
+                                                  (spritesheet.getSprite(0, 1), 128), 
+                                                  (spritesheet.getSprite(2, 1), 128), 
+                                                  (spritesheet.getSprite(0, 1), 128),
+                                                  (spritesheet.getSprite(1, 1), 128)])
+        self.sprites["walking"][Character.Direction.DOWN] = Animation([
+                                                  (spritesheet.getSprite(0, 0), 128), 
+                                                  (spritesheet.getSprite(2, 0), 128), 
+                                                  (spritesheet.getSprite(0, 0), 128),
+                                                  (spritesheet.getSprite(1, 0), 128)])
+        self.sprites["walking"][Character.Direction.LEFT] = Animation([
+                                                  (spritesheet.getSprite(0, 3), 128), 
+                                                  (spritesheet.getSprite(2, 3), 128), 
+                                                  (spritesheet.getSprite(0, 3), 128),
+                                                  (spritesheet.getSprite(1, 3), 128)])
         
         self.sprites["walking"]["holding"] = {}
-        self.sprites["walking"]["holding"][Character.Direction.UP] = Animation([(getSpritesheetSprite(4, 2, spritesheet), 128), 
-                                                  (getSpritesheetSprite(6, 2, spritesheet), 128), 
-                                                  (getSpritesheetSprite(4, 2, spritesheet), 128),
-                                                  (getSpritesheetSprite(5, 2, spritesheet), 128)])
-        self.sprites["walking"]["holding"][Character.Direction.RIGHT] = Animation([(getSpritesheetSprite(4, 1, spritesheet), 128), 
-                                                  (getSpritesheetSprite(6, 1, spritesheet), 128), 
-                                                  (getSpritesheetSprite(4, 1, spritesheet), 128),
-                                                  (getSpritesheetSprite(5, 1, spritesheet), 128)])
-        self.sprites["walking"]["holding"][Character.Direction.DOWN] = Animation([(getSpritesheetSprite(4, 0, spritesheet), 128), 
-                                                  (getSpritesheetSprite(6, 0, spritesheet), 128), 
-                                                  (getSpritesheetSprite(4, 0, spritesheet), 128),
-                                                  (getSpritesheetSprite(5, 0, spritesheet), 128)])
-        self.sprites["walking"]["holding"][Character.Direction.LEFT] = Animation([(getSpritesheetSprite(4, 3, spritesheet), 128), 
-                                                  (getSpritesheetSprite(6, 3, spritesheet), 128), 
-                                                  (getSpritesheetSprite(4, 3, spritesheet), 128),
-                                                  (getSpritesheetSprite(5, 3, spritesheet), 128)])
+        self.sprites["walking"]["holding"][Character.Direction.UP] = Animation([(spritesheet.getSprite(4, 2), 128), 
+                                                  (spritesheet.getSprite(6, 2), 128), 
+                                                  (spritesheet.getSprite(4, 2), 128),
+                                                  (spritesheet.getSprite(5, 2), 128)])
+        self.sprites["walking"]["holding"][Character.Direction.RIGHT] = Animation([(spritesheet.getSprite(4, 1), 128), 
+                                                  (spritesheet.getSprite(6, 1), 128), 
+                                                  (spritesheet.getSprite(4, 1), 128),
+                                                  (spritesheet.getSprite(5, 1), 128)])
+        self.sprites["walking"]["holding"][Character.Direction.DOWN] = Animation([(spritesheet.getSprite(4, 0), 128), 
+                                                  (spritesheet.getSprite(6, 0), 128), 
+                                                  (spritesheet.getSprite(4, 0), 128),
+                                                  (spritesheet.getSprite(5, 0), 128)])
+        self.sprites["walking"]["holding"][Character.Direction.LEFT] = Animation([(spritesheet.getSprite(4, 3), 128), 
+                                                  (spritesheet.getSprite(6, 3), 128), 
+                                                  (spritesheet.getSprite(4, 3), 128),
+                                                  (spritesheet.getSprite(5, 3), 128)])
         
         
     def update(self, dt):
@@ -135,7 +141,8 @@ class Cricket(Character, Keylistener):
             self.knife.attack(self, self.facing)
             self.lock_face = True
         else:
-            self.knife.endAttack()
+            if self.knife.attacking:
+                self.knife.endAttack()
             self.lock_face = False
             
         #TODO: "holding" state determination code needs to be made better.
@@ -195,11 +202,23 @@ class Cricket(Character, Keylistener):
             self.setVisible(False)
             Timer(self.hit_invuln_duration, self.endInvuln)
             Timer(self.invuln_flash_frequency, self.invulnFlashTimer)
-            self.addKnockbackVector((enemy.x, enemy.y), 640) #TODO: Figure out better values
+            self.addKnockbackVector((enemy.rect.x, enemy.rect.y), 640) #TODO: Figure out better values
             
     def takeDamage(self, damage_amount):
         self.current_hitpoints -= damage_amount
+
+        #Call listeners - I need to find something more elegant/flexible than observer pattern eventually,
+        #but for this project, I'm favoring quick-and-dirty. So I'll stick with it for now.
+        #Also, let's cut it out with the "handler" interfaces or whatever that was.
+        for listener in self.take_damage_listeners:
+            #TODO: Can my listeners be passed-in functions, instead of objects with this one weird method?
+            listener.onCricketTakesDamage(self.current_hitpoints, self.max_hitpoints)
+
+
         #TODO: Die
+
+    def addTakeDamageListener(self, listener):
+        self.take_damage_listeners.append(listener)
             
     def endInvuln(self, timer):
         self.invulnerable = False

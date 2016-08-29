@@ -1,0 +1,257 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Animation	animation.py	/^class Animation(Updatable):$/;"	c
+Animation	cricket.py	/^from animation import Animation$/;"	i
+Attackable	attackhandler.py	/^class Attackable:$/;"	c
+Attackable	crab.py	/^from attackhandler import Attackable$/;"	i
+Background	background.py	/^class Background(Drawable):$/;"	c
+Background	main.py	/^from background import Background$/;"	i
+Character	character.py	/^class Character(Entity):$/;"	c
+Character	crab.py	/^from character import Character$/;"	i
+Character	cricket.py	/^from character import Character$/;"	i
+Character	decoration.py	/^from character import Character$/;"	i
+Character	main.py	/^from character import Character$/;"	i
+Character	weapons.py	/^from character import Character$/;"	i
+Crab	crab.py	/^class Crab(Character, Attackable):$/;"	c
+Crab	crabspawner.py	/^from crab import Crab$/;"	i
+Crab	main.py	/^from crab import Crab$/;"	i
+CrabSpawner	crabspawner.py	/^class CrabSpawner:$/;"	c
+CrabSpawner	main.py	/^from crabspawner import CrabSpawner$/;"	i
+Cricket	cricket.py	/^class Cricket(Character, Keylistener):$/;"	c
+Cricket	hud.py	/^from cricket import Cricket $/;"	i
+Cricket	main.py	/^from cricket import Cricket$/;"	i
+Decoration	decoration.py	/^class Decoration(Entity):$/;"	c
+Direction	character.py	/^    Direction = Enum("Direction", "UP RIGHT DOWN LEFT");$/;"	v	class:Character
+Drawable	background.py	/^from drawable import Drawable, loadImage $/;"	i
+Drawable	cricket.py	/^from drawable import Drawable$/;"	i
+Drawable	drawable.py	/^class Drawable(pygame.sprite.Sprite):$/;"	c
+Drawable	entity.py	/^from drawable import Drawable, loadImage$/;"	i
+Drawable	hud.py	/^from drawable import Drawable, loadImage$/;"	i
+Drawable	main.py	/^from drawable import Drawable$/;"	i
+Drawable	spritesheet.py	/^from drawable import Drawable, loadImage $/;"	i
+Entity	character.py	/^from entity import Entity$/;"	i
+Entity	cricket.py	/^from entity import Entity$/;"	i
+Entity	decoration.py	/^from entity import Entity$/;"	i
+Entity	entity.py	/^class Entity(Drawable, Updatable):$/;"	c
+Entity	weapons.py	/^from entity import Entity$/;"	i
+Enum	character.py	/^from enum import Enum$/;"	i
+HealthBar	hud.py	/^class HealthBar(HudElement):$/;"	c
+Hud	hud.py	/^class Hud(Drawable, Updatable):$/;"	c
+Hud	main.py	/^from hud import Hud$/;"	i
+HudElement	hud.py	/^class HudElement(Drawable, Updatable):$/;"	c
+Keylistener	cricket.py	/^from keyhandler import Keylistener$/;"	i
+Keylistener	keyhandler.py	/^class Keylistener:$/;"	c
+KillCounter	hud.py	/^class KillCounter(HudElement):$/;"	c
+Knife	weapons.py	/^class Knife(Entity):$/;"	c
+KnockbackTimer	character.py	/^from timerhandler import KnockbackTimer $/;"	i
+KnockbackTimer	timerhandler.py	/^class KnockbackTimer(Timer):$/;"	c
+Layer	drawable.py	/^    Layer = {$/;"	v	class:Drawable
+SpriteSheet	crab.py	/^from spritesheet import SpriteSheet$/;"	i
+SpriteSheet	cricket.py	/^from spritesheet import SpriteSheet$/;"	i
+SpriteSheet	decoration.py	/^from spritesheet import SpriteSheet$/;"	i
+SpriteSheet	hud.py	/^from spritesheet import SpriteSheet$/;"	i
+SpriteSheet	spritesheet.py	/^class SpriteSheet:$/;"	c
+Timer	crab.py	/^from timerhandler import Timer$/;"	i
+Timer	crabspawner.py	/^from timerhandler import Timer$/;"	i
+Timer	cricket.py	/^from timerhandler import Timer      $/;"	i
+Timer	timerhandler.py	/^class Timer:$/;"	c
+Timer	weapons.py	/^from timerhandler import Timer    $/;"	i
+Updatable	animation.py	/^from updatable import Updatable$/;"	i
+Updatable	entity.py	/^from updatable import Updatable$/;"	i
+Updatable	hud.py	/^from updatable import Updatable$/;"	i
+Updatable	main.py	/^from updatable import Updatable$/;"	i
+Updatable	updatable.py	/^class Updatable:$/;"	c
+Wall	entity.py	/^class Wall(Entity):$/;"	c
+WallTorch	decoration.py	/^class WallTorch(Decoration):$/;"	c
+WallTorch	main.py	/^from decoration import WallTorch $/;"	i
+__init__	animation.py	/^    def __init__(self, frames):$/;"	m	class:Animation
+__init__	attackhandler.py	/^    def __init__(self):$/;"	m	class:Attackable
+__init__	background.py	/^    def __init__(self):$/;"	m	class:Background
+__init__	character.py	/^    def __init__(self):$/;"	m	class:Character
+__init__	crab.py	/^    def __init__(self, crabspawner):$/;"	m	class:Crab
+__init__	crabspawner.py	/^    def __init__(self, spawn_rect):$/;"	m	class:CrabSpawner
+__init__	cricket.py	/^    def __init__(self):$/;"	m	class:Cricket
+__init__	decoration.py	/^    def __init__(self, direction):$/;"	m	class:WallTorch
+__init__	decoration.py	/^    def __init__(self, layer="Floor", spritepath=None):$/;"	m	class:Decoration
+__init__	drawable.py	/^    def __init__(self, layer="Floor"):$/;"	m	class:Drawable
+__init__	entity.py	/^    def __init__(self, layer="Character"):$/;"	m	class:Entity
+__init__	entity.py	/^    def __init__(self, x, y, w, h):$/;"	m	class:Wall
+__init__	hud.py	/^    def __init__(self):$/;"	m	class:HudElement
+__init__	hud.py	/^    def __init__(self, hud_space):$/;"	m	class:Hud
+__init__	hud.py	/^    def __init__(self, rect):$/;"	m	class:HealthBar
+__init__	hud.py	/^    def __init__(self, rect):$/;"	m	class:KillCounter
+__init__	keyhandler.py	/^    def __init__(self):$/;"	m	class:Keylistener
+__init__	spritesheet.py	/^    def __init__(self, filepath, spritewidth = 64, spriteheight = 64, border = 0, use_transparency = True):$/;"	m	class:SpriteSheet
+__init__	timerhandler.py	/^    def __init__(self, duration, callback, should_repeat = False):$/;"	m	class:Timer
+__init__	timerhandler.py	/^    def __init__(self, duration, vector, addl_callback = None):$/;"	m	class:KnockbackTimer
+__init__	updatable.py	/^    def __init__(self):$/;"	m	class:Updatable
+__init__	weapons.py	/^    def __init__(self):$/;"	m	class:Knife
+_getMovementCollisionWalls	character.py	/^    def _getMovementCollisionWalls(self, x_change, y_change):$/;"	m	class:Character
+_truncateMovementByCollisions	character.py	/^    def _truncateMovementByCollisions(self, x_change, y_change, walls):$/;"	m	class:Character
+addCrabKilledListener	crabspawner.py	/^    def addCrabKilledListener(self, listener):$/;"	m	class:CrabSpawner
+addKnockbackVector	character.py	/^    def addKnockbackVector(self, source_position, force):$/;"	m	class:Character
+addMovementVector	character.py	/^    def addMovementVector(self, x, y):$/;"	m	class:Character
+addTakeDamageListener	cricket.py	/^    def addTakeDamageListener(self, listener):$/;"	m	class:Cricket
+attack	weapons.py	/^    def attack(self, attacker, direction):$/;"	m	class:Knife
+attackableGroup	attackhandler.py	/^attackableGroup = pygame.sprite.Group()$/;"	v
+attackhandler	weapons.py	/^import attackhandler$/;"	i
+background	main.py	/^background = Background()$/;"	v
+blue	main.py	/^blue = 0, 0, 255$/;"	v
+bottom_wall	main.py	/^bottom_wall = entity.Wall(0, height - 128, width, 64)$/;"	v
+character	main.py	/^import character$/;"	i
+clock	main.py	/^clock = pygame.time.Clock()$/;"	v
+corner_ll	main.py	/^corner_ll = entity.Wall(64, height - 192, 64, 64)$/;"	v
+corner_lr	main.py	/^corner_lr = entity.Wall(width - 128, height - 192, 64, 64)$/;"	v
+corner_ul	main.py	/^corner_ul = entity.Wall(64, 64, 64, 64)$/;"	v
+corner_ur	main.py	/^corner_ur = entity.Wall(width - 128, 64, 64, 64)$/;"	v
+crabKilledTrigger	crabspawner.py	/^    def crabKilledTrigger(self):$/;"	m	class:CrabSpawner
+crabspawner	main.py	/^crabspawner = CrabSpawner(crabzone)$/;"	v
+crabzone	main.py	/^crabzone = Rect(left_wall.rect.right + 64, top_wall.rect.bottom + 64, right_wall.rect.left - left_wall.rect.width - 128, bottom_wall.rect.top - top_wall.rect.height - 128)$/;"	v
+cricket	main.py	/^cricket = Cricket()$/;"	v
+die	character.py	/^    def die(self):$/;"	m	class:Character
+die	crab.py	/^    def die(self):$/;"	m	class:Crab
+dirty_rects	main.py	/^    dirty_rects = Drawable.drawAll(display)$/;"	v
+display	main.py	/^display = pygame.display.set_mode(screensize)$/;"	v
+draw	entity.py	/^    def draw(self):        $/;"	m	class:Entity
+drawAll	drawable.py	/^    def drawAll(surface):$/;"	m	class:Drawable
+drawable_group	drawable.py	/^    drawable_group = pygame.sprite.LayeredUpdates()$/;"	v	class:Drawable
+dt	main.py	/^    dt = clock.get_time()$/;"	v
+endAttack	weapons.py	/^    def endAttack(self):$/;"	m	class:Knife
+endInvuln	cricket.py	/^    def endInvuln(self, timer):$/;"	m	class:Cricket
+endTimer	timerhandler.py	/^    def endTimer(self, timer):$/;"	m	class:KnockbackTimer
+endWalk	crab.py	/^    def endWalk(self, timer):$/;"	m	class:Crab
+endWeaponHit	character.py	/^    def endWeaponHit(self, timer):$/;"	m	class:Character
+endWeaponHit	crab.py	/^    def endWeaponHit(self, timer):$/;"	m	class:Crab
+enemies	character.py	/^enemies = pygame.sprite.Group()$/;"	v
+entity	character.py	/^import entity$/;"	i
+entity	main.py	/^import entity$/;"	i
+finishSlash	weapons.py	/^    def finishSlash(self, timer):$/;"	m	class:Knife
+getAttackOrigin	weapons.py	/^    def getAttackOrigin(self):$/;"	m	class:Knife
+getCurrentFrame	animation.py	/^    def getCurrentFrame(self):$/;"	m	class:Animation
+getForce	weapons.py	/^    def getForce(self):$/;"	m	class:Knife
+getRemainingTime	timerhandler.py	/^    def getRemainingTime(self):$/;"	m	class:Timer
+getSprite	spritesheet.py	/^    def getSprite(self, x, y):$/;"	m	class:SpriteSheet
+getWalkingVector	character.py	/^    def getWalkingVector(self):$/;"	m	class:Character
+haltWalking	character.py	/^    def haltWalking(self):$/;"	m	class:Character
+handle	keyhandler.py	/^def handle(event):$/;"	f
+handleKey	cricket.py	/^    def handleKey(self, event):$/;"	m	class:Cricket
+handleKey	keyhandler.py	/^    def handleKey(self, event):$/;"	m	class:Keylistener
+hud	main.py	/^hud = Hud(hud_space)$/;"	v
+hud_elements	hud.py	/^    hud_elements = []$/;"	v	class:Hud
+hud_space	main.py	/^hud_space = Rect(0, bottom_wall.rect.bottom, width, height - left_wall.rect.height)$/;"	v
+ignoreUpdates	updatable.py	/^    def ignoreUpdates(self):$/;"	m	class:Updatable
+invulnFlashTimer	cricket.py	/^    def invulnFlashTimer(self, timer):$/;"	m	class:Cricket
+isSlashing	weapons.py	/^    def isSlashing(self):$/;"	m	class:Knife
+isVisible	drawable.py	/^    def isVisible(self):$/;"	m	class:Drawable
+isWalking	character.py	/^    def isWalking(self):$/;"	m	class:Character
+keyhandler	main.py	/^import keyhandler$/;"	i
+keylisteners	keyhandler.py	/^keylisteners = []$/;"	v
+left_wall	main.py	/^left_wall = entity.Wall(0, 64, 64, height - 128)$/;"	v
+loadImage	background.py	/^from drawable import Drawable, loadImage $/;"	i
+loadImage	drawable.py	/^def loadImage(filename, use_transparency = True):$/;"	f
+loadImage	entity.py	/^from drawable import Drawable, loadImage$/;"	i
+loadImage	hud.py	/^from drawable import Drawable, loadImage$/;"	i
+loadImage	spritesheet.py	/^from drawable import Drawable, loadImage $/;"	i
+loadImage	weapons.py	/^from drawable import loadImage$/;"	i
+loadSprites	cricket.py	/^    def loadSprites(self):$/;"	m	class:Cricket
+loadSprites	decoration.py	/^    def loadSprites(self):$/;"	m	class:WallTorch
+loadSprites	hud.py	/^    def loadSprites(self):$/;"	m	class:KillCounter
+makeAttack	attackhandler.py	/^def makeAttack(weapon):$/;"	f
+makeMove	character.py	/^    def makeMove(self, dt):$/;"	m	class:Character
+makeTurn	crab.py	/^    def makeTurn(self, timer):$/;"	m	class:Crab
+makeWalk	crab.py	/^    def makeWalk(self, timer):$/;"	m	class:Crab
+math	character.py	/^import math$/;"	i
+math	crab.py	/^import math$/;"	i
+math	cricket.py	/^import math$/;"	i
+moveCollide	character.py	/^        def moveCollide(source, wall):$/;"	f	function:Character._getMovementCollisionWalls
+onCrabKilled	hud.py	/^    def onCrabKilled(self):$/;"	m	class:KillCounter
+onCricketTakesDamage	hud.py	/^    def onCricketTakesDamage(self, current_hitpoints, max_hitpoints):$/;"	m	class:HealthBar
+onHit	cricket.py	/^    def onHit(self, enemy, damage):$/;"	m	class:Cricket
+onPlayerCollision	character.py	/^    def onPlayerCollision(self, player):$/;"	m	class:Character
+onPlayerCollision	crab.py	/^    def onPlayerCollision(self, player):$/;"	m	class:Crab
+onSpawnTimer	crabspawner.py	/^    def onSpawnTimer(self, timer):$/;"	m	class:CrabSpawner
+onWallCollision	character.py	/^    def onWallCollision(self, wall):$/;"	m	class:Character
+onWeaponHit	attackhandler.py	/^    def onWeaponHit(self, weapon):$/;"	m	class:Attackable
+onWeaponHit	crab.py	/^    def onWeaponHit(self, weapon):$/;"	m	class:Crab
+os	drawable.py	/^import os$/;"	i
+pause	timerhandler.py	/^    def pause(self):$/;"	m	class:Timer
+pdb	animation.py	/^import pdb$/;"	i
+pdb	background.py	/^import pdb$/;"	i
+pdb	character.py	/^import pdb$/;"	i
+pdb	crab.py	/^import pdb$/;"	i
+pdb	cricket.py	/^import pdb$/;"	i
+pdb	decoration.py	/^import pdb$/;"	i
+pdb	entity.py	/^import pdb$/;"	i
+pdb	hud.py	/^import pdb$/;"	i
+pdb	main.py	/^import pdb$/;"	i
+pdb	spritesheet.py	/^import pdb$/;"	i
+pdb	timerhandler.py	/^import pdb$/;"	i
+pdb	updatable.py	/^import pdb$/;"	i
+pdb	weapons.py	/^import pdb$/;"	i
+pygame	animation.py	/^import pygame$/;"	i
+pygame	attackhandler.py	/^import pygame$/;"	i
+pygame	background.py	/^import pygame$/;"	i
+pygame	character.py	/^import pygame$/;"	i
+pygame	crab.py	/^import pygame$/;"	i
+pygame	crabspawner.py	/^import pygame$/;"	i
+pygame	cricket.py	/^import pygame$/;"	i
+pygame	decoration.py	/^import pygame$/;"	i
+pygame	drawable.py	/^import pygame$/;"	i
+pygame	entity.py	/^import pygame$/;"	i
+pygame	hud.py	/^import pygame$/;"	i
+pygame	keyhandler.py	/^import pygame$/;"	i
+pygame	main.py	/^import sys, pygame$/;"	i
+pygame	spritesheet.py	/^import pygame$/;"	i
+pygame	timerhandler.py	/^import pygame$/;"	i
+pygame	weapons.py	/^import pygame$/;"	i
+random	crabspawner.py	/^import random$/;"	i
+random	decoration.py	/^import random$/;"	i
+registerListeners	hud.py	/^    def registerListeners(self, cricket, crabspawner):$/;"	m	class:Hud
+reset	animation.py	/^    def reset(self):$/;"	m	class:Animation
+reset	timerhandler.py	/^    def reset(self, new_duration = None):$/;"	m	class:Timer
+resumeUpdates	updatable.py	/^    def resumeUpdates(self):$/;"	m	class:Updatable
+right_wall	main.py	/^right_wall = entity.Wall(width - 64, 64, 64, height - 128)$/;"	v
+setHostile	character.py	/^    def setHostile(self, is_hostile = True):$/;"	m	class:Character
+setLocation	entity.py	/^    def setLocation(self, x = None, y = None):$/;"	m	class:Entity
+setVisible	drawable.py	/^    def setVisible(self, visible):$/;"	m	class:Drawable
+setWalking	character.py	/^    def setWalking(self, direction, is_walking = True):$/;"	m	class:Character
+setWall	entity.py	/^    def setWall(self, is_wall = True):$/;"	m	class:Entity
+spawnCrab	crabspawner.py	/^    def spawnCrab(self):$/;"	m	class:CrabSpawner
+sys	main.py	/^import sys, pygame$/;"	i
+takeDamage	character.py	/^    def takeDamage(self, damage_amount):$/;"	m	class:Character
+takeDamage	cricket.py	/^    def takeDamage(self, damage_amount):$/;"	m	class:Cricket
+timerhandler	main.py	/^import timerhandler$/;"	i
+timers	timerhandler.py	/^timers = []$/;"	v
+top_wall	main.py	/^top_wall = entity.Wall(0, 0, width, 64)$/;"	v
+trigger	timerhandler.py	/^    def trigger(self):$/;"	m	class:Timer
+unpause	timerhandler.py	/^    def unpause(self):$/;"	m	class:Timer
+update	animation.py	/^    def update(self, dt):$/;"	m	class:Animation
+update	character.py	/^    def update(self, dt):$/;"	m	class:Character
+update	cricket.py	/^    def update(self, dt):$/;"	m	class:Cricket
+update	decoration.py	/^    def update(self, dt):$/;"	m	class:WallTorch
+update	timerhandler.py	/^    def update(self, dt):$/;"	m	class:Timer
+update	updatable.py	/^    def update(self, dt):$/;"	m	class:Updatable
+updateAll	updatable.py	/^    def updateAll(dt):$/;"	m	class:Updatable
+updateImage	character.py	/^    def updateImage(self):$/;"	m	class:Character
+updateImage	cricket.py	/^    def updateImage(self):$/;"	m	class:Cricket
+updateImage	drawable.py	/^    def updateImage(self):$/;"	m	class:Drawable
+updateImage	hud.py	/^    def updateImage(self):$/;"	m	class:HealthBar
+updateImage	hud.py	/^    def updateImage(self):$/;"	m	class:Hud
+updateImage	hud.py	/^    def updateImage(self):$/;"	m	class:KillCounter
+updateImage	weapons.py	/^    def updateImage(self):$/;"	m	class:Knife
+updateTimers	timerhandler.py	/^def updateTimers(dt):$/;"	f
+update_list	updatable.py	/^    update_list = []$/;"	v	class:Updatable
+walls	entity.py	/^walls = pygame.sprite.Group()$/;"	v
+walltorch_bottomleft	main.py	/^walltorch_bottomleft = WallTorch(Character.Direction.DOWN)$/;"	v
+walltorch_bottomright	main.py	/^walltorch_bottomright = WallTorch(Character.Direction.DOWN)$/;"	v
+walltorch_leftbottom	main.py	/^walltorch_leftbottom = WallTorch(Character.Direction.LEFT)$/;"	v
+walltorch_lefttop	main.py	/^walltorch_lefttop = WallTorch(Character.Direction.LEFT)$/;"	v
+walltorch_rightbottom	main.py	/^walltorch_rightbottom = WallTorch(Character.Direction.RIGHT)$/;"	v
+walltorch_righttop	main.py	/^walltorch_righttop = WallTorch(Character.Direction.RIGHT)$/;"	v
+walltorch_topleft	main.py	/^walltorch_topleft = WallTorch(Character.Direction.UP)$/;"	v
+walltorch_topright	main.py	/^walltorch_topright = WallTorch(Character.Direction.UP)$/;"	v
+weapons	cricket.py	/^import weapons$/;"	i
