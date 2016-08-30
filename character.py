@@ -184,6 +184,8 @@ class Character(Entity):
             This is what will be drawn to the screen for the current frame.
         ''' 
         self.image = self.sprites[self.facing]
+        TODO: Change the line above to deal with animations? Or just override the
+        method in crab.py and move the below into its own method so I can call it in crab as well.
         #Draw the hitpoint bar:
         bar_height = self.image.get_height()
         pygame.draw.rect(self.image, self.hitbar_health_color, Rect(0,0,3,bar_height))

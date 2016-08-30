@@ -9,6 +9,7 @@ from character import Character
 from spritesheet import SpriteSheet
 from timerhandler import Timer
 from attackhandler import Attackable
+from animation import Animation
 
 class Crab(Character, Attackable):
     
@@ -33,10 +34,22 @@ class Crab(Character, Attackable):
         
         spritesheet = SpriteSheet("MonstersBeach.bmp", border = 4);
         
-        self.sprites[Character.Direction.UP] = spritesheet.getSprite(0, 0)
-        self.sprites[Character.Direction.RIGHT] = spritesheet.getSprite(2, 0)
-        self.sprites[Character.Direction.DOWN] = spritesheet.getSprite(2, 1)
-        self.sprites[Character.Direction.LEFT] = spritesheet.getSprite(0, 1)
+        self.sprites[Character.Direction.UP] = Animation([
+                                         (spritesheet.getSprite(0, 0), 128),
+                                         (pygame.transform.flip(spritesheet.getSprite(1, 0), True, False), 128)
+                                         ])
+        self.sprites[Character.Direction.RIGHT] = Animation([
+                                         (spritesheet.getSprite(2, 0), 128),
+                                         (pygame.transform.flip(spritesheet.getSprite(2, 0), False, True), 128)
+                                         ])
+        self.sprites[Character.Direction.DOWN] = Animation([
+                                         (spritesheet.getSprite(2, 1), 128),
+                                         (pygame.transform.flip(spritesheet.getSprite(2, 1), True, False), 128)
+                                         ])
+        self.sprites[Character.Direction.LEFT] = Animation([
+                                         (spritesheet.getSprite(0, 1), 128),
+                                         (pygame.transform.flip(spritesheet.getSprite(0, 1), False, True), 128)
+                                         ])
         
         #Set timer for turning
         self.turntimer = Timer(self.turn_freq, self.makeTurn, should_repeat = True)
