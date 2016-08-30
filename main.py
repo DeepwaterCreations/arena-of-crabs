@@ -97,3 +97,4 @@ while 1:
     display.fill(blue)
     dirty_rects = Drawable.drawAll(display)
     pygame.display.update(dirty_rects) 
+		
