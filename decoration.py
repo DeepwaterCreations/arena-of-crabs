@@ -16,7 +16,6 @@ class Decoration(Entity):
         if spritepath != None:
             self.sprites = {0: loadImage(spritepath)}
 
-
 import random
 
 class WallTorch(Decoration):
@@ -65,4 +64,25 @@ class WallTorch(Decoration):
             self.flicker_timer = 0
 
 
+class OneOff(Decoration):
 
+    def __init__(self, layer, animation):
+        Decoration.__init__(self, layer)
+        self.animation = animation
+
+    def loadSprites(self):
+        pass
+
+    def update(self, dt):
+        if dt == 0:
+            return
+
+        self.animation.update(dt)
+        self.image = self.animation.getCurrentFrame()
+       
+
+
+
+        
+
+        

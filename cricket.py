@@ -6,6 +6,7 @@ from pygame.locals import *
 
 #import attackhandler
 import weapons
+import decoration
 from drawable import Drawable
 from spritesheet import SpriteSheet
 from character import Character
@@ -115,7 +116,6 @@ class Cricket(Character, Keylistener):
                                                   (spritesheet.getSprite(4, 3), 128),
                                                   (spritesheet.getSprite(5, 3), 128)])
         
-        
     def update(self, dt):
         if dt == 0:
             return      
@@ -151,7 +151,6 @@ class Cricket(Character, Keylistener):
         self.swinging = self.knife.isSlashing() 
         
         Character.makeMove(self, dt)
-        
         
     def updateImage(self):
         if self.isWalking():
@@ -214,8 +213,25 @@ class Cricket(Character, Keylistener):
             #TODO: Can my listeners be passed-in functions, instead of objects with this one weird method?
             listener.onCricketTakesDamage(self.current_hitpoints, self.max_hitpoints)
 
+        if self.current_hitpoints <= 0:
+            self.die()
 
-        #TODO: Die
+    def die(self):
+        #Play an animation
+        #Go to the Game Over screen (GUI listener)
+        #Maybe create a corpse object and immediately remove Cricket to avoid lingering effects?
+        # corpse = Corpse(self.rect)
+        deathsheet = SpriteSheet("Cricket_death_large.bmp", use_transparency=False)
+        death_animation = Animation([
+            (deathsheet.getSprite(0, 0), 128),
+            (deathsheet.getSprite(1, 0), 128),
+            (deathsheet.getSprite(2, 0), 128),
+            (deathsheet.getSprite(3, 0), 128),
+            ])
+        corpse = decoration.OneOff(layer="Character", animation=death_animation)
+        corpse.rect.x = self.rect.x
+        corpse.rect.y = self.rect.y
+        
 
     def addTakeDamageListener(self, listener):
         self.take_damage_listeners.append(listener)
