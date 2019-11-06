@@ -227,7 +227,7 @@ class Cricket(Character, Keylistener):
             (deathsheet.getSprite(1, 0), 128),
             (deathsheet.getSprite(2, 0), 128),
             (deathsheet.getSprite(3, 0), 128),
-            ])
+            ], style="oneoff")
         corpse = decoration.OneOff(layer="Character", animation=death_animation)
         corpse.rect.x = self.rect.x
         corpse.rect.y = self.rect.y
