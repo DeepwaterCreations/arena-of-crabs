@@ -6,6 +6,7 @@ pygame.init()
 
 import entity
 from hud import Hud
+from death_message import DeathMessage
 import character
 from character import Character
 from cricket import Cricket
@@ -69,6 +70,10 @@ crabspawner = CrabSpawner(crabzone)
 hud_space = Rect(0, bottom_wall.rect.bottom, width, height - left_wall.rect.height)
 hud = Hud(hud_space)
 hud.registerListeners(cricket, crabspawner)
+
+screen_space = Rect(0, 0, width, height)
+death_message = DeathMessage(screen_space)
+cricket.addCricketDeathListener(death_message)
 
 clock = pygame.time.Clock()
 

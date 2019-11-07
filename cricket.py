@@ -46,6 +46,7 @@ class Cricket(Character, Keylistener):
         self.invuln_flash_frequency = 32
 
         self.take_damage_listeners = []
+        self.cricket_death_listeners = []
     
     #What I eventually want: Load a sprite sheet, have a whole structure for getting sprites and picking frames and animation
     #and all that jazz.
@@ -234,12 +235,18 @@ class Cricket(Character, Keylistener):
         corpse = decoration.OneOff(layer="Character", animation=death_animation)
         corpse.rect.x = self.rect.x
         corpse.rect.y = self.rect.y
+
+        for listener in self.cricket_death_listeners:
+            listener.onCricketDeath()
         self.setVisible(False)
         self.kill() #This just removes it from all sprite groups
         
 
     def addTakeDamageListener(self, listener):
         self.take_damage_listeners.append(listener)
+
+    def addCricketDeathListener(self, listener):
+        self.cricket_death_listeners.append(listener)
             
     def endInvuln(self, timer):
         self.invulnerable = False
