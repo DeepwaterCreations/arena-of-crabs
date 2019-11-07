@@ -119,6 +119,8 @@ class Cricket(Character, Keylistener):
     def update(self, dt):
         if dt == 0:
             return      
+        if self.current_hitpoints <= 0:
+            return
             
         #Set the walking state
         self.setWalking(Character.Direction.UP, self.key_inputs['up'])
@@ -194,14 +196,15 @@ class Cricket(Character, Keylistener):
                 self.key_inputs['atk'] = False
         
     def onHit(self, enemy, damage):
-        if not self.invulnerable:
+        if not self.invulnerable and self.current_hitpoints > 0:
             self.takeDamage(damage)
             print "Ouch! ", self.current_hitpoints 
-            self.invulnerable = True
-            self.setVisible(False)
-            Timer(self.hit_invuln_duration, self.endInvuln)
-            Timer(self.invuln_flash_frequency, self.invulnFlashTimer)
-            self.addKnockbackVector((enemy.rect.x, enemy.rect.y), 640) #TODO: Figure out better values
+            if self.current_hitpoints > 0:
+                self.invulnerable = True
+                self.setVisible(False)
+                Timer(self.hit_invuln_duration, self.endInvuln)
+                Timer(self.invuln_flash_frequency, self.invulnFlashTimer)
+                self.addKnockbackVector((enemy.rect.x, enemy.rect.y), 640) #TODO: Figure out better values
             
     def takeDamage(self, damage_amount):
         self.current_hitpoints -= damage_amount
@@ -231,6 +234,8 @@ class Cricket(Character, Keylistener):
         corpse = decoration.OneOff(layer="Character", animation=death_animation)
         corpse.rect.x = self.rect.x
         corpse.rect.y = self.rect.y
+        self.setVisible(False)
+        self.kill() #This just removes it from all sprite groups
         
 
     def addTakeDamageListener(self, listener):
