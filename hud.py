@@ -86,6 +86,11 @@ class KillCounter(HudElement):
         self.number_sprites = []
 
     def updateImage(self):
+        #TODO: Do I want to go back to the format where it always
+        #shows 4 digits? (There's code in the repo history for calculating
+        #each digit separately.) 
+        #This will solve the problem of running out of screen space if the counter
+        #gets too wide.
         self.image.fill((0,0,0), pygame.Rect((2*32+1), 0, (4*32), 64))
         number_string = list(str(self.count))
         label_string = ['x', "crabsymbol"]

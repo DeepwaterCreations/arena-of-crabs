@@ -239,6 +239,7 @@ class Cricket(Character, Keylistener):
         for listener in self.cricket_death_listeners:
             listener.onCricketDeath()
         self.setVisible(False)
+        #FIXME: Sometimes Cricket stays visible?
         self.kill() #This just removes it from all sprite groups
         
 
