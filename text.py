@@ -37,6 +37,8 @@ def getStringSurface(string):
         raise Exception("Text sprites haven't been loaded yet")
     else:
         string_surface = pygame.Surface((len(string) * spritewidth, spriteheight))
+        #TODO: Use blits() instead of blit() for multiple images at once?
+        #TODO: Figure out transparency
         for idx, c in enumerate(string):
             char_surface = getCharSurface(c)
             x_pos = idx * spritewidth
