@@ -5,6 +5,7 @@ from pygame.locals import *
 pygame.init()
 
 import entity
+import text
 from hud import Hud
 from death_message import DeathMessage
 import character
@@ -60,6 +61,8 @@ walltorch_lefttop.rect.y = 64 * 2
 walltorch_leftbottom = WallTorch(Character.Direction.LEFT)
 walltorch_leftbottom.rect.x = 0
 walltorch_leftbottom.rect.y = 64 * 5
+
+text.loadTextSprites()
 
 cricket = Cricket()
 cricket.loadSprites()
