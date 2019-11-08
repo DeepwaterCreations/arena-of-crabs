@@ -3,6 +3,7 @@ import pdb
 import pygame
 from pygame.locals import *
 
+import text
 from drawable import Drawable, loadImage
 from updatable import Updatable
 from cricket import Cricket 
@@ -33,7 +34,7 @@ class Hud(Drawable, Updatable):
         kill_counter_box.x += self.rect.x
         kill_counter_box.y += self.rect.y
         self.kill_counter = KillCounter(kill_counter_box)
-    
+
     def updateImage(self):
         self.image = self.background
 
@@ -83,29 +84,13 @@ class KillCounter(HudElement):
         self.image = pygame.Surface((32 + 32 + (32 * 4), 64)) #Crab symbol, "x", four digits.
 
         self.number_sprites = []
-        self.loadSprites()
-
-    def loadSprites(self):
-        spritesheet = SpriteSheet("letters_large.bmp", spritewidth = 32) 
-
-        #Get a set of number sprites #TODO: Move this to a separate class?
-        for i in range(0, 10):
-            self.number_sprites.append(spritesheet.getSprite(i, 3))
-
-        #Draw the part of the image that won't ever change
-        crab_sprite = spritesheet.getSprite(0, 2)
-        x_sprite = spritesheet.getSprite(23, 1)
-        label_sprite = pygame.Surface((32 + 32, 64)) 
-        label_sprite.blit(crab_sprite, (0,0))
-        label_sprite.blit(x_sprite, (crab_sprite.get_width()+1, 0))
-        self.image.blit(label_sprite, (0,0))
 
     def updateImage(self):
         self.image.fill((0,0,0), pygame.Rect((2*32+1), 0, (4*32), 64))
-        self.image.blit(self.number_sprites[(self.count/1000)%10], (0+(2*32), 0))
-        self.image.blit(self.number_sprites[(self.count/100)%10], ((1*32)+(2*32), 0))
-        self.image.blit(self.number_sprites[(self.count/10)%10], ((2*32)+(2*32), 0))
-        self.image.blit(self.number_sprites[self.count%10], ((3*32)+(2*32), 0))
+        number_string = list(str(self.count))
+        label_string = ['x', "crabsymbol"]
+        string_image = text.getStringSurface(number_string + label_string)
+        self.image.blit(string_image, (0,0))
 
     def onCrabKilled(self):
         self.count += 1
