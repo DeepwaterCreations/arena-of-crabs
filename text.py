@@ -11,7 +11,7 @@ from spritesheet import SpriteSheet
 spritewidth = 32
 spriteheight = 64
 filename = "letters_large.bmp"
-misc_chars = ["crabsymbol"]
+misc_chars = ["crabsymbol", ' ']
 
 letter_surfaces = {}
 

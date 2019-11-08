@@ -15,7 +15,7 @@ class DeathMessage(Drawable, Updatable):
         Drawable.__init__(self, "Hud_Elem")
         Updatable.__init__(self)
         
-        message = "GameOver"
+        message = "Game Over"
 
         self.image = text.getStringSurface(message)
         self.rect = self.image.get_rect()
