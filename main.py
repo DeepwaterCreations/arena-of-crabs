@@ -74,8 +74,8 @@ hud_space = Rect(0, bottom_wall.rect.bottom, width, height - left_wall.rect.heig
 hud = Hud(hud_space)
 hud.registerListeners(cricket, crabspawner)
 
-screen_space = Rect(0, 0, width, height)
-death_message = DeathMessage(screen_space)
+game_space = Rect(0, 0, width, height - hud_space.height)
+death_message = DeathMessage(game_space)
 cricket.addCricketDeathListener(death_message)
 
 clock = pygame.time.Clock()
