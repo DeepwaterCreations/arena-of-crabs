@@ -224,7 +224,6 @@ class Cricket(Character, Keylistener):
         #Play an animation
         #Go to the Game Over screen (GUI listener)
         #Maybe create a corpse object and immediately remove Cricket to avoid lingering effects?
-        # corpse = Corpse(self.rect)
         deathsheet = SpriteSheet("Cricket_death_large.bmp", use_transparency=False)
         death_animation = Animation([
             (deathsheet.getSprite(0, 0), 128),
