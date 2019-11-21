@@ -199,16 +199,11 @@ class Cricket(Character, Keylistener):
     def onHit(self, enemy, damage):
         if not self.invulnerable and self.current_hitpoints > 0:
             self.takeDamage(damage)
-            print "Ouch! ", self.current_hitpoints 
-            if self.current_hitpoints > 0:
-                self.invulnerable = True
-                self.setVisible(False)
-                Timer(self.hit_invuln_duration, self.endInvuln)
-                Timer(self.invuln_flash_frequency, self.invulnFlashTimer)
-                self.addKnockbackVector((enemy.rect.x, enemy.rect.y), 640) #TODO: Figure out better values
+            self.addKnockbackVector((enemy.rect.x, enemy.rect.y), 640) #TODO: Figure out better values
             
     def takeDamage(self, damage_amount):
         self.current_hitpoints -= damage_amount
+        print "Ouch! ", self.current_hitpoints 
 
         #Call listeners - I need to find something more elegant/flexible than observer pattern eventually,
         #but for this project, I'm favoring quick-and-dirty. So I'll stick with it for now.
@@ -217,7 +212,12 @@ class Cricket(Character, Keylistener):
             #TODO: Can my listeners be passed-in functions, instead of objects with this one weird method?
             listener.onCricketTakesDamage(self.current_hitpoints, self.max_hitpoints)
 
-        if self.current_hitpoints <= 0:
+        if self.current_hitpoints > 0:
+            self.invulnerable = True
+            self.setVisible(False)
+            Timer(self.hit_invuln_duration, self.endInvuln)
+            Timer(self.invuln_flash_frequency, self.invulnFlashTimer)
+        else:
             self.die()
 
     def die(self):
